@@ -258,7 +258,22 @@
 
 /*------------------ footer-start -----------------*/
 
+#footer {
+    display: flex;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #9caebf;
+    align-items: center;
+    justify-content: center;
+}
 
 
+/* 这个东西就先这样 */
+.footer-button {
+    border: none;
+    width: 25px;
+    height: 25px;
+    color: black;
+}
 
 /*------------------ footer-end -----------------*/
