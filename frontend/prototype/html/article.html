@@ -4,6 +4,22 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/article.css">
+    <link rel="stylesheet" href="../css/markdown/github-markdown-dark.css">
+    <style>
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+    </style>
     <title>文章</title>
 </head>
 <body>
@@ -43,15 +59,38 @@
     <div id="content">
         <article>
             <div id="user-article">
-                <h1 id="installation">Installation</h1>
-                <h2 id="downloadtarball">Download tarball</h2>
-                <p>You can download the latest release tarball directly from [releases][releases]</p>
-                <h2 id="bower">Bower</h2>
-                <pre><code>bower install showdown
-                </code></pre>
-                <h2 id="npmserverside">npm (server-side)</h2>
-                <pre><code>npm install showdown
-                </code></pre>
+                <article class="markdown-body">
+                    <div>
+                        <p><a href="http://www.showdownjs.com"><strong>Showdown</strong></a> is <em>great</em>
+                            because:</p>
+                        <ul>
+                            <li>it's easy to use</li>
+                            <li>it's extensible</li>
+                            <li>works in the server and in the browser</li>
+                        </ul>
+
+                        <pre>
+                        <code>
+                            1. First ordered list item
+                            2. Another item
+                            ⋅⋅* Unordered sub-list.
+                            1. Actual numbers don't matter, just that it's a number
+                            ⋅⋅1. Ordered sub-list
+                            4. And another item.
+
+                            ⋅⋅⋅You can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we'll use three here to also align the raw Markdown).
+
+                            ⋅⋅⋅To have a line break without a paragraph, you will need to use two trailing spaces.⋅⋅
+                            ⋅⋅⋅Note that this line is separate, but within the same paragraph.⋅⋅
+                            ⋅⋅⋅(This is contrary to the typical GFM line break behaviour, where trailing spaces are not required.)
+
+                            * Unordered list can use asterisks
+                            - Or minuses
+                            + Or pluses
+                        </code>
+                    </pre>
+                    </div>
+                </article>
             </div>
         </article>
     </div>
