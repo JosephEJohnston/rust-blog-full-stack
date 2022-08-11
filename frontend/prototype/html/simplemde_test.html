@@ -8,10 +8,40 @@
 </head>
 <body>
     <label for="MyID"></label>
-    <textarea name="" id="MyID"></textarea>
+    <textarea name="" id="MyID">
+        # Installation
+
+## Download tarball
+
+You can download the latest release tarball directly from [releases][releases]
+
+## Bower
+
+    bower install showdown
+
+## npm (server-side)
+
+    npm install showdown
+
+## CDN
+
+You can also use one of several CDNs available:
+
+* rawgit CDN
+
+        https://cdn.rawgit.com/showdownjs/showdown/<version tag>/dist/showdown.min.js
+
+    </textarea>
 
     <script>
-        var simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
+        var simplemde = new SimpleMDE({
+            element: document.getElementById("MyID"),
+            status: false,
+            toolbar: false,
+            toolbarTips: false,
+        });
+
+        simplemde.togglePreview();
     </script>
 </body>
 </html>
