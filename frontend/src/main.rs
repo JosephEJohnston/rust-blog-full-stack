@@ -1,3 +1,5 @@
+mod tests;
+
 use yew::{Component, Context, Html, html};
 use yew::virtual_dom::AttrValue;
 

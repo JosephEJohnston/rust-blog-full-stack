@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../node_modules/showdown/dist/showdown.min.js"></script>
+    <title>showdown test</title>
+</head>
+<body>
+    <!--https://showdownjs.com/-->
+    <script type="text/javascript">
+        var converter = new showdown.Converter();
+        var md = '[**Showdown**](http://www.showdownjs.com) is *great*\n' +
+                'because:\n\n' +
+                ' - it\'s easy to use\n' +
+                ' - it\'s extensible\n' +
+                ' - works in the server and in the browser';
+        var html = converter.makeHtml(md);
+
+        console.log(html);
+    </script>
+</body>
+</html>
