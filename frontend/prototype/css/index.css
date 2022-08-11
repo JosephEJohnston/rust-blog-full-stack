@@ -221,12 +221,12 @@
 .button-transform-left, .button-transform-right, .button-transform-middle {
     background-color: #e4e7ea;
     font-size: 20px;
+    color: #7f8c8f;
 }
 
 .button-transform-left, .button-transform-right {
     width: 45px;
     height: 45px;
-    color: black;
 }
 
 .button-transform-left {
@@ -251,7 +251,6 @@
     width: 35px;
     height: 45px;
     border: none;
-    color: black;
 }
 
 /*--------------------- content-end ---------------*/
@@ -273,7 +272,7 @@
     border: none;
     width: 25px;
     height: 25px;
-    color: black;
+    color: #7f8c8f;
 }
 
 /*------------------ footer-end -----------------*/
