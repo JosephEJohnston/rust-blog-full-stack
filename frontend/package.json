@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "showdown": "^2.1.0",
+    "feather-icons": "^4.29.0",
     "simplemde": "^1.11.2"
   }
 }

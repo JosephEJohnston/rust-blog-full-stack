@@ -1,0 +1,123 @@
+* {
+    margin: 0;
+}
+
+.dashboard-page {
+    width: 100%;
+    height: 100%;
+
+}
+
+.page-column-left, .page-column-right {
+    height: 100%;
+    float: left;
+}
+
+/* ---------------- left-start -------------------- */
+
+.page-column-left {
+    background-color: #647f9d;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-info-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.user-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 25px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.user-name {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.user-email {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.user-info-button {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.for-user-info-button {
+    color: white;
+    background-color: #7f8c8d;
+    border: none;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 15px;
+}
+
+.user-info-icon {
+    padding-top: 5px;
+    width: 15px;
+    height: 15px;
+}
+
+.module {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #c9d1d9;
+}
+
+.module-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+.for-each-module, .module-title {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.for-each-module {
+    height: 40px;
+    font-size: 14px;
+}
+
+.module-title {
+    height: 50px;
+    font-size: 18px;
+}
+
+
+/* ---------------- left-end -------------------- */
+
+
+/* ---------------- right-start -------------------- */
+.page-column-right {
+    width: calc(100% - 250px);
+}
+
+
+
+
+/* ---------------- right-end -------------------- */
+
+

@@ -1,6 +1,44 @@
 
+/*-------------- banner-start ------------------*/
+
+.article-banner {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+}
+
+.banner-title {
+    font-size: 25px;
+}
+
+.banner-brief {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.banner-tag {
+    color: white;
+    background-color: #9caebf;
+    border: none;
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+}
+
+/*-------------- banner-end ------------------*/
+
+
+
+/*-------------- article-start ------------------*/
+
+
 #user-article {
     padding-top: 50px;
     padding-bottom: 50px;
     width: 100%;
 }
+
+
+/*-------------- article-end ------------------*/

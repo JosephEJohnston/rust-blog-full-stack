@@ -3,6 +3,10 @@
     margin: 0;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 /*---------------- nav-start ------------------*/
 
 #header-nav {
@@ -270,9 +274,12 @@
 /* 这个东西就先这样 */
 .footer-button {
     border: none;
-    width: 25px;
-    height: 25px;
+    width: 32px;
+    height: 32px;
     color: #7f8c8f;
+    background-image: url("../resource/img/github-icon.png");
+    border-radius: 5px;
 }
+
 
 /*------------------ footer-end -----------------*/

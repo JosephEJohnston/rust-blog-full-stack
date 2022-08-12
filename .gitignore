@@ -7,12 +7,10 @@ blog.iml
 
 /frontend/node_modules/*
 
-!/frontend/node_modules/showdown
-/frontend/node_modules/showdown/*
-!/frontend/node_modules/showdown/dist
-
 !/frontend/node_modules/simplemde
 /frontend/node_modules/simplemde/*
 !/frontend/node_modules/simplemde/dist
 
-
+!/frontend/node_modules/feather-icons
+/frontend/node_modules/feather-icons/*
+!/frontend/node_modules/feather-icons/dist
