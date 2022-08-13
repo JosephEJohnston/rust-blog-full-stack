@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../node_modules/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/dashboard-manage.css">
+    <title>面板</title>
+</head>
+<body>
+<div id="page" class="dashboard-page">
+    <aside class="page-column-left">
+        <div class="user-info">
+            <div class="user-info-detail">
+                <img class="user-img" src="../resource/img/dashboard-img.jpg" alt="">
+                <div class="user-name">admin</div>
+                <div class="user-email">admin@pigjian.com</div>
+            </div>
+            <div class="user-info-button">
+                <button class="for-user-info-button">
+                    <i class="user-info-icon" data-feather="home"></i>
+                </button>
+                <button class="for-user-info-button">
+                    <i class="user-info-icon" data-feather="user"></i>
+                </button>
+                <button class="for-user-info-button">
+                    <i class="user-info-icon" data-feather="settings"></i>
+                </button>
+            </div>
+        </div>
+        <div class="function">
+            <hr>
+            <div class="module">
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="layout"></i>
+                    面板
+                </div>
+            </div>
+            <div class="module">
+                <div class="module-title">内容模块</div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="book"></i>
+                    文章管理
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="message-square"></i>
+                    讨论管理
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="message-circle"></i>
+                    评论管理
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="tag"></i>
+                    标签管理
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="table"></i>
+                    分类管理
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="link"></i>
+                    友链管理
+                </div>
+            </div>
+            <div class="module">
+                <div class="module-title">基础模块</div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="users"></i>
+                    用户管理
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="file"></i>
+                    文件管理
+                </div>
+            </div>
+            <div class="module">
+                <div class="module-title">系统模块</div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="fast-forward"></i>
+                    访问列表
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="key"></i>
+                    角色列表
+                </div>
+                <div class="for-each-module">
+                    <i class="module-icon" data-feather="server"></i>
+                    系统配置
+                </div>
+            </div>
+        </div>
+    </aside>
+    <div id="content" class="page-column-right">
+        <div class="page-right-header">
+            <i class="header-icon" data-feather="align-justify"></i>
+        </div>
+        <article class="article-list-container">
+            <div class="article-list-border">
+                <div class="article-list-title">
+                    <div class="article-list-name">文章列表</div>
+                    <div class="article-list-title-fill"></div>
+                    <div class="article-list-title-search">
+                        <div>
+                            <label>
+                                <input class="article-list-search-input" type="text">
+                            </label>
+                            <button class="article-list-search-button">
+                                <i class="article-list-search-button-icon" data-feather="search"></i>
+                            </button>
+                        </div>
+                        <button class="article-list-create-button">创建</button>
+                    </div>
+                </div>
+                <hr>
+                <table class="article-list-table">
+                    <tr class="article-list-row">
+                        <td class="article-id">ID</td>
+                        <td class="article-list-column">标题</td>
+                        <td class="article-list-column">副标题</td>
+                        <td class="article-list-column">评论数</td>
+                        <td class="article-list-column">发布时间</td>
+                        <td class="article-list-column">操作</td>
+                    </tr>
+                    <tr class="article-list-row">
+                        <td class="article-list-column article-id">1</td>
+                        <td class="article-list-column">测试标题</td>
+                        <td class="article-list-column">测试副标题</td>
+                        <td class="article-list-column">50</td>
+                        <td class="article-list-column">2022-8-12</td>
+                        <td class="article-list-column">
+                            <button class="article-list-column-button article-list-column-button-update">修改</button>
+                            <button class="article-list-column-button article-list-column-button-delete">删除</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </article>
+    </div>
+    <footer>
+
+    </footer>
+</div>
+</body>
+<script>
+    feather.replace();
+
+</script>
+</html>
