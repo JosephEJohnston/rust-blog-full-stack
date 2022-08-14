@@ -4,7 +4,7 @@ mod css;
 use stylist::Style;
 use yew::{Component, Context, Html, html};
 use yew::virtual_dom::AttrValue;
-use crate::css::INDEX_CSS;
+use crate::css::{INDEX_CSS};
 
 pub struct App {
     name: AttrValue,
@@ -22,10 +22,12 @@ impl Component for App {
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let style = Style::new(INDEX_CSS).unwrap();
+        // 可以使用多个 style，例如 class={ vec![style, test] }
+        // let test = Style::new(ARTICLE_CSS).unwrap();
 
         html! {
             <>
-                <div class={style} id="page">
+                <div class={ style } id="page">
                     <header>
                         <nav id="header-nav">
                             <div class="nav-side"></div>
