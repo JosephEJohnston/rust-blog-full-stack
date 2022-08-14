@@ -30,6 +30,71 @@
     width: 100%;
 }
 
+/* ------------------ input-start ------------------- */
+
 .article-create-input-container {
-    margin-top: 40px;
+    padding-top: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
+
+.for-each-input-container {
+    width: 60%;
+    height: 60px;
+    padding-top: 20px;
+}
+
+.input-name-container {
+    width: 10%;
+    float: left;
+}
+
+.input-name {
+    float: right;
+    padding-top: 10px;
+    color: black;
+}
+
+.each-input {
+    float: left;
+    margin-left: 20px;
+    height: 40px;
+    width: 70%;
+    text-indent: 5px;
+    border-radius: 10px;
+}
+
+.update-file-button {
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    margin-left: 10px;
+    background-color: #7ee787;
+    color: white;
+}
+
+.bottom-check-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-check-button {
+    text-indent: 5px;
+    margin-left: 5px;
+}
+
+.article-create-create-button {
+    width: 60px;
+    height: 40px;
+    background-color: #0a3069;
+    color: white;
+    border-radius: 5px;
+}
+
+/* ------------------ input-end ------------------- */
