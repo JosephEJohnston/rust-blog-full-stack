@@ -1,23 +1,4 @@
 
-.article-list-container {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-.article-list-border {
-    border: 2px black dashed;
-    padding: 20px;
-    background-color: white;
-}
-
-.article-list-title {
-    height: 40px;
-    width: 100%;
-}
 
 .article-list-name,
 .article-list-title-fill,
@@ -27,8 +8,6 @@
 
 .article-list-name {
     width: 30%;
-    font-size: 20px;
-
 }
 
 .article-list-title-fill {
@@ -106,17 +85,16 @@
     height: 30px;
     margin-left: 10px;
     border-radius: 5px;
+    color: white;
 }
 
 .article-list-column-button-update {
     background-color: sandybrown;
-    color: gray;
     border: none;
 }
 
 .article-list-column-button-delete {
     background-color: darkred;
-    color: white;
     border: none;
 }
 

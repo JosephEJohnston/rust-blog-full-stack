@@ -4,7 +4,7 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../../node_modules/feather-icons/dist/feather.min.js"></script>
     <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/dashboard-article-manage.css">
+    <link rel="stylesheet" href="../css/dashboard-article-create.css">
     <title>面板</title>
 </head>
 <body>
@@ -96,45 +96,73 @@
             <i class="header-icon" data-feather="align-justify"></i>
         </div>
         <article class="main-container">
-            <div class="main-border">
+            <div class="article-create-border main-border">
                 <div class="main-title">
-                    <div class="main-name article-list-name">文章列表</div>
-                    <div class="article-list-title-fill"></div>
-                    <div class="article-list-title-search">
-                        <div>
-                            <label>
-                                <input class="article-list-search-input" type="text">
-                            </label>
-                            <button class="article-list-search-button">
-                                <i class="article-list-search-button-icon" data-feather="search"></i>
-                            </button>
-                        </div>
-                        <button class="article-list-create-button">创建</button>
+                    <div class="main-name article-create-name">
+                        创建文章
                     </div>
+                    <div class="article-create-title-blank-fill"></div>
+                    <button class="article-create-back-button">
+                        返回
+                    </button>
                 </div>
-                <hr>
-                <table class="article-list-table">
-                    <tr class="article-list-row">
-                        <td class="article-id">ID</td>
-                        <td class="article-list-column">标题</td>
-                        <td class="article-list-column">副标题</td>
-                        <td class="article-list-column">评论数</td>
-                        <td class="article-list-column">发布时间</td>
-                        <td class="article-list-column">操作</td>
-                    </tr>
-                    <tr class="article-list-row">
-                        <td class="article-list-column article-id">1</td>
-                        <td class="article-list-column">测试标题</td>
-                        <td class="article-list-column">测试副标题</td>
-                        <td class="article-list-column">50</td>
-                        <td class="article-list-column">2022-8-12</td>
-                        <td class="article-list-column">
-                            <button class="article-list-column-button article-list-column-button-update">修改</button>
-                            <button class="article-list-column-button article-list-column-button-delete">删除</button>
-                        </td>
-                    </tr>
-                </table>
-
+                <hr class="article-create-title-border-line">
+                <div class="article-create-input-container">
+                    <div>
+                        <label>
+                            分类
+                            <input type="text" placeholder="选择分类">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            标题
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            副标题
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            页面图像
+                            <input type="text" placeholder="">
+                        </label>
+                        <button>上传文件</button>
+                    </div>
+                    <div>
+                        <label>
+                            内容
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            标签
+                            <input type="text" placeholder="选择标签">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            主要描述
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            日期时间
+                            <input type="text" placeholder="发布时间">
+                        </label>
+                    </div>
+                    <div>
+                        <button>是否草稿？</button>
+                        <button>是否原创？</button>
+                    </div>
+                    <button>创建</button>
+                </div>
             </div>
         </article>
     </div>

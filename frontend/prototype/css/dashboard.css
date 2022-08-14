@@ -203,3 +203,31 @@ html, body {
 /* ---------------- right-end -------------------- */
 
 
+/* ---------------- right-common-start --------------- */
+
+.main-container {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.main-border {
+    border: 2px black dashed;
+    padding: 20px;
+    background-color: white;
+    width: 90%;
+}
+
+.main-title {
+    height: 40px;
+    width: 100%;
+}
+
+.main-name {
+    font-size: 20px;
+}
+
+/* ---------------- right-common-end --------------- */

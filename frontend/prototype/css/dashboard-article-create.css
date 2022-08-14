@@ -1,0 +1,35 @@
+
+.article-create-border {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.article-create-name,
+.article-create-title-blank-fill,
+.article-create-back-button {
+    float: left;
+}
+
+.article-create-title-blank-fill {
+    height: 40px;
+    width: 85%;
+}
+
+.article-create-back-button {
+    width: 40px;
+    height: 30px;
+    background-color: #0d1117;
+    color: white;
+    border-radius: 5px;
+
+}
+
+.article-create-title-border-line {
+    width: 100%;
+}
+
+.article-create-input-container {
+    margin-top: 40px;
+}
