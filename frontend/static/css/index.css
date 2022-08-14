@@ -277,9 +277,12 @@ button:hover {
     width: 32px;
     height: 32px;
     color: #7f8c8f;
-    background-image: url("../resource/img/github-icon.png");
     border-radius: 5px;
+    margin-left: 5px;
 }
 
+.footer-button-img {
+    background-image: url("img/github-icon.png");
+}
 
 /*------------------ footer-end -----------------*/
