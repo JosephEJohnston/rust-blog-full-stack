@@ -1,13 +1,13 @@
 mod tests;
 mod css;
+mod article;
 
 use stylist::Style;
 use yew::{Component, Context, Html, html};
-use yew::virtual_dom::AttrValue;
 use crate::css::{INDEX_CSS};
 
 pub struct App {
-    name: AttrValue,
+
 }
 
 impl Component for App {
@@ -16,7 +16,7 @@ impl Component for App {
 
     fn create(_ctx: &Context<Self>) -> Self {
         App {
-            name: AttrValue::from("Hello, world!"),
+
         }
     }
 
