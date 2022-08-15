@@ -26,7 +26,7 @@ impl Component for Index {
 
         html! {
             <>
-                <div class={ style } id="page">
+                <div class={ style } id="index-page">
                     <header>
                         <nav id="header-nav">
                             <div class="nav-side"></div>

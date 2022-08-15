@@ -11,6 +11,9 @@ use crate::index::Index;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum Route {
+    #[at("/")]
+    Index,
+
     #[at("/articles")]
     Article,
 }
@@ -18,11 +21,17 @@ pub enum Route {
 
 fn switch(routes: &Route) -> Html {
     match routes {
+        Route::Index => {
+            html! {
+                <Index />
+            }
+        },
+
         Route::Article => {
             html! {
                 <Article />
             }
-        }
+        },
     }
 }
 
@@ -45,7 +54,6 @@ impl Component for App {
             <>
                 <BrowserRouter>
                     <Switch<Route> render={Switch::render(switch)} />
-                    <Index />
                 </BrowserRouter>
             </>
         }
