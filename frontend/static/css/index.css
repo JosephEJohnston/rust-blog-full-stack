@@ -27,6 +27,19 @@ button:hover {
     height: 100px; /* Set same as footer's height */
 }
 
+& {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    overflow: visible;
+}
+
+&:after {
+     content: '';
+     display: block;
+     height: 100px;
+ }
+
 /*---------------- nav-start ------------------*/
 
 #header-nav {
