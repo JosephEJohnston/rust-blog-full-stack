@@ -44,7 +44,9 @@ impl Component for Index {
                                         </form>
                                     </div>
                                     <button class="nav-button nav-button-size-small">
-                                        { "登录" }
+                                        <Link<Route> to={ Route::Dashboard }>
+                                                { "登录" }
+                                        </Link<Route>>
                                     </button>
                                     <button class="nav-button nav-button-size-small">
                                         { "注册" }

@@ -14,6 +14,7 @@ button:hover {
 }
 
 #index-page {
+    background-color: #f9f9fb;
     position: relative;
     width: 100%;
     min-height: 100%;
@@ -28,6 +29,7 @@ button:hover {
 }
 
 & {
+    background-color: #f9f9fb;
     position: relative;
     width: 100%;
     min-height: 100%;
@@ -154,7 +156,6 @@ button:hover {
 /*--------------------- content-start ------------*/
 
 #content {
-    background-color: #f9f9fb;
     width: 100%;
     height: 100%;
 }

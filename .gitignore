@@ -5,12 +5,5 @@ blog.iml
 /frontend/target
 /frontend/dist
 
-/frontend/node_modules/*
+/frontend/node_modules
 
-!/frontend/node_modules/simplemde
-/frontend/node_modules/simplemde/*
-!/frontend/node_modules/simplemde/dist
-
-!/frontend/node_modules/feather-icons
-/frontend/node_modules/feather-icons/*
-!/frontend/node_modules/feather-icons/dist
