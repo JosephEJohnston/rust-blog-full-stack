@@ -1,9 +1,14 @@
+pub mod article;
+mod header;
+mod footer;
 
 use stylist::Style;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use crate::css::{INDEX_CSS};
+use crate::css::{ARTICLE_CSS, INDEX_CSS};
 use crate::Route;
+use crate::index::header::IndexHeader;
+use crate::index::footer::IndexFooter;
 
 pub struct Index {
 
@@ -21,45 +26,16 @@ impl Component for Index {
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let style = Style::new(INDEX_CSS).unwrap();
+        // 部分样式在 article_css 中，之后拆分
+        let article_css = Style::new(ARTICLE_CSS).unwrap();
+
         // 可以使用多个 style，例如 class={ vec![style, test] }
         // let test = Style::new(ARTICLE_CSS).unwrap();
 
         html! {
             <>
-                <div id="index-page" class={ style }>
-                    <header>
-                        <nav id="header-nav">
-                            <div class="nav-side"></div>
-                            <div class="nav-middle">
-                                <div class="nav-button-left">
-                                    <button class="nav-button nav-button-big">{ "PJ Blog" }</button>
-                                    <button class="nav-button nav-button-size-small">{ "文章" }</button>
-                                    <button class="nav-button nav-button-size-small">{ "分享" }</button>
-                                    <button class="nav-button nav-button-size-small">{ "文档" }</button>
-                                </div>
-                                <div class="nav-button-right">
-                                    <div class="nav-button nav-form-div">
-                                        <form class="nav-form" action="">
-                                            <input class="form-search" type="text" placeholder="搜索"/>
-                                        </form>
-                                    </div>
-                                    <button class="nav-button nav-button-size-small">
-                                        <Link<Route> to={ Route::Dashboard }>
-                                                { "登录" }
-                                        </Link<Route>>
-                                    </button>
-                                    <button class="nav-button nav-button-size-small">
-                                        { "注册" }
-                                    </button>
-                                </div>
-                            </div>
-                        </nav>
-                        <div id="header-banner">
-                            <p class="banner-p">
-                                { "Nothing is impossible." }
-                            </p>
-                        </div>
-                    </header>
+                <div id="index-page" class={ vec![style, article_css] }>
+                    <IndexHeader />
                     <div id="content">
                         <article class="article-container">
                             <div class="for-article-container">
@@ -102,13 +78,7 @@ impl Component for Index {
                             <button class="button-transform-right">{ ">" }</button>
                         </div>
                     </div>
-                    <footer id="footer">
-                        <nav>
-                            <button class="footer-button footer-button-img"></button>
-                            <button class="footer-button footer-button-img"></button>
-                            <button class="footer-button footer-button-img"></button>
-                        </nav>
-                    </footer>
+                    <IndexFooter />
                 </div>
             </>
         }

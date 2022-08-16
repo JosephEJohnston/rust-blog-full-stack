@@ -1,13 +1,12 @@
 mod tests;
 mod css;
-mod article;
 mod index;
 mod dashboard;
 
 use yew::prelude::*;
 use yew_router::{Routable, BrowserRouter};
 use yew_router::prelude::*;
-use crate::article::Article;
+use crate::index::article::Article;
 use crate::index::Index;
 use crate::dashboard::index::DashboardIndex;
 use crate::dashboard::article::manage::DashboardArticleManage;
