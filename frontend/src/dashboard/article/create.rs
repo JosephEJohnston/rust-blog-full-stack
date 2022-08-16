@@ -1,4 +1,6 @@
+use stylist::Style;
 use yew::{Component, Context, Html, html};
+use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_CSS};
 
 pub struct DashboardArticleCreate {
 
@@ -15,9 +17,12 @@ impl Component for DashboardArticleCreate {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
+        let dashboard_css = Style::new(DASHBOARD_CSS).unwrap();
+        let create_css = Style::new(DASHBOARD_ARTICLE_CREATE_CSS).unwrap();
+
         html! {
             <>
-                <div id="page" class="dashboard-page">
+                <div id="page" class={ vec![dashboard_css, create_css] }>
                     <aside class="page-column-left">
                         <div class="user-info">
                             <div class="user-info-detail">

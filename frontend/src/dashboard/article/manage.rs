@@ -1,45 +1,28 @@
+use yew::{Component, Context, Html, html};
 use stylist::Style;
-use yew::prelude::*;
-use yew_router::prelude::*;
-use crate::css::DASHBOARD_CSS;
-use crate::Route;
+use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_CSS};
 
+pub struct DashboardArticleManage {
 
-pub struct DashboardIndex {
-    js_code: String,
 }
 
-#[derive(PartialEq, Debug, Clone)]
-pub enum DashboardIndexMsg {
-    RenderJS,
-}
-
-impl Component for DashboardIndex {
-    type Message = DashboardIndexMsg;
+impl Component for DashboardArticleManage {
+    type Message = ();
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        DashboardIndex {
-            js_code: "feather.replace();".to_string(),
-        }
-    }
+        DashboardArticleManage {
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            DashboardIndexMsg::RenderJS => {
-                self.js_code = "feather.replace();".to_string();
-
-                true
-            }
         }
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let dashboard_css = Style::new(DASHBOARD_CSS).unwrap();
+        let manage_css = Style::new(DASHBOARD_ARTICLE_MANAGE_CSS).unwrap();
 
         html! {
             <>
-                <div id="page" class={ dashboard_css }>
+                <div id="page" class={ vec![dashboard_css, manage_css] }>
                     <aside class="page-column-left">
                         <div class="user-info">
                             <div class="user-info-detail">
@@ -71,9 +54,7 @@ impl Component for DashboardIndex {
                                 <div class="module-title">{"内容模块"}</div>
                                 <div class="for-each-module">
                                     <i class="module-icon" data-feather="book"></i>
-                                    <Link<Route> to={ Route::DashboardArticleManage }>
-                                        {"文章管理"}
-                                    </Link<Route>>
+                                    {"文章管理"}
                                 </div>
                                 <div class="for-each-module">
                                     <i class="module-icon" data-feather="message-square"></i>
@@ -128,48 +109,48 @@ impl Component for DashboardIndex {
                         <div class="page-right-header">
                             <i class="header-icon" data-feather="align-justify"></i>
                         </div>
-                        <article>
-                            <div class="statistics-info">
-                                <div class="for-each-statistics">
-                                    <div class="each-statistics-title">
-                                        <div class="each-title-detail">{"用户数"}</div>
-                                        <div class="each-tag-all">{"全部"}</div>
-                                    </div>
-                                    <div class="each-statistics-data">
-                                        <i class="each-icon" data-feather="users"></i>
-                                        <div class="each-data">{"12"}</div>
-                                    </div>
-                                </div>
-                                <div class="for-each-statistics">
-                                    <div class="each-statistics-title">
-                                        <div class="each-title-detail">{"访问者"}</div>
-                                        <div class="each-tag-all">{"全部"}</div>
-                                    </div>
-                                    <div class="each-statistics-data">
-                                        <i class="each-icon" data-feather="eye"></i>
-                                        <div class="each-data">{"4775"}</div>
+                        <article class="main-container">
+                            <div class="main-border">
+                                <div class="main-title">
+                                    <div class="main-name article-list-name">{"文章列表"}</div>
+                                    <div class="article-list-title-fill"></div>
+                                    <div class="article-list-title-search">
+                                        <div>
+                                            <label>
+                                                <input class="article-list-search-input" type="text"/>
+                                            </label>
+                                            <button class="article-list-search-button">
+                                                <i class="article-list-search-button-icon" data-feather="search"></i>
+                                            </button>
+                                        </div>
+                                        <button class="article-list-create-button">{"创建"}</button>
                                     </div>
                                 </div>
-                                <div class="for-each-statistics">
-                                    <div class="each-statistics-title">
-                                        <div class="each-title-detail">{"文章数"}</div>
-                                        <div class="each-tag-all">{"全部"}</div>
-                                    </div>
-                                    <div class="each-statistics-data">
-                                        <i class="each-icon" data-feather="book"></i>
-                                        <div class="each-data">{"20"}</div>
-                                    </div>
-                                </div>
-                                <div class="for-each-statistics">
-                                    <div class="each-statistics-title">
-                                        <div class="each-title-detail">{"评论数"}</div>
-                                        <div class="each-tag-all">{"全部"}</div>
-                                    </div>
-                                    <div class="each-statistics-data">
-                                        <i class="each-icon" data-feather="message-circle"></i>
-                                        <div class="each-data">{"50"}</div>
-                                    </div>
-                                </div>
+                                <hr/>
+                                <table class="article-list-table">
+                                    <tbody>
+                                        <tr class="article-list-row">
+                                            <td class="article-id">{"ID"}</td>
+                                            <td class="article-list-column">{"标题"}</td>
+                                            <td class="article-list-column">{"副标题"}</td>
+                                            <td class="article-list-column">{"评论数"}</td>
+                                            <td class="article-list-column">{"发布时间"}</td>
+                                            <td class="article-list-column">{"操作"}</td>
+                                        </tr>
+                                        <tr class="article-list-row">
+                                            <td class="article-list-column article-id">{"1"}</td>
+                                            <td class="article-list-column">{"测试标题"}</td>
+                                            <td class="article-list-column">{"测试副标题"}</td>
+                                            <td class="article-list-column">{"50"}</td>
+                                            <td class="article-list-column">{"2022-8-12"}</td>
+                                            <td class="article-list-column">
+                                                <button class="article-list-column-button article-list-column-button-update">{"修改"}</button>
+                                                <button class="article-list-column-button article-list-column-button-delete">{"删除"}</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </article>
                     </div>
@@ -177,18 +158,7 @@ impl Component for DashboardIndex {
 
                     </footer>
                 </div>
-                <script src="feather/feather.min.js">
-                </script>
-                <script>
-                    { "setTimeout(function() { feather.replace(); }, 100)" }
-                </script>
             </>
-        }
-    }
-
-    fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
-        if first_render {
-            ctx.link().send_message(DashboardIndexMsg::RenderJS);
         }
     }
 }
