@@ -28,50 +28,48 @@ impl Component for DashboardIndex {
     fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <>
-                <article>
-                    <div class="statistics-info">
-                        <div class="for-each-statistics">
-                            <div class="each-statistics-title">
-                                <div class="each-title-detail">{"用户数"}</div>
-                                <div class="each-tag-all">{"全部"}</div>
-                            </div>
-                            <div class="each-statistics-data">
-                                <i class="each-icon" data-feather="users"></i>
-                                <div class="each-data">{"12"}</div>
-                            </div>
+                <div class="statistics-info">
+                    <div class="for-each-statistics">
+                        <div class="each-statistics-title">
+                            <div class="each-title-detail">{"用户数"}</div>
+                            <div class="each-tag-all">{"全部"}</div>
                         </div>
-                        <div class="for-each-statistics">
-                            <div class="each-statistics-title">
-                                <div class="each-title-detail">{"访问者"}</div>
-                                <div class="each-tag-all">{"全部"}</div>
-                            </div>
-                            <div class="each-statistics-data">
-                                <i class="each-icon" data-feather="eye"></i>
-                                <div class="each-data">{"4775"}</div>
-                            </div>
-                        </div>
-                        <div class="for-each-statistics">
-                            <div class="each-statistics-title">
-                                <div class="each-title-detail">{"文章数"}</div>
-                                <div class="each-tag-all">{"全部"}</div>
-                            </div>
-                            <div class="each-statistics-data">
-                                <i class="each-icon" data-feather="book"></i>
-                                <div class="each-data">{"20"}</div>
-                            </div>
-                        </div>
-                        <div class="for-each-statistics">
-                            <div class="each-statistics-title">
-                                <div class="each-title-detail">{"评论数"}</div>
-                                <div class="each-tag-all">{"全部"}</div>
-                            </div>
-                            <div class="each-statistics-data">
-                                <i class="each-icon" data-feather="message-circle"></i>
-                                <div class="each-data">{"50"}</div>
-                            </div>
+                        <div class="each-statistics-data">
+                            <i class="each-icon" data-feather="users"></i>
+                            <div class="each-data">{"12"}</div>
                         </div>
                     </div>
-                </article>
+                    <div class="for-each-statistics">
+                        <div class="each-statistics-title">
+                            <div class="each-title-detail">{"访问者"}</div>
+                            <div class="each-tag-all">{"全部"}</div>
+                        </div>
+                        <div class="each-statistics-data">
+                            <i class="each-icon" data-feather="eye"></i>
+                            <div class="each-data">{"4775"}</div>
+                        </div>
+                    </div>
+                    <div class="for-each-statistics">
+                        <div class="each-statistics-title">
+                            <div class="each-title-detail">{"文章数"}</div>
+                            <div class="each-tag-all">{"全部"}</div>
+                        </div>
+                        <div class="each-statistics-data">
+                            <i class="each-icon" data-feather="book"></i>
+                            <div class="each-data">{"20"}</div>
+                        </div>
+                    </div>
+                    <div class="for-each-statistics">
+                        <div class="each-statistics-title">
+                            <div class="each-title-detail">{"评论数"}</div>
+                            <div class="each-tag-all">{"全部"}</div>
+                        </div>
+                        <div class="each-statistics-data">
+                            <i class="each-icon" data-feather="message-circle"></i>
+                            <div class="each-data">{"50"}</div>
+                        </div>
+                    </div>
+                </div>
             </>
         }
     }

@@ -221,20 +221,5 @@ html, body {
     margin-bottom: 30px;
 }
 
-.main-border {
-    border: 2px black dashed;
-    padding: 20px;
-    background-color: white;
-    width: 90%;
-}
-
-.main-title {
-    height: 40px;
-    width: 100%;
-}
-
-.main-name {
-    font-size: 20px;
-}
 
 /* ---------------- right-common-end --------------- */

@@ -6,6 +6,8 @@ pub const ARTICLE_CSS: &str = include_str!("../static/css/article.css");
 
 pub const DASHBOARD_CSS: &str = include_str!("../static/css/dashboard.css");
 
+pub const DASHBOARD_MAIN_COMMON: &str = include_str!("../static/css/dashboard-main-common.css");
+
 pub const DASHBOARD_ARTICLE_MANAGE_CSS: &str = include_str!("../static/css/dashboard-article-manage.css");
 
 pub const DASHBOARD_ARTICLE_CREATE_CSS: &str = include_str!("../static/css/dashboard-article-create.css");

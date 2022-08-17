@@ -1,11 +1,4 @@
 
-.article-create-border {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
 .article-create-name,
 .article-create-title-blank-fill,
 .article-create-back-button {

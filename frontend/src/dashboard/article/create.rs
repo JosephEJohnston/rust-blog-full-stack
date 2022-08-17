@@ -1,7 +1,6 @@
 use stylist::Style;
 use yew::{Component, Context, Html, html};
-use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_CSS};
-use crate::dashboard::side_bar::DashboardSideBar;
+use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 
 pub struct DashboardArticleCreate {
 
@@ -18,101 +17,99 @@ impl Component for DashboardArticleCreate {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        let dashboard_css = Style::new(DASHBOARD_CSS).unwrap();
+        let dashboard_css = Style::new(DASHBOARD_MAIN_COMMON).unwrap();
         let create_css = Style::new(DASHBOARD_ARTICLE_CREATE_CSS).unwrap();
 
         html! {
             <>
-                <article class="main-container">
-                    <div class="article-create-border main-border">
-                        <div class="main-title">
-                            <div class="main-name article-create-name">
-                                {"创建文章"}
-                            </div>
-                            <div class="article-create-title-blank-fill"></div>
-                            <button class="article-create-back-button">
-                                {"返回"}
-                            </button>
+                <div class={ vec![create_css, dashboard_css] }>
+                    <div class="main-title">
+                        <div class="main-name article-create-name">
+                            {"创建文章"}
                         </div>
-                        <hr class="article-create-title-border-line"/>
-                        <div class="article-create-input-container">
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"分类"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text" placeholder="选择分类"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"标题"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"副标题"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"页面图像"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text" placeholder=""/>
-                                </label>
-                                <button class="update-file-button">{"上传文件"}</button>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"内容"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"标签"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text" placeholder="选择标签"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"主要描述"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container">
-                                <div class="input-name-container">
-                                    <div class="input-name">{"日期时间"}</div>
-                                </div>
-                                <label>
-                                    <input class="each-input" type="text" placeholder="发布时间"/>
-                                </label>
-                            </div>
-                            <div class="for-each-input-container bottom-check-container">
-                                <label>
-                                    <input class="input-check-button" type="text" placeholder="是否草稿？"/>
-                                </label>
-                                <label>
-                                    <input class="input-check-button" type="text" placeholder="是否原创？"/>
-                                </label>
-                            </div>
-                            <button class="article-create-create-button">{"创建"}</button>
-                        </div>
+                        <div class="article-create-title-blank-fill"></div>
+                        <button class="article-create-back-button">
+                            {"返回"}
+                        </button>
                     </div>
-                </article>
+                    <hr class="article-create-title-border-line"/>
+                    <div class="article-create-input-container">
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"分类"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text" placeholder="选择分类"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"标题"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"副标题"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"页面图像"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text" placeholder=""/>
+                            </label>
+                            <button class="update-file-button">{"上传文件"}</button>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"内容"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"标签"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text" placeholder="选择标签"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"主要描述"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container">
+                            <div class="input-name-container">
+                                <div class="input-name">{"日期时间"}</div>
+                            </div>
+                            <label>
+                                <input class="each-input" type="text" placeholder="发布时间"/>
+                            </label>
+                        </div>
+                        <div class="for-each-input-container bottom-check-container">
+                            <label>
+                                <input class="input-check-button" type="text" placeholder="是否草稿？"/>
+                            </label>
+                            <label>
+                                <input class="input-check-button" type="text" placeholder="是否原创？"/>
+                            </label>
+                        </div>
+                        <button class="article-create-create-button">{"创建"}</button>
+                    </div>
+                </div>
             </>
         }
     }

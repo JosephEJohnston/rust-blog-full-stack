@@ -5,9 +5,8 @@ mod side_bar;
 
 use stylist::Style;
 use yew::{Component, Context, Html, html};
-use yew_router::{Routable, BrowserRouter, Switch};
+use yew_router::{Routable, Switch};
 use crate::css::DASHBOARD_CSS;
-use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::index::DashboardIndex;
 use crate::dashboard::side_bar::DashboardSideBar;
 use crate::dashboard::article::DashboardArticle;
@@ -71,7 +70,9 @@ impl Component for Dashboard {
                         <div class="page-right-header">
                             <i class="header-icon" data-feather="align-justify"></i>
                         </div>
-                        <Switch<DashboardRoute> render={Switch::render(switch)} />
+                        <article class="main-container">
+                            <Switch<DashboardRoute> render={Switch::render(switch)} />
+                        </article>
                     </div>
                     <footer></footer>
                 </div>
