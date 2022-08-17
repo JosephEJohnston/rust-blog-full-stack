@@ -1,6 +1,6 @@
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
-use crate::Route;
+use crate::dashboard::DashboardRoute;
 
 pub struct DashboardSideBar {
 
@@ -43,16 +43,18 @@ impl Component for DashboardSideBar {
                         <div class="module">
                             <div class="for-each-module">
                                 <i class="module-icon" data-feather="layout"></i>
-                                {"面板"}
+                                <Link<DashboardRoute> to={ DashboardRoute::Index }>
+                                    {"面板"}
+                                </Link<DashboardRoute>>
                             </div>
                         </div>
                         <div class="module">
                             <div class="module-title">{"内容模块"}</div>
                             <div class="for-each-module">
                                 <i class="module-icon" data-feather="book"></i>
-                                <Link<Route> to={ Route::DashboardArticleManage }>
+                                <Link<DashboardRoute> to={ DashboardRoute::Article }>
                                     {"文章管理"}
-                                </Link<Route>>
+                                </Link<DashboardRoute>>
                             </div>
                             <div class="for-each-module">
                                 <i class="module-icon" data-feather="message-square"></i>

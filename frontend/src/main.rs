@@ -8,9 +8,7 @@ use yew_router::{Routable, BrowserRouter};
 use yew_router::prelude::*;
 use crate::index::article::Article;
 use crate::index::Index;
-use crate::dashboard::index::DashboardIndex;
-use crate::dashboard::article::manage::DashboardArticleManage;
-use crate::dashboard::article::create::DashboardArticleCreate;
+use crate::dashboard::Dashboard;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum Route {
@@ -22,12 +20,6 @@ pub enum Route {
 
     #[at("/dashboard")]
     Dashboard,
-
-    #[at("/dashboard/article/manage")]
-    DashboardArticleManage,
-
-    #[at("/dashboard/article/create")]
-    DashboardArticleCreate,
 }
 
 
@@ -47,21 +39,9 @@ fn switch(routes: &Route) -> Html {
 
         Route::Dashboard => {
             html! {
-                <DashboardIndex />
+                <Dashboard />
             }
         },
-
-        Route::DashboardArticleManage => {
-            html! {
-                <DashboardArticleManage />
-            }
-        },
-
-        Route::DashboardArticleCreate => {
-            html! {
-                <DashboardArticleCreate />
-            }
-        }
     }
 }
 
