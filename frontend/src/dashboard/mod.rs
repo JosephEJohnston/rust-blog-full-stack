@@ -6,6 +6,7 @@ mod side_bar;
 use stylist::Style;
 use yew::{Component, Context, Html, html};
 use yew_router::{Routable, Switch};
+use yew_feather::align_justify::AlignJustify;
 use crate::css::DASHBOARD_CSS;
 use crate::dashboard::index::DashboardIndex;
 use crate::dashboard::side_bar::DashboardSideBar;
@@ -68,7 +69,7 @@ impl Component for Dashboard {
                     <DashboardSideBar />
                     <div id="content" class="page-column-right">
                         <div class="page-right-header">
-                            <i class="header-icon" data-feather="align-justify"></i>
+                            <AlignJustify class="header-icon"/>
                         </div>
                         <article class="main-container">
                             <Switch<DashboardRoute> render={Switch::render(switch)} />
@@ -76,10 +77,6 @@ impl Component for Dashboard {
                     </div>
                     <footer></footer>
                 </div>
-                <script src="feather/feather.min.js"></script>
-                <script>
-                    { "setTimeout(function() { feather.replace(); }, 1000)" }
-                </script>
             </>
         }
     }

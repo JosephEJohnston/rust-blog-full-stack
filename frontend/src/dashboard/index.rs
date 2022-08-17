@@ -1,4 +1,8 @@
 use yew::prelude::*;
+use yew_feather::users::Users;
+use yew_feather::eye::Eye;
+use yew_feather::book::Book;
+use yew_feather::message_circle::MessageCircle;
 
 pub struct DashboardIndex {
 }
@@ -35,7 +39,7 @@ impl Component for DashboardIndex {
                             <div class="each-tag-all">{"全部"}</div>
                         </div>
                         <div class="each-statistics-data">
-                            <i class="each-icon" data-feather="users"></i>
+                            <Users class="each-icon" />
                             <div class="each-data">{"12"}</div>
                         </div>
                     </div>
@@ -45,7 +49,7 @@ impl Component for DashboardIndex {
                             <div class="each-tag-all">{"全部"}</div>
                         </div>
                         <div class="each-statistics-data">
-                            <i class="each-icon" data-feather="eye"></i>
+                            <Eye class="each-icon" />
                             <div class="each-data">{"4775"}</div>
                         </div>
                     </div>
@@ -55,7 +59,7 @@ impl Component for DashboardIndex {
                             <div class="each-tag-all">{"全部"}</div>
                         </div>
                         <div class="each-statistics-data">
-                            <i class="each-icon" data-feather="book"></i>
+                            <Book class="each-icon" />
                             <div class="each-data">{"20"}</div>
                         </div>
                     </div>
@@ -65,7 +69,7 @@ impl Component for DashboardIndex {
                             <div class="each-tag-all">{"全部"}</div>
                         </div>
                         <div class="each-statistics-data">
-                            <i class="each-icon" data-feather="message-circle"></i>
+                            <MessageCircle class="each-icon" />
                             <div class="each-data">{"50"}</div>
                         </div>
                     </div>

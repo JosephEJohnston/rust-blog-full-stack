@@ -1,5 +1,19 @@
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
+use yew_feather::home::Home;
+use yew_feather::user::User;
+use yew_feather::settings::Settings;
+use yew_feather::layout::Layout;
+use yew_feather::book::Book;
+use yew_feather::message_square::MessageSquare;
+use yew_feather::message_circle::MessageCircle;
+use yew_feather::tag::Tag;
+use yew_feather::tablet::Tablet;
+use yew_feather::users::Users;
+use yew_feather::file::File;
+use yew_feather::fast_forward::FastForward;
+use yew_feather::key::Key;
+use yew_feather::server::Server;
 use crate::dashboard::DashboardRoute;
 
 pub struct DashboardSideBar {
@@ -28,13 +42,13 @@ impl Component for DashboardSideBar {
                         </div>
                         <div class="user-info-button">
                             <button class="for-user-info-button">
-                                <i class="user-info-icon" data-feather="home"></i>
+                                <Home class="user-info-icon" />
                             </button>
                             <button class="for-user-info-button">
-                                <i class="user-info-icon" data-feather="user"></i>
+                                <User class="user-info-icon" />
                             </button>
                             <button class="for-user-info-button">
-                                <i class="user-info-icon" data-feather="settings"></i>
+                                <Settings class="user-info-icon" />
                             </button>
                         </div>
                     </div>
@@ -42,7 +56,7 @@ impl Component for DashboardSideBar {
                         <hr/>
                         <div class="module">
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="layout"></i>
+                                <Layout class="module-icon" />
                                 <Link<DashboardRoute> to={ DashboardRoute::Index }>
                                     {"面板"}
                                 </Link<DashboardRoute>>
@@ -51,55 +65,55 @@ impl Component for DashboardSideBar {
                         <div class="module">
                             <div class="module-title">{"内容模块"}</div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="book"></i>
+                                <Book class="module-icon" />
                                 <Link<DashboardRoute> to={ DashboardRoute::ArticleIndex }>
                                     {"文章管理"}
                                 </Link<DashboardRoute>>
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="message-square"></i>
+                                <MessageSquare class="module-icon" />
                                 {"讨论管理"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="message-circle"></i>
+                                <MessageCircle class="module-icon" />
                                 {"评论管理"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="tag"></i>
+                                <Tag class="module-icon" />
                                 {"标签管理"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="table"></i>
+                                <Tablet class="module-icon" />
                                 {"分类管理"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="link"></i>
+                                <yew_feather::link::Link class="module-icon" />
                                 {"友链管理"}
                             </div>
                         </div>
                         <div class="module">
                             <div class="module-title">{"基础模块"}</div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="users"></i>
+                                <Users class="module-icon" />
                                 {"用户管理"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="file"></i>
+                                <File class="module-icon" />
                                 {"文件管理"}
                             </div>
                         </div>
                         <div class="module">
                             <div class="module-title">{"系统模块"}</div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="fast-forward"></i>
+                                <FastForward class="module-icon" />
                                 {"访问列表"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="key"></i>
+                                <Key class="module-icon" />
                                 {"角色列表"}
                             </div>
                             <div class="for-each-module">
-                                <i class="module-icon" data-feather="server"></i>
+                                <Server class="module-icon" />
                                 {"系统配置"}
                             </div>
                         </div>

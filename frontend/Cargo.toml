@@ -9,7 +9,11 @@ edition = "2021"
 # 前端服务器框架
 yew = "0.19.3"
 
+# 路由库
 yew-router = "0.16.0"
+
+# icon 库
+yew-feather = "0.2.1"
 
 wasm-bindgen = "0.2.82"
 

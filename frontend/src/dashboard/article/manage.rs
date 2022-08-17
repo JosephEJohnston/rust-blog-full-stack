@@ -1,5 +1,6 @@
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
+use yew_feather::search::Search;
 use stylist::Style;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
@@ -34,7 +35,7 @@ impl Component for DashboardArticleManage {
                                     <input class="article-list-search-input" type="text"/>
                                 </label>
                                 <button class="article-list-search-button">
-                                    <i class="article-list-search-button-icon" data-feather="search"></i>
+                                    <Search class="article-list-search-button-icon" />
                                 </button>
                             </div>
                             <button class="article-list-create-button">
