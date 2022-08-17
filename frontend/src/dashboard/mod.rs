@@ -7,17 +7,21 @@ use stylist::Style;
 use yew::{Component, Context, Html, html};
 use yew_router::{Routable, BrowserRouter, Switch};
 use crate::css::DASHBOARD_CSS;
+use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::index::DashboardIndex;
 use crate::dashboard::side_bar::DashboardSideBar;
-use crate::dashboard::article::manage::DashboardArticleManage;
+use crate::dashboard::article::DashboardArticle;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum DashboardRoute {
-    #[at("/dashboard/index")]
+    #[at("/dashboard")]
     Index,
 
-    #[at("/dashboard/article")]
+    #[at("/dashboard/article/:s")]
     Article,
+
+    #[at("/dashboard/article")]
+    ArticleIndex,
 }
 
 fn switch(routes: &DashboardRoute) -> Html {
@@ -30,7 +34,13 @@ fn switch(routes: &DashboardRoute) -> Html {
 
         DashboardRoute::Article => {
             html! {
-                <DashboardArticleManage />
+                <DashboardArticle />
+            }
+        }
+
+        DashboardRoute::ArticleIndex => {
+            html! {
+                <DashboardArticle />
             }
         },
     }

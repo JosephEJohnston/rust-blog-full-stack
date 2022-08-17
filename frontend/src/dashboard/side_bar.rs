@@ -52,7 +52,7 @@ impl Component for DashboardSideBar {
                             <div class="module-title">{"内容模块"}</div>
                             <div class="for-each-module">
                                 <i class="module-icon" data-feather="book"></i>
-                                <Link<DashboardRoute> to={ DashboardRoute::Article }>
+                                <Link<DashboardRoute> to={ DashboardRoute::ArticleIndex }>
                                     {"文章管理"}
                                 </Link<DashboardRoute>>
                             </div>

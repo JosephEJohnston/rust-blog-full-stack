@@ -21,7 +21,7 @@ pub enum Route {
     #[at("/dashboard/:s")]
     Dashboard,
 
-    #[at("/dashboard/index")]
+    #[at("/dashboard")]
     DashboardIndex,
 }
 

@@ -2,6 +2,7 @@ use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use stylist::Style;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_CSS};
+use crate::dashboard::article::DashboardArticleRoute;
 
 pub struct DashboardArticleManage {
 
@@ -38,7 +39,9 @@ impl Component for DashboardArticleManage {
                                     </button>
                                 </div>
                                 <button class="article-list-create-button">
-                                    {"创建"}
+                                    <Link<DashboardArticleRoute> to={ DashboardArticleRoute::Create }>
+                                        {"创建"}
+                                    </Link<DashboardArticleRoute>>
                                 </button>
                             </div>
                         </div>
