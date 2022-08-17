@@ -18,7 +18,7 @@ pub enum Route {
     #[at("/article")]
     Article,
 
-    #[at("/dashboard/:s")]
+    #[at("/dashboard/*")]
     Dashboard,
 
     #[at("/dashboard")]

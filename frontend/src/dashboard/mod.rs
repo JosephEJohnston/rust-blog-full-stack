@@ -1,6 +1,6 @@
 pub mod index;
-pub mod feather;
 pub mod article;
+
 mod side_bar;
 
 use stylist::Style;
@@ -17,7 +17,7 @@ pub enum DashboardRoute {
     #[at("/dashboard")]
     Index,
 
-    #[at("/dashboard/article/:s")]
+    #[at("/dashboard/article/*")]
     Article,
 
     #[at("/dashboard/article")]
