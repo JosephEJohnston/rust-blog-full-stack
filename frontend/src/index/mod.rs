@@ -1,14 +1,41 @@
 pub mod article;
 mod header;
 mod footer;
+mod as_index;
 
 use stylist::Style;
 use yew::prelude::*;
 use yew_router::prelude::*;
 use crate::css::{ARTICLE_CSS, INDEX_CSS};
-use crate::Route;
+use crate::index::as_index::AsIndex;
 use crate::index::header::IndexHeader;
 use crate::index::footer::IndexFooter;
+use crate::index::article::Article;
+
+#[derive(Routable, PartialEq, Clone, Debug)]
+pub enum IndexRoute {
+    #[at("/")]
+    AsIndex,
+
+    #[at("/article")]
+    Article,
+}
+
+fn switch(routes: &IndexRoute) -> Html {
+    match routes {
+        IndexRoute::AsIndex => {
+            html! {
+                <AsIndex />
+            }
+        },
+
+        IndexRoute::Article => {
+            html! {
+                <Article />
+            }
+        },
+    }
+}
 
 pub struct Index {
 
@@ -37,46 +64,7 @@ impl Component for Index {
                 <div id="index-page" class={ vec![style, article_css] }>
                     <IndexHeader />
                     <div id="content">
-                        <article class="article-container">
-                            <div class="for-article-container">
-                                <div class="for-article">
-                                    <img class="article-img" src="img/article-img.jpg" alt="" />
-                                    <div class="article-text">
-                                        <button class="article-title">{ "Ubuntu 16.04 环境安装部署" }</button>
-                                        <p class="article-brief">{ "项目部署文档" }</p>
-                                        <hr class="article-border-line" />
-                                        <div class="article-tag">
-                                            <button class="for-article-tag">{ "入门" }</button>
-                                            <button class="for-article-tag">{ "Linux" }</button>
-                                            <button class="for-article-tag">{ "Laravel" }</button>
-                                            <button class="for-article-tag">{ "Ubuntu" }</button>
-                                            <button class="for-article-tag">{ "PHP7" }</button>
-                                        </div>
-                                        <hr class="article-border-line" />
-                                        <div class="article-info">
-                                            <div class="for-article-info">{ "Jiajian" }</div>
-                                            <div class="for-article-info">{ "3年前" }</div>
-                                            <div class="for-article-info">{ "15820" }</div>
-                                        </div>
-                                        <button class="article-detail-button">
-                                            <Link<Route> to={ Route::Article }>
-                                                { "Read More >" }
-                                            </Link<Route>>
-                                        </button>
-                                    </div>
-                                </div>
-                                <hr class="article-bottom-line" />
-                            </div>
-                        </article>
-                        <aside>
-                        </aside>
-                        <div id="page-transform">
-                            <button class="button-transform-left">{ "<" }</button>
-                            <button class="button-transform-middle">{ "1" }</button>
-                            <button class="button-transform-middle">{ "2" }</button>
-                            <button class="button-transform-middle">{ "3" }</button>
-                            <button class="button-transform-right">{ ">" }</button>
-                        </div>
+                        <Switch<IndexRoute> render={Switch::render(switch)} />
                     </div>
                     <IndexFooter />
                 </div>

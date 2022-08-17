@@ -6,7 +6,6 @@ mod dashboard;
 use yew::prelude::*;
 use yew_router::{Routable, BrowserRouter};
 use yew_router::prelude::*;
-use crate::index::article::Article;
 use crate::index::Index;
 use crate::dashboard::Dashboard;
 
@@ -15,8 +14,8 @@ pub enum Route {
     #[at("/")]
     Index,
 
-    #[at("/article")]
-    Article,
+    #[at("/*")]
+    IndexPage,
 
     #[at("/dashboard/*")]
     Dashboard,
@@ -34,9 +33,9 @@ fn switch(routes: &Route) -> Html {
             }
         },
 
-        Route::Article => {
+        Route::IndexPage => {
             html! {
-                <Article />
+                <Index />
             }
         },
 

@@ -1,8 +1,6 @@
 use stylist::{Style};
 use yew::{Component, Context, Html, html};
 use crate::css::{ARTICLE_CSS, INDEX_CSS, GITHUB_MARKDOWN_DARK_CSS};
-use crate::index::header::IndexHeader;
-use crate::index::footer::IndexFooter;
 
 pub struct Article {
 
@@ -25,19 +23,13 @@ impl Component for Article {
 
         html! {
             <>
-                <div id="index-page" class={ vec![index_css, article_css, markdown_css] }>
-                    <IndexHeader />
-                    <div id="content">
-                        <article>
-                            <div id="user-article">
-                                <article class="markdown-body">
-                                    { "我是文章内容" }
-                                </article>
-                            </div>
+                <article>
+                    <div id="user-article">
+                        <article class="markdown-body">
+                            { "我是文章内容" }
                         </article>
                     </div>
-                    <IndexFooter />
-                </div>
+                </article>
             </>
         }
     }
