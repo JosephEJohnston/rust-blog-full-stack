@@ -37,7 +37,7 @@ impl Component for IndexHeader {
                                     </form>
                                 </div>
                                 <button class="nav-button nav-button-size-small">
-                                    <Link<Route> to={ Route::Dashboard }>
+                                    <Link<Route> to={ Route::DashboardIndex }>
                                         { "登录" }
                                     </Link<Route>>
                                 </button>

@@ -13,7 +13,7 @@ use crate::dashboard::article::manage::DashboardArticleManage;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum DashboardRoute {
-    #[at("/dashboard")]
+    #[at("/dashboard/index")]
     Index,
 
     #[at("/dashboard/article")]
@@ -30,7 +30,7 @@ fn switch(routes: &DashboardRoute) -> Html {
 
         DashboardRoute::Article => {
             html! {
-                <h1>{ "test" }</h1>
+                <DashboardArticleManage />
             }
         },
     }
@@ -55,22 +55,20 @@ impl Component for Dashboard {
 
         html! {
             <>
-                <BrowserRouter>
-                    <div id="page" class={ dashboard_css }>
-                        <DashboardSideBar />
-                        <div id="content" class="page-column-right">
-                            <div class="page-right-header">
-                                <i class="header-icon" data-feather="align-justify"></i>
-                            </div>
-                            <Switch<DashboardRoute> render={Switch::render(switch)} />
+                <div id="page" class={ dashboard_css }>
+                    <DashboardSideBar />
+                    <div id="content" class="page-column-right">
+                        <div class="page-right-header">
+                            <i class="header-icon" data-feather="align-justify"></i>
                         </div>
-                        <footer></footer>
+                        <Switch<DashboardRoute> render={Switch::render(switch)} />
                     </div>
-                    <script src="feather/feather.min.js"></script>
-                    <script>
-                        { "setTimeout(function() { feather.replace(); }, 100)" }
-                    </script>
-                </BrowserRouter>
+                    <footer></footer>
+                </div>
+                <script src="feather/feather.min.js"></script>
+                <script>
+                    { "setTimeout(function() { feather.replace(); }, 1000)" }
+                </script>
             </>
         }
     }

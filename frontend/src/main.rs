@@ -18,8 +18,11 @@ pub enum Route {
     #[at("/article")]
     Article,
 
-    #[at("/dashboard")]
+    #[at("/dashboard/:s")]
     Dashboard,
+
+    #[at("/dashboard/index")]
+    DashboardIndex,
 }
 
 
@@ -42,6 +45,12 @@ fn switch(routes: &Route) -> Html {
                 <Dashboard />
             }
         },
+
+        Route::DashboardIndex => {
+            html! {
+                <Dashboard />
+            }
+        }
     }
 }
 
