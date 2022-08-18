@@ -15,7 +15,12 @@ yew-router = "0.16.0"
 # icon 库
 yew-feather = "0.2.1"
 
+# js、css 引入
+yew-interop = { version = "0.3.0", features = ["script"] }
+
 wasm-bindgen = "0.2.82"
+
+js-sys = "0.3.59"
 
 #stdweb = "0.4.20"
 

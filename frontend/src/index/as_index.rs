@@ -1,7 +1,5 @@
-use stylist::Style;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use crate::css::{ARTICLE_CSS, INDEX_CSS};
 use crate::index::IndexRoute;
 
 pub struct AsIndex {
@@ -19,9 +17,6 @@ impl Component for AsIndex {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        let style = Style::new(INDEX_CSS).unwrap();
-        // 部分样式在 article_css 中，之后拆分
-        let article_css = Style::new(ARTICLE_CSS).unwrap();
 
         // 可以使用多个 style，例如 class={ vec![style, test] }
         // let test = Style::new(ARTICLE_CSS).unwrap();
@@ -31,7 +26,7 @@ impl Component for AsIndex {
                 <article class="article-container">
                     <div class="for-article-container">
                         <div class="for-article">
-                            <img class="article-img" src="img/article-img.jpg" alt="" />
+                            <img class="article-img" src="/static/resource/img/article-img.jpg" alt="" />
                             <div class="article-text">
                                 <button class="article-title">{ "Ubuntu 16.04 环境安装部署" }</button>
                                 <p class="article-brief">{ "项目部署文档" }</p>

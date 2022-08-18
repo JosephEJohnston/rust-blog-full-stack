@@ -1,7 +1,9 @@
+use gloo::utils::document;
+use js_sys::{Object, Reflect};
 use stylist::Style;
 use yew::{Component, Context, Html, html};
-use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON, SIMPLEMDE_CSS};
-use crate::dashboard::article::editor_binding::Editor;
+use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
+use crate::dashboard::article::create_interop::SimpleMDE;
 
 pub struct DashboardArticleCreate {
 
@@ -24,9 +26,15 @@ impl Component for DashboardArticleCreate {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             DashboardArticleCreateMsg::EditorInit => {
-                let editor = Editor::new();
+                let config = Object::new();
 
-                editor.init("editor");
+                Reflect::set(
+                    &config,
+                    &"element".into(),
+                    &document().get_element_by_id("editor").unwrap(),
+                ).ok();
+
+                SimpleMDE::new(&config);
 
                 true
             }

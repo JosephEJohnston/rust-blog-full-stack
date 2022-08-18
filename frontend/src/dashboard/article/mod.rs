@@ -8,6 +8,7 @@ use crate::dashboard::article::manage::DashboardArticleManage;
 pub mod create;
 pub mod manage;
 mod editor_binding;
+mod create_interop;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum DashboardArticleRoute {
