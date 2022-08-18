@@ -1,13 +1,18 @@
 use stylist::Style;
 use yew::{Component, Context, Html, html};
-use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
+use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON, SIMPLEMDE_CSS};
+use crate::dashboard::article::editor_binding::Editor;
 
 pub struct DashboardArticleCreate {
 
 }
 
+pub enum DashboardArticleCreateMsg {
+    EditorInit,
+}
+
 impl Component for DashboardArticleCreate {
-    type Message = ();
+    type Message = DashboardArticleCreateMsg;
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
@@ -16,9 +21,22 @@ impl Component for DashboardArticleCreate {
         }
     }
 
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            DashboardArticleCreateMsg::EditorInit => {
+                let editor = Editor::new();
+
+                editor.init("editor");
+
+                true
+            }
+        }
+    }
+
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let dashboard_css = Style::new(DASHBOARD_MAIN_COMMON).unwrap();
         let create_css = Style::new(DASHBOARD_ARTICLE_CREATE_CSS).unwrap();
+        // let simplemde_css = Style::new(SIMPLEMDE_CSS).unwrap();
 
         html! {
             <>
@@ -72,7 +90,9 @@ impl Component for DashboardArticleCreate {
                                 <div class="input-name">{"内容"}</div>
                             </div>
                             <label>
-                                <input class="each-input" type="text"/>
+                                <div>
+                                    <textarea id="editor"></textarea>
+                                </div>
                             </label>
                         </div>
                         <div class="for-each-input-container">
@@ -110,7 +130,14 @@ impl Component for DashboardArticleCreate {
                         <button class="article-create-create-button">{"创建"}</button>
                     </div>
                 </div>
+                // <link rel="stylesheet" href="simplemde/simplemde.min.css" />
             </>
+        }
+    }
+
+    fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
+        if first_render {
+            ctx.link().send_message(DashboardArticleCreateMsg::EditorInit);
         }
     }
 }

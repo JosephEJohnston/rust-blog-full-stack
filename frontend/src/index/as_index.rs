@@ -3,7 +3,6 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 use crate::css::{ARTICLE_CSS, INDEX_CSS};
 use crate::index::IndexRoute;
-use crate::index::article::Article;
 
 pub struct AsIndex {
 
