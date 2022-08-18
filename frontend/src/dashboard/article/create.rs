@@ -1,4 +1,3 @@
-use gloo::console::log;
 use gloo::utils::document;
 use js_sys::{Object, Reflect};
 use stylist::Style;
@@ -30,7 +29,7 @@ impl Component for DashboardArticleCreate {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             DashboardArticleCreateMsg::EditorInit => {
-                /*let config = Object::new();
+                let config = Object::new();
 
                 Reflect::set(
                     &config,
@@ -38,7 +37,7 @@ impl Component for DashboardArticleCreate {
                     &document().get_element_by_id("editor").unwrap(),
                 ).ok();
 
-                SimpleMDE::new(&config);*/
+                SimpleMDE::new(&config);
 
                 true
             }
@@ -101,11 +100,7 @@ impl Component for DashboardArticleCreate {
                             <div class="input-name-container">
                                 <div class="input-name">{"内容"}</div>
                             </div>
-                            <label>
-                                <div>
-                                    <ForEditor />
-                                </div>
-                            </label>
+                            <ForEditor />
                         </div>
                         <div class="for-each-input-container">
                             <div class="input-name-container">

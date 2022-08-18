@@ -40,6 +40,20 @@
     padding-top: 20px;
 }
 
+.editor-container {
+    width: 60%;
+    padding-top: 20px;
+}
+
+.editor-inner-container {
+    width: 87%;
+    float: right;
+}
+
+.content-input {
+    margin-right: 20px;
+}
+
 .input-name-container {
     width: 10%;
     float: left;

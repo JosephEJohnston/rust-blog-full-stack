@@ -7,7 +7,6 @@ use crate::dashboard::article::manage::DashboardArticleManage;
 
 pub mod create;
 pub mod manage;
-mod editor_binding;
 mod create_interop;
 mod for_editor;
 

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../../node_modules/feather-icons/dist/feather.min.js"></script>
+    <script src="../js/simplemde/simplemde.min.js"></script>
+    <link rel="stylesheet" href="../js/simplemde/simplemde.min.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/dashboard-article-create.css">
     <link rel="stylesheet" href="../css/dashboard-main-common.css">
@@ -142,13 +144,13 @@
                         </label>
                         <button class="update-file-button">上传文件</button>
                     </div>
-                    <div class="for-each-input-container">
-                        <div class="input-name-container">
+                    <div class="editor-container">
+                        <div class="input-name-container content-input">
                             <div class="input-name">内容</div>
                         </div>
-                        <label>
-                            <input class="each-input" type="text">
-                        </label>
+                        <div class="editor-inner-container">
+                            <textarea id="editor" ></textarea>
+                        </div>
                     </div>
                     <div class="for-each-input-container">
                         <div class="input-name-container">
@@ -195,5 +197,8 @@
 <script>
     feather.replace();
 
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("editor"),
+    });
 </script>
 </html>

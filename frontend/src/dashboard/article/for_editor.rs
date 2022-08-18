@@ -8,21 +8,25 @@ pub fn for_editor() -> Html {
     html! {
         <>
             <ResourceProvider>
-                <Test/>
+                <Editor />
             </ResourceProvider>
         </>
     }
 }
 
-#[function_component(Test)]
-pub fn test() -> Html {
-    let try_to_get = use_simplemde();
+#[function_component(Editor)]
+pub fn editor() -> Html {
+    let load_done = use_simplemde();
 
     html! {
-        if try_to_get {
-            <div>{ "success" }</div>
+        if load_done {
+            <div>
+                <textarea id="editor"></textarea>
+            </div>
         } else {
-            <div>{ "failure" }</div>
+            <label>
+                <input class="each-input" type="text" placeholder=""/>
+            </label>
         }
     }
 }
