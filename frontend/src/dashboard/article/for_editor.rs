@@ -14,9 +14,25 @@ pub fn for_editor() -> Html {
     }
 }
 
+#[derive(Properties, Clone, PartialEq)]
+pub struct EditorProps {
+
+}
+
 #[function_component(Editor)]
 pub fn editor() -> Html {
     let load_done = use_simplemde();
+
+    {
+        let load_done = load_done.clone();
+        use_effect(move || {
+            if load_done {
+                create_editor();
+            }
+
+            || ()
+        });
+    }
 
     html! {
         if load_done {

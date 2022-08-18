@@ -27,15 +27,15 @@ impl Component for DashboardArticleCreate {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             DashboardArticleCreateMsg::EditorInit => {
-                let config = Object::new();
-
-                Reflect::set(
-                    &config,
-                    &"element".into(),
-                    &document().get_element_by_id("editor").unwrap(),
-                ).ok();
-
-                SimpleMDE::new(&config);
+                // let config = Object::new();
+                //
+                // Reflect::set(
+                //     &config,
+                //     &"element".into(),
+                //     &document().get_element_by_id("editor").unwrap(),
+                // ).ok();
+                //
+                // SimpleMDE::new(&config);
 
                 true
             }

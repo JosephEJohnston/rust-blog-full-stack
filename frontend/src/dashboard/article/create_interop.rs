@@ -1,3 +1,5 @@
+use gloo::utils::document;
+use js_sys::{Object, Reflect};
 use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::*;
 use yew_interop::declare_resources;
@@ -16,4 +18,16 @@ extern "C" {
 
     #[wasm_bindgen(constructor, js_class = "SimpleMDE")]
     pub fn new(config: &JsValue) -> SimpleMDE;
+}
+
+pub fn create_editor() {
+    let config = Object::new();
+
+    Reflect::set(
+        &config,
+        &"element".into(),
+        &document().get_element_by_id("editor").unwrap(),
+    ).ok();
+
+    SimpleMDE::new(&config);
 }
