@@ -20,8 +20,8 @@ pub fn editor() -> Html {
 
     html! {
         if load_done {
-            <div>
-                <textarea id="editor"></textarea>
+            <div class="editor-inner-container">
+                <textarea id="editor" ></textarea>
             </div>
         } else {
             <label>

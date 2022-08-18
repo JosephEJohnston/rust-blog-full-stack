@@ -2,9 +2,7 @@ use gloo::utils::document;
 use js_sys::{Object, Reflect};
 use stylist::Style;
 use yew::{Component, Context, Html, html};
-use yew_interop::ScriptEffect;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
-use crate::dashboard::article::create_interop;
 use crate::dashboard::article::create_interop::SimpleMDE;
 use crate::dashboard::article::for_editor::ForEditor;
 
@@ -96,8 +94,8 @@ impl Component for DashboardArticleCreate {
                             </label>
                             <button class="update-file-button">{"上传文件"}</button>
                         </div>
-                        <div class="for-each-input-container">
-                            <div class="input-name-container">
+                        <div class="editor-container">
+                            <div class="input-name-container content-input">
                                 <div class="input-name">{"内容"}</div>
                             </div>
                             <ForEditor />
