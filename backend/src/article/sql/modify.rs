@@ -3,7 +3,7 @@ use crate::article::sql::model::ArticleDB;
 use crate::sql_conn::get_connection;
 use crate::article::sql::model::article;
 
-fn insert(article: ArticleDB) -> QueryResult<usize> {
+pub fn insert(article: ArticleDB) -> QueryResult<usize> {
     let conn = &mut get_connection();
 
     diesel::insert_into(article::table)

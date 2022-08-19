@@ -5,6 +5,5 @@ blog.iml
 /backend/.env
 /frontend/target
 /frontend/dist
-
 /frontend/node_modules
-
+/share/share.iml
