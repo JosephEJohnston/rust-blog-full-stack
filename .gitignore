@@ -2,6 +2,7 @@
 .idea
 blog.iml
 /backend/target
+/backend/.env
 /frontend/target
 /frontend/dist
 
