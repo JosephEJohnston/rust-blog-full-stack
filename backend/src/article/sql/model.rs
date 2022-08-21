@@ -7,7 +7,7 @@ table! {
     article (id) {
         id -> Nullable<Bigint>,
         user_id -> Bigint,
-        content -> Text,
+        content -> Nullable<Text>,
         outline -> Varchar,
         status -> Tinyint,
         create_time -> Nullable<Datetime>,
@@ -22,7 +22,7 @@ pub struct ArticleDB {
 
     pub user_id: i64,
 
-    pub content: String,
+    pub content: Option<String>,
 
     pub outline: String,
 

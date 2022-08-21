@@ -6,7 +6,7 @@ pub struct ArticleHttp {
 
     pub user_id: i64,
 
-    pub content: String,
+    pub content: Option<String>,
 
     pub outline: String,
 

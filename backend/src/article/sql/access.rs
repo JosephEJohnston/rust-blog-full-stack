@@ -1,7 +1,8 @@
 #![allow(dead_code)]
 
 use diesel::{QueryDsl, QueryResult, RunQueryDsl};
-use diesel::sql_types::Bigint;
+use diesel::dsl::sql;
+use diesel::sql_types::{Bigint, Nullable, Text};
 use diesel::prelude::*;
 use crate::article::sql::model::ArticleDB;
 use crate::sql_conn::get_connection;
@@ -24,7 +25,7 @@ pub fn test_sql() -> QueryResult<Vec<ArticleDB>> {
         .select((
             id,
             user_id,
-            content,
+            sql::<Nullable<Text>>("NULL"),
             outline,
             status,
             create_time,
@@ -39,8 +40,6 @@ mod tests {
 
     #[test]
     fn test() {
-        if let Ok(res) = test_sql() {
-            println!("{:?}", res);
-        }
+        println!("{:?}", test_sql());
     }
 }

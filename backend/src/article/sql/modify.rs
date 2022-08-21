@@ -23,7 +23,7 @@ mod tests {
         let article = ArticleDB {
             id: None,
             user_id: 1,
-            content: "测试文章插入".to_string(),
+            content: Some("测试文章插入".to_string()),
             outline: "测试文章插入".to_string(),
             status: 0,
             create_time: None,
