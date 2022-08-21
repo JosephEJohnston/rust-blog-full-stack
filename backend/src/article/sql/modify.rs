@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use diesel::{QueryResult, RunQueryDsl};
 use crate::article::sql::model::ArticleDB;
 use crate::sql_conn::get_connection;

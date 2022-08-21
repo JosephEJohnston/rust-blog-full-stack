@@ -1,2 +1,2 @@
-mod access;
-mod modify;
+pub mod access;
+pub mod modify;

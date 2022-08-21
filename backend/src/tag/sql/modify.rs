@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use diesel::{QueryResult, RunQueryDsl};
 use crate::sql_conn::get_connection;
 use crate::tag::sql::model::{tag, TagDB};

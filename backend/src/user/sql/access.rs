@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use diesel::{QueryResult, RunQueryDsl};
 use diesel::sql_types::Varchar;
 use crate::sql_conn::get_connection;
