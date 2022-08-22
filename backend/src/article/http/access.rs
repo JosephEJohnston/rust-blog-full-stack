@@ -1,5 +1,5 @@
 use rocket::fairing::AdHoc;
-use rocket::{get, routes};
+use rocket::{FromForm, get, routes};
 use rocket::serde::json::Json;
 use share::article::ArticleHttp;
 use crate::article::sql::access::list_article_sql;
@@ -7,13 +7,18 @@ use crate::article::sql::model::ArticleDB;
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
-        rocket.mount("/articles", routes![list_article_http])
+        rocket.mount("/article", routes![list_article_http])
     })
 }
 
-#[get("/")]
-fn list_article_http() -> Json<Vec<ArticleHttp>> {
-    let opt = list_article_sql(1);
+#[derive(FromForm)]
+struct ListArticleOptions {
+    pub user_id: i64,
+}
+
+#[get("/list?<opt..>")]
+fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleHttp>> {
+    let opt = list_article_sql(opt.user_id);
 
     if opt.is_none() {
         return Json(Vec::new());
@@ -25,3 +30,4 @@ fn list_article_http() -> Json<Vec<ArticleHttp>> {
 
     Json(articles)
 }
+

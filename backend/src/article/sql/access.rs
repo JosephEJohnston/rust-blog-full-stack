@@ -13,6 +13,7 @@ pub fn list_article_sql(user_id_: i64) -> Option<Vec<ArticleDB>> {
 
     let query_result = article
         .filter(user_id.eq(user_id_))
+        .order(create_time.desc())
         .select((
             id,
             user_id,
