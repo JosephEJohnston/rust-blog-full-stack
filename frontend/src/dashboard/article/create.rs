@@ -2,6 +2,7 @@ use stylist::Style;
 use yew::{Component, Context, Html, html};
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::for_editor::ForEditor;
+use crate::dashboard::article::for_markdown_converter::ForMarkdownConventer;
 
 pub struct DashboardArticleCreate {
 
@@ -87,6 +88,7 @@ impl Component for DashboardArticleCreate {
                                 <div class="input-name">{"内容"}</div>
                             </div>
                             <ForEditor />
+                            <ForMarkdownConventer />
                         </div>
                         <div class="for-each-input-container">
                             <div class="input-name-container">
