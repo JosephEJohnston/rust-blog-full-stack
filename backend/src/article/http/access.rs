@@ -13,9 +13,13 @@ pub fn stage() -> AdHoc {
 
 #[get("/")]
 fn list_article_http() -> Json<Vec<ArticleHttp>> {
-    let articles = list_article_sql(1).unwrap();
+    let opt = list_article_sql(1);
 
-    let articles = articles.into_iter()
+    if opt.is_none() {
+        return Json(Vec::new());
+    }
+
+    let articles = opt.unwrap().into_iter()
         .map(|db: ArticleDB| <ArticleDB as Into<ArticleHttp>>::into(db))
         .collect();
 
