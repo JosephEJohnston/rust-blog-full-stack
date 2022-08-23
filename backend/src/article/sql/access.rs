@@ -17,6 +17,7 @@ pub fn list_article_sql(user_id_: i64) -> Option<Vec<ArticleDB>> {
         .select((
             id,
             user_id,
+            title,
             sql::<Nullable<Text>>("NULL"),
             outline,
             status,

@@ -1,18 +1,45 @@
 use yew::prelude::*;
-use yew_router::prelude::*;
-use crate::index::IndexRoute;
+use yew_interop::script::wasm_bindgen_futures::spawn_local;
+use share::article::ArticleHttp;
+use crate::index::article_list_item::ArticleListItem;
+use crate::index::http::list_article_from_http;
 
 pub struct AsIndex {
+    article_list: Vec<ArticleHttp>,
+}
 
+pub enum AsIndexMsg {
+    HttpFetchArticleList(Vec<ArticleHttp>),
 }
 
 impl Component for AsIndex {
-    type Message = ();
+    type Message = AsIndexMsg;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
-        AsIndex {
+    fn create(ctx: &Context<Self>) -> Self {
+        let as_index = AsIndex {
+            article_list: Vec::new(),
+        };
 
+        {
+            let link = ctx.link().clone();
+            spawn_local(async move {
+                if let Ok(articles) = list_article_from_http().await {
+                    link.send_message(AsIndexMsg::HttpFetchArticleList(articles));
+                }
+            })
+        }
+
+        as_index
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            AsIndexMsg::HttpFetchArticleList(articles) => {
+                self.article_list = articles;
+
+                true
+            }
         }
     }
 
@@ -25,33 +52,13 @@ impl Component for AsIndex {
             <>
                 <article class="article-container">
                     <div class="for-article-container">
-                        <div class="for-article">
-                            <img class="article-img" src="/static/resource/img/article-img.jpg" alt="" />
-                            <div class="article-text">
-                                <button class="article-title">{ "Ubuntu 16.04 环境安装部署" }</button>
-                                <p class="article-brief">{ "项目部署文档" }</p>
-                                <hr class="article-border-line" />
-                                <div class="article-tag">
-                                    <button class="for-article-tag">{ "入门" }</button>
-                                    <button class="for-article-tag">{ "Linux" }</button>
-                                    <button class="for-article-tag">{ "Laravel" }</button>
-                                    <button class="for-article-tag">{ "Ubuntu" }</button>
-                                    <button class="for-article-tag">{ "PHP7" }</button>
-                                </div>
-                                <hr class="article-border-line" />
-                                <div class="article-info">
-                                    <div class="for-article-info">{ "Jiajian" }</div>
-                                    <div class="for-article-info">{ "3年前" }</div>
-                                    <div class="for-article-info">{ "15820" }</div>
-                                </div>
-                                <button class="article-detail-button">
-                                    <Link<IndexRoute> to={ IndexRoute::Article }>
-                                        { "Read More >" }
-                                    </Link<IndexRoute>>
-                                </button>
-                            </div>
-                        </div>
-                        <hr class="article-bottom-line" />
+                        {
+                            for self.article_list.iter().map(|article| -> Html {
+                                html! {
+                                    <ArticleListItem article={article.clone()}/>
+                                }
+                            })
+                        }
                     </div>
                 </article>
                 <aside>

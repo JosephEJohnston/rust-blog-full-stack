@@ -1,4 +1,3 @@
-use gloo::console::log;
 use yew::function_component;
 use yew::prelude::*;
 use crate::dashboard::article::showdown_interop::*;
@@ -23,9 +22,9 @@ pub fn markdown_converter() -> Html {
         let load_done = load_done.clone();
         use_effect(move || {
             if load_done {
-                let converter = Converter::new();
-                let html = converter.makeHtml("hello world".to_string());
-                log!(format!("{:?}", html));
+                // let converter = showdown.Converter();
+                // let html = converter.makeHtml("hello world".to_string());
+                // log!(format!("{:?}", html));
             }
 
             || ()

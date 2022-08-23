@@ -8,13 +8,18 @@ declare_resources!(
 
 #[wasm_bindgen]
 extern "C" {
+    #[wasm_bindgen(js_name = showdown)]
+    pub type Showdown;
+
+    pub static SHOWDOWN: Showdown;
+
     #[wasm_bindgen(js_name = Converter)]
     pub type Converter;
 
-    #[wasm_bindgen(constructor, js_class = "Converter")]
-    pub fn new() -> Converter;
+    #[wasm_bindgen(method, structural, indexing_getter)]
+    pub fn Converter(this: &Showdown) -> Converter;
 
-    #[wasm_bindgen(method, structural, js_class = "Converter", js_name = makeHtml)]
+    #[wasm_bindgen(method, structural)]
     pub fn makeHtml(this: &Converter, text: String) -> String;
 }
 
