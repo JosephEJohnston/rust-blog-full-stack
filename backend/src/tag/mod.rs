@@ -1,3 +1,3 @@
-mod sql;
+pub mod sql;
 mod http;
-mod tag_relation;
+pub mod tag_relation;
