@@ -59,6 +59,7 @@ impl Into<ArticleHttp> for ArticleDB {
             title: self.title,
             content: self.content,
             outline: self.outline,
+            tag_list: None,
             create_time: self.create_time.unwrap().timestamp(),
         }
     }

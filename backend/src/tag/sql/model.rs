@@ -1,6 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
+use share::tag::TagHttp;
 
 table! {
     tag (id) {
@@ -29,3 +30,25 @@ pub struct TagDB {
     pub modify_time: Option<NaiveDateTime>,
 }
 
+impl From<TagHttp> for TagDB {
+    fn from(tag: TagHttp) -> Self {
+        TagDB {
+            id: None,
+            user_id: tag.user_id,
+            name: tag.name.clone(),
+            status: 0,
+            create_time: None,
+            modify_time: None
+        }
+    }
+}
+
+impl Into<TagHttp> for TagDB {
+    fn into(self) -> TagHttp {
+        TagHttp {
+            id: self.id.unwrap(),
+            user_id: self.user_id,
+            name: self.name.clone(),
+        }
+    }
+}
