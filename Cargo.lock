@@ -496,6 +496,7 @@ dependencies = [
 name = "frontend"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "gloo 0.8.0",
  "js-sys",
  "markdown",
@@ -1685,6 +1686,7 @@ dependencies = [
 name = "share"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "serde",
  "serde_json",
 ]

@@ -188,6 +188,7 @@ button:hover {
 
 .article-text {
     padding-left: 10px;
+    width: 400px;
 }
 
 .article-title {
@@ -229,11 +230,10 @@ button:hover {
 }
 
 .for-article-info {
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
     float: left;
     height: 25px;
-    width: 50px;
     color: #7f8c8f;
     text-align: center;
     font-size: 12px;

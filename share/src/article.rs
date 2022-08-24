@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use crate::tag::TagHttp;
 
@@ -15,6 +16,6 @@ pub struct ArticleHttp {
 
     pub tag_list: Option<Vec<TagHttp>>,
 
-    pub create_time: i64,
+    pub create_time: Option<NaiveDateTime>,
 }
 

@@ -15,6 +15,10 @@ pub struct ArticleListItemProps {
 pub enum ArticleListItemMsg {
 }
 
+impl ArticleListItem {
+
+}
+
 impl Component for ArticleListItem {
     type Message = ArticleListItemMsg;
     type Properties = ArticleListItemProps;
@@ -47,7 +51,8 @@ impl Component for ArticleListItem {
                         <hr class="article-border-line" />
                         <div class="article-info">
                             <div class="for-article-info">{ "Jiajian" }</div>
-                            <div class="for-article-info">{ "3年前" }</div>
+                            <div class="for-article-info">{ ctx.props().article.create_time.unwrap().date() }</div>
+                            // <div class="for-article-info">{ "三年前" }</div>
                             <div class="for-article-info">{ "15820" }</div>
                         </div>
                         <button class="article-detail-button">
