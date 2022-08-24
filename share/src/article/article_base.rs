@@ -1,6 +1,6 @@
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use crate::tag::TagHttp;
+use crate::tag::tag_base::TagHttp;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ArticleHttp {

@@ -1,6 +1,6 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
-use share::article::ArticleHttp;
+use share::article::article_base::ArticleHttp;
 use crate::index::IndexRoute;
 
 pub struct ArticleListItem {

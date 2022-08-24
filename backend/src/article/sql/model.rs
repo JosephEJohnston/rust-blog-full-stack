@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
-use share::article::ArticleHttp;
+use share::article::article_base::ArticleHttp;
 
 table! {
     article (id) {
