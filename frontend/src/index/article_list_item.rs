@@ -35,11 +35,14 @@ impl Component for ArticleListItem {
                         <p class="article-brief">{ ctx.props().article.outline.clone() }</p>
                         <hr class="article-border-line" />
                         <div class="article-tag">
-                            <button class="for-article-tag">{ "入门" }</button>
-                            <button class="for-article-tag">{ "Linux" }</button>
-                            <button class="for-article-tag">{ "Laravel" }</button>
-                            <button class="for-article-tag">{ "Ubuntu" }</button>
-                            <button class="for-article-tag">{ "PHP7" }</button>
+                            {
+                                for ctx.props().article.tag_list.as_ref().unwrap().iter().map(|tag| {
+
+                                    html! {
+                                        <button class="for-article-tag">{ tag.name.clone() }</button>
+                                    }
+                                })
+                            }
                         </div>
                         <hr class="article-border-line" />
                         <div class="article-info">
