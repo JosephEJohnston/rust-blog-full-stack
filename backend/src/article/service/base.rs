@@ -5,7 +5,7 @@ use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
 use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
 
-struct ArticleService<'a> {
+pub struct ArticleService<'a> {
     article_list: &'a mut Vec<ArticleHttp>,
 }
 
