@@ -2,11 +2,13 @@ use std::collections::HashMap;
 use share::article::article_base::ArticleHttp;
 use share::article::article_statistics::ArticleStatisticsHttp;
 use share::tag::tag_base::TagHttp;
+use share::user::simple_user::SimpleUserHttp;
 use crate::article::article_statistics::sql::access::list_article_statistics;
 use crate::article::sql::model::ArticleDB;
 use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
 use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
+use crate::user::sql::access::list_user;
 
 pub struct ArticleService {
     article_list: Vec<ArticleHttp>,
@@ -104,6 +106,19 @@ impl ArticleService {
 
                     article.statistics = Some((*statistics).clone());
                 })
+        }
+    }
+
+    pub fn each_set_with_user(&mut self) {
+        let article_id_list = self.article_list.iter()
+            .map(|article| article.id.unwrap())
+            .collect();
+
+        if let Some(user_list) = list_user(article_id_list) {
+            user_list.into_iter()
+                .map(|user| user.into())
+                .collect::<Vec<SimpleUserHttp>>();
+
         }
     }
 }

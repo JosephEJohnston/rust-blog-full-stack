@@ -1,6 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
+use share::user::simple_user::SimpleUserHttp;
 
 table! {
     user (id) {
@@ -36,4 +37,13 @@ pub struct UserDB {
     pub create_time: Option<NaiveDateTime>,
 
     pub modify_time: Option<NaiveDateTime>,
+}
+
+impl Into<SimpleUserHttp> for UserDB {
+    fn into(self) -> SimpleUserHttp {
+        SimpleUserHttp {
+            id: self.id.unwrap(),
+            name: self.name.clone(),
+        }
+    }
 }

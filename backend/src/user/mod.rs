@@ -1,2 +1,2 @@
-mod sql;
+pub mod sql;
 mod http;
