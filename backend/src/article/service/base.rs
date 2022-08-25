@@ -3,19 +3,28 @@ use share::article::article_base::ArticleHttp;
 use share::article::article_statistics::ArticleStatisticsHttp;
 use share::tag::tag_base::TagHttp;
 use crate::article::article_statistics::sql::access::list_article_statistics;
+use crate::article::sql::model::ArticleDB;
 use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
 use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
 
-pub struct ArticleService<'a> {
-    article_list: &'a mut Vec<ArticleHttp>,
+pub struct ArticleService {
+    article_list: Vec<ArticleHttp>,
 }
 
-impl <'a> ArticleService <'a> {
-    pub fn new(article_list: &mut Vec<ArticleHttp>) -> ArticleService {
+impl ArticleService {
+    pub fn new(article_list: Vec<ArticleDB>) -> ArticleService {
+        let article_list: Vec<ArticleHttp> = article_list.into_iter()
+            .map(|db: ArticleDB| <ArticleDB as Into<ArticleHttp>>::into(db))
+            .collect();
+
         ArticleService {
             article_list
         }
+    }
+
+    pub fn consume(self) -> Vec<ArticleHttp> {
+        self.article_list
     }
 
     pub fn each_set_with_tag_list(&mut self) {

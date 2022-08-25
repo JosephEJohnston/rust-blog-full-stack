@@ -14,16 +14,6 @@ pub fn list_article_sql(user_id_: i64) -> Option<Vec<ArticleDB>> {
     let query_result = article
         .filter(user_id.eq(user_id_))
         .order(create_time.desc())
-        .select((
-            id,
-            user_id,
-            title,
-            sql::<Nullable<Text>>("NULL"),
-            outline,
-            status,
-            create_time,
-            modify_time,
-        ))
         .load::<ArticleDB>(conn);
 
     return if let Ok(res) = query_result {

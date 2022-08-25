@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-struct UserHttp {
+pub struct UserHttp {
     pub id: i64,
 
     pub name: String,

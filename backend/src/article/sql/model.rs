@@ -8,7 +8,6 @@ table! {
         id -> Nullable<Bigint>,
         user_id -> Bigint,
         title -> Varchar,
-        content -> Nullable<Text>,
         outline -> Varchar,
         status -> Tinyint,
         create_time -> Nullable<Datetime>,
@@ -25,8 +24,6 @@ pub struct ArticleDB {
 
     pub title: String,
 
-    pub content: Option<String>,
-
     pub outline: String,
 
     pub status: i8,
@@ -42,7 +39,6 @@ impl From<ArticleHttp> for ArticleDB {
             id: article.id,
             user_id: article.user_id,
             title: article.title,
-            content: article.content,
             outline: article.outline,
             status: 0,
             create_time: None,
@@ -57,8 +53,9 @@ impl Into<ArticleHttp> for ArticleDB {
             id: self.id,
             user_id: self.user_id,
             title: self.title,
-            content: self.content,
             outline: self.outline,
+            user: None,
+            content: None,
             statistics: None,
             tag_list: None,
             create_time: self.create_time,
