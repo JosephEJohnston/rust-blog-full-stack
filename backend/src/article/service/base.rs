@@ -110,15 +110,26 @@ impl ArticleService {
     }
 
     pub fn each_set_with_user(&mut self) {
-        let article_id_list = self.article_list.iter()
-            .map(|article| article.id.unwrap())
+        let user_id_list = self.article_list.iter()
+            .map(|article| article.user_id)
             .collect();
 
-        if let Some(user_list) = list_user(article_id_list) {
-            user_list.into_iter()
+        if let Some(user_list) = list_user(user_id_list) {
+            let map: HashMap<i64, SimpleUserHttp> = user_list.into_iter()
                 .map(|user| user.into())
-                .collect::<Vec<SimpleUserHttp>>();
+                .collect::<Vec<SimpleUserHttp>>().into_iter()
+                .fold(HashMap::new(), |mut map: HashMap<i64, SimpleUserHttp>, user: SimpleUserHttp| {
+                    map.insert(user.id, user);
 
+                    map
+                });
+
+            self.article_list.iter_mut()
+                .for_each(|article| {
+                    let user = map.get(&article.user_id).unwrap();
+
+                    article.user = Some(user.clone());
+                })
         }
     }
 }

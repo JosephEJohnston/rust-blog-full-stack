@@ -34,6 +34,7 @@ fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleHttp>> {
 
     article_service.each_set_with_tag_list();
     article_service.each_set_with_statistics();
+    article_service.each_set_with_user();
 
     Json(article_service.consume())
 }
