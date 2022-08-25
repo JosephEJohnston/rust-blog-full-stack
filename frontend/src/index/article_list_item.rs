@@ -53,7 +53,7 @@ impl Component for ArticleListItem {
                             <div class="for-article-info">{ "Jiajian" }</div>
                             <div class="for-article-info">{ ctx.props().article.create_time.unwrap().date() }</div>
                             // <div class="for-article-info">{ "三年前" }</div>
-                            <div class="for-article-info">{ "15820" }</div>
+                            <div class="for-article-info">{ ctx.props().article.statistics.as_ref().unwrap().read_count }</div>
                         </div>
                         <button class="article-detail-button">
                             <Link<IndexRoute> to={ IndexRoute::Article }>

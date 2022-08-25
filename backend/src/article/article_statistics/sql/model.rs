@@ -1,6 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
+use share::article::article_statistics::ArticleStatisticsHttp;
 
 table! {
     article_statistics (id) {
@@ -24,5 +25,14 @@ pub struct ArticleStatisticsDB {
     pub create_time: Option<NaiveDateTime>,
 
     pub modify_time: Option<NaiveDateTime>,
+}
+
+impl Into<ArticleStatisticsHttp> for ArticleStatisticsDB {
+    fn into(self) -> ArticleStatisticsHttp {
+        ArticleStatisticsHttp {
+            article_id: self.article_id,
+            read_count: self.read_count,
+        }
+    }
 }
 

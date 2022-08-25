@@ -37,6 +37,7 @@ fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleHttp>> {
     let mut article_service = ArticleService::new(&mut articles);
 
     article_service.each_set_with_tag_list();
+    article_service.each_set_with_statistics();
 
     Json(articles)
 }

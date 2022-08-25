@@ -1,5 +1,6 @@
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
+use crate::article::article_statistics::ArticleStatisticsHttp;
 use crate::tag::tag_base::TagHttp;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -13,6 +14,8 @@ pub struct ArticleHttp {
     pub content: Option<String>,
 
     pub outline: String,
+
+    pub statistics: Option<ArticleStatisticsHttp>,
 
     pub tag_list: Option<Vec<TagHttp>>,
 
