@@ -1,18 +1,37 @@
 use yew::{Component, Context, Html, html};
+use yew_agent::{Bridge, Bridged};
 use yew_router::prelude::Link;
+use share::article::article_base::ArticleHttp;
+use crate::index::article_dispatcher::ArticleDispatcher;
 use crate::Route;
 
 pub struct IndexHeader {
+    _producer: Box<dyn Bridge<ArticleDispatcher>>,
+    article: Option<ArticleHttp>,
+}
 
+pub enum IndexHeaderMsg {
+    GetArticle(ArticleHttp),
 }
 
 impl Component for IndexHeader {
-    type Message = ();
+    type Message = IndexHeaderMsg;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
         IndexHeader {
+            _producer: ArticleDispatcher::bridge(ctx.link().callback(IndexHeaderMsg::GetArticle)),
+            article: None,
+        }
+    }
 
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            IndexHeaderMsg::GetArticle(article) => {
+                self.article = Some(article);
+
+                true
+            }
         }
     }
 

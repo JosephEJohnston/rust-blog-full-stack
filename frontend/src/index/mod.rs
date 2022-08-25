@@ -4,6 +4,7 @@ mod footer;
 mod as_index;
 mod article_list_item;
 mod http;
+mod article_dispatcher;
 
 use stylist::Style;
 use yew::prelude::*;
