@@ -9,7 +9,7 @@ pub enum Request {
 }
 
 pub struct ArticleDispatcher {
-    _link: AgentLink<ArticleDispatcher>,
+    link: AgentLink<ArticleDispatcher>,
     subscribers: HashSet<HandlerId>,
 }
 
@@ -21,7 +21,7 @@ impl Agent for ArticleDispatcher {
 
     fn create(link: AgentLink<Self>) -> Self {
         Self {
-            _link: link,
+            link,
             subscribers: HashSet::new(),
         }
     }
@@ -32,8 +32,18 @@ impl Agent for ArticleDispatcher {
         self.subscribers.insert(id);
     }
 
-    fn handle_input(&mut self, _msg: Self::Input, _id: HandlerId) {
-        todo!()
+    fn handle_input(&mut self, msg: Self::Input, _id: HandlerId) {
+        match msg {
+            Request::RequestArticle(article) => {
+                for sub in self.subscribers.iter() {
+                    self.link.respond(*sub, article.clone());
+                }
+            }
+        }
+    }
+
+    fn disconnected(&mut self, id: HandlerId) {
+        self.subscribers.remove(&id);
     }
 }
 

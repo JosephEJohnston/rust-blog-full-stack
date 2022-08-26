@@ -1,10 +1,13 @@
+use gloo::console::log;
 use yew::prelude::*;
+use yew_agent::{Dispatched, Dispatcher};
 use yew_router::prelude::*;
 use share::article::article_base::ArticleHttp;
+use crate::index::article_dispatcher::{ArticleDispatcher, Request};
 use crate::index::IndexRoute;
 
 pub struct ArticleListItem {
-
+    article_dispatcher: Dispatcher<ArticleDispatcher>,
 }
 
 #[derive(Clone, Debug, PartialEq, Properties)]
@@ -13,6 +16,7 @@ pub struct ArticleListItemProps {
 }
 
 pub enum ArticleListItemMsg {
+    Clicked,
 }
 
 impl ArticleListItem {
@@ -25,11 +29,30 @@ impl Component for ArticleListItem {
 
     fn create(_ctx: &Context<Self>) -> Self {
         ArticleListItem {
+            article_dispatcher: ArticleDispatcher::dispatcher(),
+        }
+    }
 
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            ArticleListItemMsg::Clicked => {
+                self.article_dispatcher
+                    .send(Request::RequestArticle(ctx.props().article.clone()));
+
+                log!(format!("test"));
+
+                false
+            }
         }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
+        let send_msg = || {
+            ctx.link().send_message(ArticleListItemMsg::Clicked);
+
+            "Read More >".to_string()
+        };
+
         html! {
             <>
                 <div class="for-article">
@@ -57,7 +80,7 @@ impl Component for ArticleListItem {
                         </div>
                         <button class="article-detail-button">
                             <Link<IndexRoute> to={ IndexRoute::Article }>
-                                { "Read More >" }
+                                { send_msg() }
                             </Link<IndexRoute>>
                         </button>
                     </div>
