@@ -25,15 +25,15 @@ fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> 
         return Json(Vec::new());
     }
 
-    let mut article_list: Vec<ArticleListItemHttp> = opt.unwrap().into_iter()
+    let article_list: Vec<ArticleListItemHttp> = opt.unwrap().into_iter()
         .map(|db: ArticleDB| <ArticleDB as Into<ArticleListItemHttp>>::into(db))
         .collect();
 
-    let mut article_service = ArticleService::new(&mut article_list);
+    let mut article_service = ArticleService::new(article_list);
 
     article_service.each_set_with_tag_list();
     article_service.each_set_with_statistics();
     article_service.each_set_with_user();
 
-    Json(article_list)
+    Json(article_service.consume())
 }

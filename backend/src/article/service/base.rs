@@ -9,15 +9,19 @@ use crate::tag::sql::model::TagDB;
 use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
 use crate::user::sql::access::list_user;
 
-pub struct ArticleService<'a, T: Article> {
-    article_list: &'a mut Vec<T>,
+pub struct ArticleService<T: Article> {
+    article_list: Vec<T>,
 }
 
-impl <'a, T: Article> ArticleService <'a, T> {
-    pub fn new(article_list: &mut Vec<T>) -> ArticleService<T> {
+impl <T: Article> ArticleService <T> {
+    pub fn new(article_list: Vec<T>) -> ArticleService<T> {
         ArticleService {
             article_list
         }
+    }
+
+    pub fn consume(self) -> Vec<T> {
+        self.article_list
     }
 
     pub fn each_set_with_tag_list(&mut self) {
