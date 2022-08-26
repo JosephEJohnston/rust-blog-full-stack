@@ -1,37 +1,28 @@
 use std::collections::HashMap;
-use share::article::article_base::ArticleListItemHttp;
+use share::article::Article;
 use share::article::article_statistics::ArticleStatisticsHttp;
 use share::tag::tag_base::TagHttp;
 use share::user::simple_user::SimpleUserHttp;
 use crate::article::article_statistics::sql::access::list_article_statistics;
-use crate::article::sql::model::ArticleDB;
 use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
 use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
 use crate::user::sql::access::list_user;
 
-pub struct ArticleService {
-    article_list: Vec<ArticleListItemHttp>,
+pub struct ArticleService<'a, T: Article> {
+    article_list: &'a mut Vec<T>,
 }
 
-impl ArticleService {
-    pub fn new(article_list: Vec<ArticleDB>) -> ArticleService {
-        let article_list: Vec<ArticleListItemHttp> = article_list.into_iter()
-            .map(|db: ArticleDB| <ArticleDB as Into<ArticleListItemHttp>>::into(db))
-            .collect();
-
+impl <'a, T: Article> ArticleService <'a, T> {
+    pub fn new(article_list: &mut Vec<T>) -> ArticleService<T> {
         ArticleService {
             article_list
         }
     }
 
-    pub fn consume(self) -> Vec<ArticleListItemHttp> {
-        self.article_list
-    }
-
     pub fn each_set_with_tag_list(&mut self) {
         let entity_id_list = self.article_list.iter()
-            .map(|article| article.id.unwrap())
+            .map(|article| article.get_id())
             .collect();
 
         let tag_relation_list =
@@ -74,20 +65,20 @@ impl ArticleService {
             });
 
         for article in self.article_list.iter_mut() {
-            let tag_id_list = relation_map.get(&article.id.unwrap()).unwrap();
+            let tag_id_list = relation_map.get(&article.get_id()).unwrap();
 
             let tag_list = tag_id_list.iter()
                 .map(|id| tag_map.get(id).unwrap())
                 .map(|tag| <TagDB as Into<TagHttp>>::into((*tag).clone()))
                 .collect();
 
-            article.tag_list = Some(tag_list);
+            article.set_tag_list(tag_list);
         }
     }
 
     pub fn each_set_with_statistics(&mut self) {
         let article_id_list = self.article_list.iter()
-            .map(|article| article.id.unwrap())
+            .map(|article| article.get_id())
             .collect();
 
         if let Some(data_list) = list_article_statistics(article_id_list) {
@@ -102,16 +93,16 @@ impl ArticleService {
 
             self.article_list.iter_mut()
                 .for_each(|article| {
-                    let statistics = map.get(&article.id.unwrap()).unwrap();
+                    let statistics = map.get(&article.get_id()).unwrap();
 
-                    article.statistics = Some((*statistics).clone());
+                    article.set_statistics((*statistics).clone());
                 })
         }
     }
 
     pub fn each_set_with_user(&mut self) {
         let user_id_list = self.article_list.iter()
-            .map(|article| article.user_id)
+            .map(|article| article.get_user_id())
             .collect();
 
         if let Some(user_list) = list_user(user_id_list) {
@@ -126,9 +117,9 @@ impl ArticleService {
 
             self.article_list.iter_mut()
                 .for_each(|article| {
-                    let user = map.get(&article.user_id).unwrap();
+                    let user = map.get(&article.get_user_id()).unwrap();
 
-                    article.user = Some(user.clone());
+                    article.set_user(user.clone());
                 })
         }
     }

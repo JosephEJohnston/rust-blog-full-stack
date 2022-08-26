@@ -1,4 +1,3 @@
-use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use crate::article::Article;
 use crate::article::article_statistics::ArticleStatisticsHttp;
@@ -6,7 +5,7 @@ use crate::tag::tag_base::TagHttp;
 use crate::user::simple_user::SimpleUserHttp;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct ArticleListItemHttp {
+pub struct ArticleCompleteHttp {
     pub id: Option<i64>,
 
     pub user_id: i64,
@@ -15,16 +14,12 @@ pub struct ArticleListItemHttp {
 
     pub outline: String,
 
-    pub user: Option<SimpleUserHttp>,
-
-    pub statistics: Option<ArticleStatisticsHttp>,
+    pub content: Option<String>,
 
     pub tag_list: Option<Vec<TagHttp>>,
-
-    pub create_time: Option<NaiveDateTime>,
 }
 
-impl Article for ArticleListItemHttp {
+impl Article for ArticleCompleteHttp {
 
     fn get_id(&self) -> i64 {
         self.id.unwrap()
@@ -38,11 +33,11 @@ impl Article for ArticleListItemHttp {
         self.tag_list = Some(tag_list);
     }
 
-    fn set_statistics(&mut self, statistics: ArticleStatisticsHttp) {
-        self.statistics = Some(statistics);
+    fn set_statistics(&mut self, _statistics: ArticleStatisticsHttp) {
+
     }
 
-    fn set_user(&mut self, user: SimpleUserHttp) {
-        self.user = Some(user);
+    fn set_user(&mut self, _user: SimpleUserHttp) {
+
     }
 }

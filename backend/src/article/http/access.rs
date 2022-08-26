@@ -1,15 +1,10 @@
-use std::collections::HashMap;
 use rocket::fairing::AdHoc;
 use rocket::{FromForm, get, routes};
 use rocket::serde::json::Json;
 use share::article::article_base::ArticleListItemHttp;
-use share::tag::tag_base::TagHttp;
 use crate::article::service::base::ArticleService;
 use crate::article::sql::access::list_article_sql;
 use crate::article::sql::model::ArticleDB;
-use crate::tag::sql::access::list_tag_sql;
-use crate::tag::sql::model::TagDB;
-use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
@@ -30,11 +25,15 @@ fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> 
         return Json(Vec::new());
     }
 
-    let mut article_service = ArticleService::new(opt.unwrap());
+    let mut article_list: Vec<ArticleListItemHttp> = opt.unwrap().into_iter()
+        .map(|db: ArticleDB| <ArticleDB as Into<ArticleListItemHttp>>::into(db))
+        .collect();
+
+    let mut article_service = ArticleService::new(&mut article_list);
 
     article_service.each_set_with_tag_list();
     article_service.each_set_with_statistics();
     article_service.each_set_with_user();
 
-    Json(article_service.consume())
+    Json(article_list)
 }

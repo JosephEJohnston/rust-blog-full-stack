@@ -55,7 +55,6 @@ impl Into<ArticleListItemHttp> for ArticleDB {
             title: self.title,
             outline: self.outline,
             user: None,
-            content: None,
             statistics: None,
             tag_list: None,
             create_time: self.create_time,

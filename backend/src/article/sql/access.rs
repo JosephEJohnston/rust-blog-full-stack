@@ -1,8 +1,6 @@
 #![allow(dead_code)]
 
 use diesel::{QueryDsl, RunQueryDsl};
-use diesel::dsl::sql;
-use diesel::sql_types::{Nullable, Text};
 use diesel::prelude::*;
 use crate::article::sql::model::article::dsl::*;
 use crate::article::sql::model::ArticleDB;

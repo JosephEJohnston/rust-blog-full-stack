@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use diesel::{QueryDsl, RunQueryDsl};
 use diesel::prelude::*;
 use crate::article::article_content::sql::model::article_content::dsl::*;
