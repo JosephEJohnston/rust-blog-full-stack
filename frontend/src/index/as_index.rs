@@ -50,6 +50,11 @@ impl Component for AsIndex {
 
         html! {
             <>
+                <div id="content-banner">
+                    <p class="banner-p">
+                        { "Nothing is impossible." }
+                    </p>
+                </div>
                 <article class="article-container">
                     <div class="for-article-container">
                         {

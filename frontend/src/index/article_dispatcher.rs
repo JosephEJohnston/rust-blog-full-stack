@@ -1,3 +1,6 @@
+#![allow(unused)]
+// 暂不使用
+
 use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 use yew_agent::{Agent, AgentLink, Context, HandlerId};
@@ -5,7 +8,7 @@ use share::article::article_base::ArticleHttp;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Request {
-    RequestArticle(ArticleHttp),
+    RequestArticle(Option<ArticleHttp>),
 }
 
 pub struct ArticleDispatcher {
@@ -17,7 +20,7 @@ impl Agent for ArticleDispatcher {
     type Reach = Context<Self>;
     type Message = ();
     type Input = Request;
-    type Output = ArticleHttp;
+    type Output = Option<ArticleHttp>;
 
     fn create(link: AgentLink<Self>) -> Self {
         Self {

@@ -6,32 +6,14 @@ use crate::index::article_dispatcher::ArticleDispatcher;
 use crate::Route;
 
 pub struct IndexHeader {
-    _producer: Box<dyn Bridge<ArticleDispatcher>>,
-    article: Option<ArticleHttp>,
-}
-
-pub enum IndexHeaderMsg {
-    GetArticle(ArticleHttp),
 }
 
 impl Component for IndexHeader {
-    type Message = IndexHeaderMsg;
+    type Message = ();
     type Properties = ();
 
-    fn create(ctx: &Context<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         IndexHeader {
-            _producer: ArticleDispatcher::bridge(ctx.link().callback(IndexHeaderMsg::GetArticle)),
-            article: None,
-        }
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            IndexHeaderMsg::GetArticle(article) => {
-                self.article = Some(article);
-
-                true
-            }
         }
     }
 
@@ -66,17 +48,6 @@ impl Component for IndexHeader {
                             </div>
                         </div>
                     </nav>
-                    <div id="header-banner" class="article-banner">
-                        <div class="banner-title">{ "Ubuntu 16.04 环境安装部署" }</div>
-                        <p class="banner-brief">{ "项目部署文档" }</p>
-                        <div>
-                            <button class="banner-tag">{ "入门" }</button>
-                            <button class="banner-tag">{ "Linux" }</button>
-                            <button class="banner-tag">{ "Laravel" }</button>
-                            <button class="banner-tag">{ "Ubuntu" }</button>
-                            <button class="banner-tag">{ "PHP7" }</button>
-                        </div>
-                    </div>
                 </header>
             </>
         }
