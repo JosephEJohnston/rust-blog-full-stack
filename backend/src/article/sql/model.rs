@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
-use share::article::article_base::ArticleHttp;
+use share::article::article_base::ArticleListItemHttp;
 
 table! {
     article (id) {
@@ -33,8 +33,8 @@ pub struct ArticleDB {
     pub modify_time: Option<NaiveDateTime>,
 }
 
-impl From<ArticleHttp> for ArticleDB {
-    fn from(article: ArticleHttp) -> Self {
+impl From<ArticleListItemHttp> for ArticleDB {
+    fn from(article: ArticleListItemHttp) -> Self {
         ArticleDB {
             id: article.id,
             user_id: article.user_id,
@@ -47,9 +47,9 @@ impl From<ArticleHttp> for ArticleDB {
     }
 }
 
-impl Into<ArticleHttp> for ArticleDB {
-    fn into(self) -> ArticleHttp {
-        ArticleHttp {
+impl Into<ArticleListItemHttp> for ArticleDB {
+    fn into(self) -> ArticleListItemHttp {
+        ArticleListItemHttp {
             id: self.id,
             user_id: self.user_id,
             title: self.title,

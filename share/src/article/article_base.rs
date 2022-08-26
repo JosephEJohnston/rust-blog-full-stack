@@ -5,7 +5,7 @@ use crate::tag::tag_base::TagHttp;
 use crate::user::simple_user::SimpleUserHttp;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct ArticleHttp {
+pub struct ArticleListItemHttp {
     pub id: Option<i64>,
 
     pub user_id: i64,

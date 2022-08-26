@@ -1,9 +1,6 @@
-use gloo::console::log;
 use yew::prelude::*;
-use yew_agent::{Dispatched, Dispatcher};
 use yew_router::prelude::*;
-use share::article::article_base::ArticleHttp;
-use crate::index::article_dispatcher::{ArticleDispatcher, Request};
+use share::article::article_base::ArticleListItemHttp;
 use crate::index::IndexRoute;
 
 pub struct ArticleListItem {
@@ -12,11 +9,8 @@ pub struct ArticleListItem {
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct ArticleListItemProps {
-    pub article: ArticleHttp,
-}
-
-pub enum ArticleListItemMsg {
-    Clicked,
+    // 没有 content
+    pub article: ArticleListItemHttp,
 }
 
 impl ArticleListItem {
@@ -24,21 +18,12 @@ impl ArticleListItem {
 }
 
 impl Component for ArticleListItem {
-    type Message = ArticleListItemMsg;
+    type Message = ();
     type Properties = ArticleListItemProps;
 
     fn create(_ctx: &Context<Self>) -> Self {
         ArticleListItem {
 
-        }
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            ArticleListItemMsg::Clicked => {
-
-                false
-            }
         }
     }
 

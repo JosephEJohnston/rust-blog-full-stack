@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use rocket::fairing::AdHoc;
 use rocket::{FromForm, get, routes};
 use rocket::serde::json::Json;
-use share::article::article_base::ArticleHttp;
+use share::article::article_base::ArticleListItemHttp;
 use share::tag::tag_base::TagHttp;
 use crate::article::service::base::ArticleService;
 use crate::article::sql::access::list_article_sql;
@@ -23,7 +23,7 @@ struct ListArticleOptions {
 }
 
 #[get("/list?<opt..>")]
-fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleHttp>> {
+fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> {
     let opt = list_article_sql(opt.user_id);
 
     if opt.is_none() {

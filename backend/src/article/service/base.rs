@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use share::article::article_base::ArticleHttp;
+use share::article::article_base::ArticleListItemHttp;
 use share::article::article_statistics::ArticleStatisticsHttp;
 use share::tag::tag_base::TagHttp;
 use share::user::simple_user::SimpleUserHttp;
@@ -11,13 +11,13 @@ use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
 use crate::user::sql::access::list_user;
 
 pub struct ArticleService {
-    article_list: Vec<ArticleHttp>,
+    article_list: Vec<ArticleListItemHttp>,
 }
 
 impl ArticleService {
     pub fn new(article_list: Vec<ArticleDB>) -> ArticleService {
-        let article_list: Vec<ArticleHttp> = article_list.into_iter()
-            .map(|db: ArticleDB| <ArticleDB as Into<ArticleHttp>>::into(db))
+        let article_list: Vec<ArticleListItemHttp> = article_list.into_iter()
+            .map(|db: ArticleDB| <ArticleDB as Into<ArticleListItemHttp>>::into(db))
             .collect();
 
         ArticleService {
@@ -25,7 +25,7 @@ impl ArticleService {
         }
     }
 
-    pub fn consume(self) -> Vec<ArticleHttp> {
+    pub fn consume(self) -> Vec<ArticleListItemHttp> {
         self.article_list
     }
 

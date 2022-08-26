@@ -1,15 +1,15 @@
 use yew::prelude::*;
 use yew_interop::script::wasm_bindgen_futures::spawn_local;
-use share::article::article_base::ArticleHttp;
+use share::article::article_base::ArticleListItemHttp;
 use crate::index::article_list_item::ArticleListItem;
 use crate::index::http::list_article_from_http;
 
 pub struct AsIndex {
-    article_list: Vec<ArticleHttp>,
+    article_list: Vec<ArticleListItemHttp>,
 }
 
 pub enum AsIndexMsg {
-    HttpFetchArticleList(Vec<ArticleHttp>),
+    HttpFetchArticleList(Vec<ArticleListItemHttp>),
 }
 
 impl Component for AsIndex {

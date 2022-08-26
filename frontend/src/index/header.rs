@@ -1,8 +1,5 @@
 use yew::{Component, Context, Html, html};
-use yew_agent::{Bridge, Bridged};
 use yew_router::prelude::Link;
-use share::article::article_base::ArticleHttp;
-use crate::index::article_dispatcher::ArticleDispatcher;
 use crate::Route;
 
 pub struct IndexHeader {
