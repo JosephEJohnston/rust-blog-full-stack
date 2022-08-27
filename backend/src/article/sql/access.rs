@@ -21,3 +21,21 @@ pub fn list_article_sql(user_id_: i64) -> Option<Vec<ArticleDB>> {
     };
 }
 
+pub fn get_article_sql(id_: i64) -> Option<ArticleDB> {
+    let conn = &mut get_connection();
+
+    let query_result = article
+        .filter(id.eq(id_))
+        .limit(1)
+        .load::<ArticleDB>(conn);
+
+    return if let Ok(mut res) = query_result {
+        if res.len() == 1 {
+            Some(res.pop().unwrap())
+        } else {
+            None
+        }
+    } else {
+        None
+    };
+}

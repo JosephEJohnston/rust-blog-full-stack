@@ -2,6 +2,7 @@ use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
 use share::article::article_base::ArticleListItemHttp;
+use share::article::article_complete::ArticleCompleteHttp;
 
 table! {
     article (id) {
@@ -62,3 +63,15 @@ impl Into<ArticleListItemHttp> for ArticleDB {
     }
 }
 
+impl Into<ArticleCompleteHttp> for ArticleDB {
+    fn into(self) -> ArticleCompleteHttp {
+        ArticleCompleteHttp {
+            id: self.id,
+            user_id: self.user_id,
+            title: self.title.clone(),
+            outline: self.outline.clone(),
+            content: None,
+            tag_list: None
+        }
+    }
+}

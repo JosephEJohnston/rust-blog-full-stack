@@ -2,13 +2,14 @@ use rocket::fairing::AdHoc;
 use rocket::{FromForm, get, routes};
 use rocket::serde::json::Json;
 use share::article::article_base::ArticleListItemHttp;
-use crate::article::service::base::ArticleService;
-use crate::article::sql::access::list_article_sql;
+use share::article::article_complete::ArticleCompleteHttp;
+use crate::article::service::base::{ArticleService, ArticleSingleService};
+use crate::article::sql::access::{get_article_sql, list_article_sql};
 use crate::article::sql::model::ArticleDB;
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
-        rocket.mount("/article", routes![list_article_http])
+        rocket.mount("/article", routes![list_article_http, get_article])
     })
 }
 
@@ -36,4 +37,25 @@ fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> 
     article_service.each_set_with_user();
 
     Json(article_service.consume())
+}
+
+#[derive(FromForm)]
+struct GetArticleOptions {
+    pub id: i64,
+}
+
+#[get("/get?<opt..>")]
+fn get_article(opt: GetArticleOptions) -> Json<ArticleCompleteHttp> {
+    if let Some(article) = get_article_sql(opt.id) {
+        let article: ArticleCompleteHttp = article.into();
+
+        let mut service = ArticleSingleService::new(article);
+
+        service.set_tag_list();
+        service.set_content();
+
+        Json(service.consume())
+    } else {
+        Json(ArticleCompleteHttp::default())
+    }
 }

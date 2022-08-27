@@ -1,2 +1,2 @@
-mod model;
-mod access;
+pub mod model;
+pub mod access;

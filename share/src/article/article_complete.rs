@@ -19,6 +19,19 @@ pub struct ArticleCompleteHttp {
     pub tag_list: Option<Vec<TagHttp>>,
 }
 
+impl Default for ArticleCompleteHttp {
+    fn default() -> Self {
+        ArticleCompleteHttp {
+            id: None,
+            user_id: 0,
+            title: "".to_string(),
+            outline: "".to_string(),
+            content: None,
+            tag_list: None
+        }
+    }
+}
+
 impl Article for ArticleCompleteHttp {
 
     fn get_id(&self) -> i64 {
@@ -39,5 +52,9 @@ impl Article for ArticleCompleteHttp {
 
     fn set_user(&mut self, _user: SimpleUserHttp) {
 
+    }
+
+    fn set_content(&mut self, content: String) {
+        self.content = Some(content);
     }
 }

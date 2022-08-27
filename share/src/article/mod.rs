@@ -16,4 +16,6 @@ pub trait Article {
     fn set_statistics(&mut self, statistics: ArticleStatisticsHttp);
 
     fn set_user(&mut self, user: SimpleUserHttp);
+
+    fn set_content(&mut self, content: String);
 }

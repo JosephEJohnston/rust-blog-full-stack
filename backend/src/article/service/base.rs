@@ -3,6 +3,7 @@ use share::article::Article;
 use share::article::article_statistics::ArticleStatisticsHttp;
 use share::tag::tag_base::TagHttp;
 use share::user::simple_user::SimpleUserHttp;
+use crate::article::article_content::sql::access::list_article_content;
 use crate::article::article_statistics::sql::access::list_article_statistics;
 use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
@@ -125,6 +126,51 @@ impl <T: Article> ArticleService <T> {
 
                     article.set_user(user.clone());
                 })
+        }
+    }
+}
+
+pub struct ArticleSingleService<T: Article> {
+    article: T,
+}
+
+impl <T: Article> ArticleSingleService<T> {
+    pub fn new(article: T) -> ArticleSingleService<T> {
+        ArticleSingleService {
+            article,
+        }
+    }
+
+    pub fn consume(self) -> T {
+        self.article
+    }
+
+    pub fn set_tag_list(&mut self) {
+        if let Some(tag_relation_list) = list_tag_relation_sql(vec![self.article.get_id()], 1) {
+            let tag_id_list = tag_relation_list
+                .iter()
+                .map(|r| r.tag_id)
+                .collect();
+
+            if let Some(tag_list) = list_tag_sql(tag_id_list) {
+                let tag_list: Vec<TagHttp> = tag_list.into_iter()
+                    .map(|tag| tag.into())
+                    .collect();
+
+                self.article.set_tag_list(tag_list);
+            }
+        }
+    }
+
+    pub fn set_content(&mut self) {
+        if let Some(mut content_list) = list_article_content(vec![self.article.get_id()]) {
+            if content_list.len() == 0 {
+                return;
+            }
+
+            let content = content_list.pop().unwrap();
+
+            self.article.set_content(content.content.clone());
         }
     }
 }

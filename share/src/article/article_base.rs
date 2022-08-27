@@ -45,4 +45,7 @@ impl Article for ArticleListItemHttp {
     fn set_user(&mut self, user: SimpleUserHttp) {
         self.user = Some(user);
     }
+
+    fn set_content(&mut self, _content: String) {
+    }
 }
