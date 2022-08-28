@@ -50,27 +50,48 @@ impl Component for Article {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        html! {
-            <>
-                <div id="content-banner" class="article-banner">
-                    <div class="banner-title">{ "Ubuntu 16.04 环境安装部署" }</div>
-                    <p class="banner-brief">{ "项目部署文档" }</p>
-                    <div>
-                        <button class="banner-tag">{ "入门" }</button>
-                        <button class="banner-tag">{ "Linux" }</button>
-                        <button class="banner-tag">{ "Laravel" }</button>
-                        <button class="banner-tag">{ "Ubuntu" }</button>
-                        <button class="banner-tag">{ "PHP7" }</button>
+        if let Some(article) = self.article.as_ref() {
+            html! {
+                <>
+                    <div id="content-banner" class="article-banner">
+                        <div class="banner-title">{ article.title.clone() }</div>
+                        <p class="banner-brief">{ article.outline.clone() }</p>
+                        <div>
+                            {
+                                for article.tag_list.as_ref().unwrap().iter().map(|tag| {
+                                    html! {
+                                        <button class="banner-tag">{ tag.name.clone() }</button>
+                                    }
+                                })
+                            }
+                        </div>
                     </div>
-                </div>
-                <article>
-                    <div id="user-article">
-                        <article class="markdown-body">
-                            { "我是文章内容" }
-                        </article>
+                    <article>
+                        <div id="user-article">
+                            <article class="markdown-body">
+                                { article.content.as_ref().unwrap().clone() }
+                            </article>
+                        </div>
+                    </article>
+                </>
+            }
+        } else {
+            html! {
+                <>
+                    <div id="content-banner">
+                        <p class="banner-p">
+                            { "Nothing is impossible." }
+                        </p>
                     </div>
-                </article>
-            </>
+                    <article>
+                        <div id="user-article">
+                            <article class="markdown-body">
+                                { "内容加载中，请稍作等待。" }
+                            </article>
+                        </div>
+                    </article>
+                </>
+            }
         }
     }
 }
