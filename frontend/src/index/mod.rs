@@ -20,8 +20,8 @@ pub enum IndexRoute {
     #[at("/")]
     AsIndex,
 
-    #[at("/article")]
-    Article,
+    #[at("/article/:article_id")]
+    Article { article_id: i64 },
 }
 
 fn switch(routes: &IndexRoute) -> Html {
@@ -32,9 +32,9 @@ fn switch(routes: &IndexRoute) -> Html {
             }
         },
 
-        IndexRoute::Article => {
+        IndexRoute::Article { article_id } => {
             html! {
-                <Article />
+                <Article article_id={ article_id.clone() } />
             }
         },
     }

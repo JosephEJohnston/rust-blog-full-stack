@@ -55,7 +55,7 @@ impl Component for ArticleListItem {
                             <div class="for-article-info">{ ctx.props().article.statistics.as_ref().unwrap().read_count }</div>
                         </div>
                         <button class="article-detail-button">
-                            <Link<IndexRoute> to={ IndexRoute::Article }>
+                            <Link<IndexRoute> to={ IndexRoute::Article{ article_id: ctx.props().article.id.unwrap() } }>
                                 { "Read More >" }
                             </Link<IndexRoute>>
                         </button>
