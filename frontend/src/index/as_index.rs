@@ -9,7 +9,7 @@ pub struct AsIndex {
 }
 
 pub enum AsIndexMsg {
-    HttpFetchArticleList(Vec<ArticleListItemHttp>),
+    FetchArticleListHttp(Vec<ArticleListItemHttp>),
 }
 
 impl Component for AsIndex {
@@ -25,7 +25,7 @@ impl Component for AsIndex {
             let link = ctx.link().clone();
             spawn_local(async move {
                 if let Ok(articles) = list_article_from_http().await {
-                    link.send_message(AsIndexMsg::HttpFetchArticleList(articles));
+                    link.send_message(AsIndexMsg::FetchArticleListHttp(articles));
                 }
             })
         }
@@ -35,7 +35,7 @@ impl Component for AsIndex {
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            AsIndexMsg::HttpFetchArticleList(articles) => {
+            AsIndexMsg::FetchArticleListHttp(articles) => {
                 self.article_list = articles;
 
                 true

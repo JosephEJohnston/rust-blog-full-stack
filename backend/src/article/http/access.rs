@@ -9,7 +9,7 @@ use crate::article::sql::model::ArticleDB;
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
-        rocket.mount("/article", routes![list_article_http, get_article])
+        rocket.mount("/article", routes![list_article, get_article])
     })
 }
 
@@ -19,7 +19,7 @@ struct ListArticleOptions {
 }
 
 #[get("/list?<opt..>")]
-fn list_article_http(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> {
+fn list_article(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> {
     let opt = list_article_sql(opt.user_id);
 
     if opt.is_none() {

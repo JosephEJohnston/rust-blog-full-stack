@@ -14,7 +14,7 @@ pub struct Article {
 }
 
 pub enum ArticleMsg {
-    HttpFetchArticle(ArticleCompleteHttp),
+    FetchArticleHttp(ArticleCompleteHttp),
 }
 
 impl Component for Article {
@@ -27,7 +27,7 @@ impl Component for Article {
             let article_id = ctx.props().article_id;
             spawn_local(async move {
                 if let Ok(article) = get_article_from_http(article_id).await {
-                    link.send_message(ArticleMsg::HttpFetchArticle(article));
+                    link.send_message(ArticleMsg::FetchArticleHttp(article));
                 }
             })
         }
@@ -39,7 +39,7 @@ impl Component for Article {
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            ArticleMsg::HttpFetchArticle(article) => {
+            ArticleMsg::FetchArticleHttp(article) => {
                 self.article = Some(article);
 
                 log!(format!("{:?}", self.article));

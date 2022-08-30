@@ -3,6 +3,7 @@ use gloo::net::http::Request;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
 
+// todo 全局文章接口和用户文章接口
 pub async fn list_article_from_http() -> Result<Vec<ArticleListItemHttp>, Box<dyn Error>> {
     let url = "http://localhost:8000/article/list?user_id=1";
 

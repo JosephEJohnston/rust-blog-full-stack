@@ -9,8 +9,6 @@ pub mod create;
 pub mod manage;
 mod simplemde_interop;
 mod for_editor;
-mod showdown_interop;
-mod for_markdown_converter;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum DashboardArticleRoute {

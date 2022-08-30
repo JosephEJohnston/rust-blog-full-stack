@@ -2,20 +2,76 @@ use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use yew_feather::search::Search;
 use stylist::Style;
+use yew_interop::script::wasm_bindgen_futures::spawn_local;
+use share::article::article_base::ArticleListItemHttp;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
+use crate::index::http::list_article_from_http;
 
 pub struct DashboardArticleManage {
+    article_list: Option<Vec<ArticleListItemHttp>>,
+}
 
+impl DashboardArticleManage {
+    fn render_article_list(&self) -> Html {
+        if let Some(articles) = self.article_list.as_ref() {
+            html! {
+                {
+                    for articles.iter().map(|article| -> Html {
+                        html! {
+                            <tr class="article-list-row">
+                                <td class="article-list-column article-id">{ article.id.unwrap().clone() }</td>
+                                <td class="article-list-column">{ article.title.clone() }</td>
+                                <td class="article-list-column">{ article.outline.clone() }</td>
+                                <td class="article-list-column">{"50"}</td>
+                                <td class="article-list-column">{ article.create_time.unwrap().clone() }</td>
+                                <td class="article-list-column">
+                                    <button class="article-list-column-button article-list-column-button-update">{"修改"}</button>
+                                    <button class="article-list-column-button article-list-column-button-delete">{"删除"}</button>
+                                </td>
+                            </tr>
+                        }
+                    })
+                }
+            }
+        } else {
+            html! {
+
+            }
+        }
+    }
+}
+
+pub enum Msg {
+    FetchArticleListHttp(Vec<ArticleListItemHttp>),
 }
 
 impl Component for DashboardArticleManage {
-    type Message = ();
+    type Message = Msg;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
-        DashboardArticleManage {
+    fn create(ctx: &Context<Self>) -> Self {
+        {
+            let link = ctx.link().clone();
+            spawn_local(async move {
+                if let Ok(articles) = list_article_from_http().await {
+                    link.send_message(Msg::FetchArticleListHttp(articles));
+                }
+            })
+        }
 
+        DashboardArticleManage {
+            article_list: None
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            Msg::FetchArticleListHttp(articles) => {
+                self.article_list = Some(articles);
+
+                true
+            }
         }
     }
 
@@ -56,17 +112,7 @@ impl Component for DashboardArticleManage {
                                 <td class="article-list-column">{"发布时间"}</td>
                                 <td class="article-list-column">{"操作"}</td>
                             </tr>
-                            <tr class="article-list-row">
-                                <td class="article-list-column article-id">{"1"}</td>
-                                <td class="article-list-column">{"测试标题"}</td>
-                                <td class="article-list-column">{"测试副标题"}</td>
-                                <td class="article-list-column">{"50"}</td>
-                                <td class="article-list-column">{"2022-8-12"}</td>
-                                <td class="article-list-column">
-                                    <button class="article-list-column-button article-list-column-button-update">{"修改"}</button>
-                                    <button class="article-list-column-button article-list-column-button-delete">{"删除"}</button>
-                                </td>
-                            </tr>
+                            { self.render_article_list() }
                         </tbody>
                     </table>
                 </div>
