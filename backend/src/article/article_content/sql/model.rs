@@ -7,6 +7,7 @@ table! {
         id -> Nullable<Bigint>,
         article_id -> Bigint,
         content -> Text,
+        status -> Tinyint,
         create_time -> Nullable<Datetime>,
         modify_time -> Nullable<Datetime>,
     }
@@ -21,6 +22,8 @@ pub struct ArticleContentDB {
     pub article_id: i64,
 
     pub content: String,
+
+    pub status: i8,
 
     pub create_time: Option<NaiveDateTime>,
 

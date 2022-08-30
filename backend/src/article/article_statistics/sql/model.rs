@@ -8,6 +8,7 @@ table! {
         id -> Nullable<Bigint>,
         article_id -> Bigint,
         read_count -> Integer,
+        status -> Tinyint,
         create_time -> Nullable<Datetime>,
         modify_time -> Nullable<Datetime>,
     }
@@ -21,6 +22,8 @@ pub struct ArticleStatisticsDB {
     pub article_id: i64,
 
     pub read_count: i32,
+
+    pub status: i8,
 
     pub create_time: Option<NaiveDateTime>,
 
