@@ -1,16 +1,18 @@
 #![allow(dead_code)]
 
-use diesel::{QueryResult, RunQueryDsl};
+use diesel::prelude::*;
 use crate::article::sql::model::ArticleDB;
 use crate::sql_conn::get_connection;
 use crate::article::sql::model::article;
+use crate::article::sql::model::article::dsl::*;
 
-pub fn insert(article: ArticleDB) -> QueryResult<usize> {
+pub fn insert(article: ArticleDB) -> QueryResult<ArticleDB> {
     let conn = &mut get_connection();
 
+    // todo
     diesel::insert_into(article::table)
         .values(vec![article])
-        .execute(conn)
+        .get_result(conn)
 }
 
 #[cfg(test)]
@@ -30,8 +32,8 @@ mod tests {
             modify_time: None
         };
 
-        if let Ok(n) = insert(article) {
-            println!("Insert article: {:?}", n);
+        if let Ok(article) = insert(article) {
+            println!("Insert article: {:?}", article);
         }
     }
 }

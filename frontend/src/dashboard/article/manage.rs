@@ -6,7 +6,7 @@ use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
-use crate::index::http::list_article_from_http;
+use crate::index::http::list_article_http;
 
 pub struct DashboardArticleManage {
     article_list: Option<Vec<ArticleListItemHttp>>,
@@ -54,7 +54,7 @@ impl Component for DashboardArticleManage {
         {
             let link = ctx.link().clone();
             spawn_local(async move {
-                if let Ok(articles) = list_article_from_http().await {
+                if let Ok(articles) = list_article_http().await {
                     link.send_message(Msg::FetchArticleListHttp(articles));
                 }
             })

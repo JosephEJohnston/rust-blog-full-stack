@@ -63,6 +63,20 @@ impl Into<ArticleListItemHttp> for ArticleDB {
     }
 }
 
+impl From<ArticleCompleteHttp> for ArticleDB {
+    fn from(article: ArticleCompleteHttp) -> Self {
+        ArticleDB {
+            id: None,
+            user_id: article.user_id,
+            title: article.title.clone(),
+            outline: article.outline.clone(),
+            status: 0,
+            create_time: None,
+            modify_time: None
+        }
+    }
+}
+
 impl Into<ArticleCompleteHttp> for ArticleDB {
     fn into(self) -> ArticleCompleteHttp {
         ArticleCompleteHttp {

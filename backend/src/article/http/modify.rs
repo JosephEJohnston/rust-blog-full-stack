@@ -2,6 +2,9 @@ use rocket::fairing::AdHoc;
 use rocket::{post, routes};
 use rocket::serde::json::Json;
 use serde::{Deserialize, Serialize};
+use share::article::article_complete::ArticleCompleteHttp;
+use crate::article::service::modify::InsertArticleService;
+use crate::article::sql::model::ArticleDB;
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
@@ -9,14 +12,13 @@ pub fn stage() -> AdHoc {
     })
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct TestJson {
-    pub test: i64,
-}
+#[post("/add", data = "<article>")]
+fn add_article(article: Json<ArticleCompleteHttp>) -> Json<()> {
+    let article = article.into_inner();
 
-#[post("/add", data = "<data>")]
-fn add_article(data: Json<TestJson>) {
-    let data = data.into_inner();
-    println!("{:?}", data.test);
+    let service = InsertArticleService::new(article);
+
+
+    Json(())
 }
 

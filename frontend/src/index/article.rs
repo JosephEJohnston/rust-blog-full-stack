@@ -1,7 +1,7 @@
 use yew::{Component, Context, Html, html, Properties};
 use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_complete::ArticleCompleteHttp;
-use crate::index::http::get_article_from_http;
+use crate::index::http::get_article_http;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct ArticleProps {
@@ -25,7 +25,7 @@ impl Component for Article {
             let link = ctx.link().clone();
             let article_id = ctx.props().article_id;
             spawn_local(async move {
-                if let Ok(article) = get_article_from_http(article_id).await {
+                if let Ok(article) = get_article_http(article_id).await {
                     link.send_message(ArticleMsg::FetchArticleHttp(article));
                 }
             })

@@ -9,6 +9,7 @@ pub mod create;
 pub mod manage;
 mod simplemde_interop;
 mod for_editor;
+mod http;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum DashboardArticleRoute {

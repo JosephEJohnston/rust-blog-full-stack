@@ -70,7 +70,6 @@ impl Component for DashboardArticleCreate {
     fn view(&self, ctx: &Context<Self>) -> Html {
         let dashboard_css = Style::new(DASHBOARD_MAIN_COMMON).unwrap();
         let create_css = Style::new(DASHBOARD_ARTICLE_CREATE_CSS).unwrap();
-        // let simplemde_css = Style::new(SIMPLEMDE_CSS).unwrap();
 
         let editor_callback = ctx.link()
             .callback(|editor| DashboardArticleCreateMsg::FetchEditor(editor));

@@ -2,7 +2,7 @@ use yew::prelude::*;
 use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
 use crate::index::article_list_item::ArticleListItem;
-use crate::index::http::list_article_from_http;
+use crate::index::http::list_article_http;
 
 pub struct AsIndex {
     article_list: Vec<ArticleListItemHttp>,
@@ -24,7 +24,7 @@ impl Component for AsIndex {
         {
             let link = ctx.link().clone();
             spawn_local(async move {
-                if let Ok(articles) = list_article_from_http().await {
+                if let Ok(articles) = list_article_http().await {
                     link.send_message(AsIndexMsg::FetchArticleListHttp(articles));
                 }
             })
