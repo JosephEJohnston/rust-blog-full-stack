@@ -1,13 +1,22 @@
+use std::fmt::{Debug, Formatter};
+use gloo::console::log;
 use stylist::Style;
 use yew::{Component, Context, Html, html, NodeRef};
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
-use crate::dashboard::article::for_editor::ForEditor;
+use crate::dashboard::article::for_editor::{ForEditor};
 use crate::dashboard::article::simplemde_interop::SimpleMDE;
 
 pub struct ArticleCreateContent {
     pub input_title: NodeRef,
     pub editor: Option<SimpleMDE>,
     pub input_outline: NodeRef,
+}
+
+impl Debug for ArticleCreateContent {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "ArticleCreateContent[input_title: , editor: {:?}, input_outline: ]",
+               self.editor.as_ref().map(|e| e.value()))
+    }
 }
 
 impl Default for ArticleCreateContent {
@@ -25,8 +34,8 @@ pub struct DashboardArticleCreate {
 }
 
 pub enum DashboardArticleCreateMsg {
-    EditorInit,
     FetchEditor(SimpleMDE),
+    Create,
 }
 
 impl Component for DashboardArticleCreate {
@@ -41,13 +50,14 @@ impl Component for DashboardArticleCreate {
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            DashboardArticleCreateMsg::EditorInit => {
-
-                true
-            },
-
             DashboardArticleCreateMsg::FetchEditor(editor) => {
                 self.create_content.editor = Some(editor);
+
+                false
+            },
+
+            DashboardArticleCreateMsg::Create => {
+                log!(format!("{:?}", self.create_content));
 
                 false
             }
@@ -61,6 +71,9 @@ impl Component for DashboardArticleCreate {
 
         let editor_callback = ctx.link()
             .callback(|editor| DashboardArticleCreateMsg::FetchEditor(editor));
+
+        let create_callback = ctx.link()
+            .callback(|_| DashboardArticleCreateMsg::Create);
 
         html! {
             <>
@@ -149,11 +162,11 @@ impl Component for DashboardArticleCreate {
                                 <input class="input-check-button" type="text" placeholder="是否原创？"/>
                             </label>
                         </div>
-                        <button class="article-create-create-button">{"创建"}</button>
+                        <button class="article-create-create-button" onclick={ create_callback }>
+                            {"创建"}
+                        </button>
                     </div>
                 </div>
-                // <link rel="stylesheet" href="simplemde/simplemde.min.css" />
-                // <script src="/static/js/simplemde/simplemde.min.js"></script>
             </>
         }
     }
