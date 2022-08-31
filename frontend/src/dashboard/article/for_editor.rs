@@ -2,13 +2,18 @@ use yew::function_component;
 use yew::prelude::*;
 use crate::dashboard::article::simplemde_interop::*;
 
+#[derive(Properties, Clone, PartialEq)]
+pub struct ForEditorProps {
+    pub editor_callback: Callback<SimpleMDE>,
+}
+
 #[function_component(ForEditor)]
-pub fn for_editor() -> Html {
+pub fn for_editor(props: &ForEditorProps) -> Html {
 
     html! {
         <>
             <ResourceProvider>
-                <Editor />
+                <Editor editor_callback={props.editor_callback.clone()}/>
             </ResourceProvider>
         </>
     }
@@ -16,18 +21,19 @@ pub fn for_editor() -> Html {
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct EditorProps {
-
+    pub editor_callback: Callback<SimpleMDE>,
 }
 
 #[function_component(Editor)]
-pub fn editor() -> Html {
+pub fn editor(props: &EditorProps) -> Html {
     let load_done = use_simplemde();
 
     {
+        let callback = props.editor_callback.clone();
         let load_done = load_done.clone();
         use_effect(move || {
             if load_done {
-                create_editor();
+                callback.emit(create_editor());
             }
 
             || ()
@@ -37,7 +43,7 @@ pub fn editor() -> Html {
     html! {
         if load_done {
             <div class="editor-inner-container">
-                <textarea id="editor" ></textarea>
+                <textarea id="editor"></textarea>
             </div>
         } else {
             <label>

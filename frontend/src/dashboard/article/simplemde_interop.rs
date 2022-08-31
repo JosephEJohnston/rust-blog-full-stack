@@ -18,9 +18,12 @@ extern "C" {
 
     #[wasm_bindgen(constructor, js_class = "SimpleMDE")]
     pub fn new(config: &JsValue) -> SimpleMDE;
+
+    #[wasm_bindgen(method, structural, js_class = "SimpleMDE")]
+    pub fn value(this: &SimpleMDE) -> String;
 }
 
-pub fn create_editor() {
+pub fn create_editor() -> SimpleMDE {
     let config = Object::new();
 
     Reflect::set(
@@ -29,5 +32,5 @@ pub fn create_editor() {
         &document().get_element_by_id("editor").unwrap(),
     ).ok();
 
-    SimpleMDE::new(&config);
+    SimpleMDE::new(&config)
 }

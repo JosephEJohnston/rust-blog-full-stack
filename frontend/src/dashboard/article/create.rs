@@ -1,14 +1,32 @@
 use stylist::Style;
-use yew::{Component, Context, Html, html};
+use yew::{Component, Context, Html, html, NodeRef};
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::for_editor::ForEditor;
+use crate::dashboard::article::simplemde_interop::SimpleMDE;
+
+pub struct ArticleCreateContent {
+    pub input_title: NodeRef,
+    pub editor: Option<SimpleMDE>,
+    pub input_outline: NodeRef,
+}
+
+impl Default for ArticleCreateContent {
+    fn default() -> Self {
+        Self {
+            input_title: NodeRef::default(),
+            editor: None,
+            input_outline: NodeRef::default(),
+        }
+    }
+}
 
 pub struct DashboardArticleCreate {
-
+    create_content: ArticleCreateContent,
 }
 
 pub enum DashboardArticleCreateMsg {
     EditorInit,
+    FetchEditor(SimpleMDE),
 }
 
 impl Component for DashboardArticleCreate {
@@ -17,7 +35,7 @@ impl Component for DashboardArticleCreate {
 
     fn create(_ctx: &Context<Self>) -> Self {
         DashboardArticleCreate {
-
+            create_content: Default::default(),
         }
     }
 
@@ -26,14 +44,23 @@ impl Component for DashboardArticleCreate {
             DashboardArticleCreateMsg::EditorInit => {
 
                 true
+            },
+
+            DashboardArticleCreateMsg::FetchEditor(editor) => {
+                self.create_content.editor = Some(editor);
+
+                false
             }
         }
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
         let dashboard_css = Style::new(DASHBOARD_MAIN_COMMON).unwrap();
         let create_css = Style::new(DASHBOARD_ARTICLE_CREATE_CSS).unwrap();
         // let simplemde_css = Style::new(SIMPLEMDE_CSS).unwrap();
+
+        let editor_callback = ctx.link()
+            .callback(|editor| DashboardArticleCreateMsg::FetchEditor(editor));
 
         html! {
             <>
@@ -51,10 +78,10 @@ impl Component for DashboardArticleCreate {
                     <div class="article-create-input-container">
                         <div class="for-each-input-container">
                             <div class="input-name-container">
-                                <div class="input-name">{"分类"}</div>
+                                <div class="input-name">{"标签"}</div>
                             </div>
                             <label>
-                                <input class="each-input" type="text" placeholder="选择分类"/>
+                                <input class="each-input" type="text" placeholder="选择标签"/>
                             </label>
                         </div>
                         <div class="for-each-input-container">
@@ -62,7 +89,8 @@ impl Component for DashboardArticleCreate {
                                 <div class="input-name">{"标题"}</div>
                             </div>
                             <label>
-                                <input class="each-input" type="text"/>
+                                <input class="each-input" type="text"
+                                    ref={self.create_content.input_title.clone()}/>
                             </label>
                         </div>
                         <div class="for-each-input-container">
@@ -86,7 +114,7 @@ impl Component for DashboardArticleCreate {
                             <div class="input-name-container content-input">
                                 <div class="input-name">{"内容"}</div>
                             </div>
-                            <ForEditor />
+                            <ForEditor editor_callback={editor_callback} />
                         </div>
                         <div class="for-each-input-container">
                             <div class="input-name-container">
@@ -101,7 +129,8 @@ impl Component for DashboardArticleCreate {
                                 <div class="input-name">{"主要描述"}</div>
                             </div>
                             <label>
-                                <input class="each-input" type="text"/>
+                                <input class="each-input" type="text"
+                                    ref={self.create_content.input_outline.clone()}/>
                             </label>
                         </div>
                         <div class="for-each-input-container">

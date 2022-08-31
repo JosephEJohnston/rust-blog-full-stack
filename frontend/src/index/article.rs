@@ -1,4 +1,3 @@
-use gloo::console::log;
 use yew::{Component, Context, Html, html, Properties};
 use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_complete::ArticleCompleteHttp;
@@ -41,8 +40,6 @@ impl Component for Article {
         match msg {
             ArticleMsg::FetchArticleHttp(article) => {
                 self.article = Some(article);
-
-                log!(format!("{:?}", self.article));
 
                 true
             }
