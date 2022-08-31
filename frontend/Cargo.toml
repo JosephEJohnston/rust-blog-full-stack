@@ -26,6 +26,18 @@ wasm-bindgen = "0.2.82"
 
 js-sys = "0.3.59"
 
+web-sys = { version = "0.3.58", features = [
+#    "HtmlCanvasElement",
+    "HtmlInputElement",
+#    "HtmlSelectElement",
+#    "HtmlOptionsCollection",
+#    "HtmlOptionElement",
+#    "HtmlCollection",
+#    "HtmlElement",
+#    "Element",
+#    "Node"
+]}
+
 #stdweb = "0.4.20"
 
 # wasm js 工具库

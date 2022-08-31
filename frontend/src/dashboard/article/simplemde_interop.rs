@@ -1,3 +1,4 @@
+use std::fmt::{Debug, Formatter};
 use gloo::utils::document;
 use js_sys::{Object, Reflect};
 use wasm_bindgen::JsValue;
@@ -21,6 +22,12 @@ extern "C" {
 
     #[wasm_bindgen(method, structural, js_class = "SimpleMDE")]
     pub fn value(this: &SimpleMDE) -> String;
+}
+
+impl Debug for SimpleMDE {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "SimpleMDE[value: {:?}]", self.value())
+    }
 }
 
 pub fn create_editor() -> SimpleMDE {

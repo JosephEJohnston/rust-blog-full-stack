@@ -1,6 +1,6 @@
-use std::fmt::{Debug, Formatter};
 use gloo::console::log;
 use stylist::Style;
+use web_sys::HtmlInputElement;
 use yew::{Component, Context, Html, html, NodeRef};
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::for_editor::{ForEditor};
@@ -10,13 +10,6 @@ pub struct ArticleCreateContent {
     pub input_title: NodeRef,
     pub editor: Option<SimpleMDE>,
     pub input_outline: NodeRef,
-}
-
-impl Debug for ArticleCreateContent {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "ArticleCreateContent[input_title: , editor: {:?}, input_outline: ]",
-               self.editor.as_ref().map(|e| e.value()))
-    }
 }
 
 impl Default for ArticleCreateContent {
@@ -57,7 +50,17 @@ impl Component for DashboardArticleCreate {
             },
 
             DashboardArticleCreateMsg::Create => {
-                log!(format!("{:?}", self.create_content));
+                let editor = self.create_content.editor.as_ref().unwrap();
+
+                let input_title = self.create_content.input_title.cast::<HtmlInputElement>()
+                    .map(|input| input.value()).unwrap_or("".to_string());
+
+                let input_outline = self.create_content.input_outline.cast::<HtmlInputElement>()
+                    .map(|input| input.value()).unwrap_or("".to_string());
+
+                log!(format!("{:?}", editor));
+                log!(format!("{:?}", input_title));
+                log!(format!("{:?}", input_outline));
 
                 false
             }

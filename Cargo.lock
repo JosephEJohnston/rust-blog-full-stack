@@ -538,6 +538,7 @@ dependencies = [
  "share",
  "stylist",
  "wasm-bindgen",
+ "web-sys",
  "yew",
  "yew-agent",
  "yew-feather",
