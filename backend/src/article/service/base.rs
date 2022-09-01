@@ -70,14 +70,14 @@ impl <T: Article> ArticleService <T> {
             });
 
         for article in self.article_list.iter_mut() {
-            let tag_id_list = relation_map.get(&article.get_id()).unwrap();
+            if let Some(tag_id_list) = relation_map.get(&article.get_id()) {
+                let tag_list = tag_id_list.iter()
+                    .map(|id| tag_map.get(id).unwrap())
+                    .map(|tag| <TagDB as Into<TagHttp>>::into((*tag).clone()))
+                    .collect();
 
-            let tag_list = tag_id_list.iter()
-                .map(|id| tag_map.get(id).unwrap())
-                .map(|tag| <TagDB as Into<TagHttp>>::into((*tag).clone()))
-                .collect();
-
-            article.set_tag_list(tag_list);
+                article.set_tag_list(tag_list);
+            }
         }
     }
 
@@ -98,9 +98,9 @@ impl <T: Article> ArticleService <T> {
 
             self.article_list.iter_mut()
                 .for_each(|article| {
-                    let statistics = map.get(&article.get_id()).unwrap();
-
-                    article.set_statistics((*statistics).clone());
+                    if let Some(statistics) = map.get(&article.get_id()) {
+                        article.set_statistics((*statistics).clone());
+                    }
                 })
         }
     }

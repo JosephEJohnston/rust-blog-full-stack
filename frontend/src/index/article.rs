@@ -66,7 +66,7 @@ impl Component for Article {
                     <article>
                         <div id="user-article">
                             <article class="markdown-body">
-                                { article.content.as_ref().unwrap().clone() }
+                                { article.content.as_ref().unwrap_or(&"".to_string()).clone() }
                             </article>
                         </div>
                     </article>

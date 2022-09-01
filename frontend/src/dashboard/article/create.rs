@@ -2,8 +2,11 @@ use gloo::console::log;
 use stylist::Style;
 use web_sys::HtmlInputElement;
 use yew::{Component, Context, Html, html, NodeRef};
+use yew_interop::script::wasm_bindgen_futures::spawn_local;
+use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::for_editor::{ForEditor};
+use crate::dashboard::article::http::add_article_http;
 use crate::dashboard::article::simplemde_interop::SimpleMDE;
 
 pub struct ArticleCreateContent {
@@ -50,17 +53,26 @@ impl Component for DashboardArticleCreate {
             },
 
             DashboardArticleCreateMsg::Create => {
-                let editor = self.create_content.editor.as_ref().unwrap();
+                let content = self.create_content.editor.as_ref().unwrap().value().clone();
 
                 let input_title = self.create_content.input_title.cast::<HtmlInputElement>()
-                    .map(|input| input.value()).unwrap_or("".to_string());
+                    .map(|input| input.value()).unwrap_or("".to_string()).clone();
 
                 let input_outline = self.create_content.input_outline.cast::<HtmlInputElement>()
-                    .map(|input| input.value()).unwrap_or("".to_string());
+                    .map(|input| input.value()).unwrap_or("".to_string()).clone();
 
-                log!(format!("{:?}", editor));
-                log!(format!("{:?}", input_title));
-                log!(format!("{:?}", input_outline));
+                spawn_local(async move {
+                    if let Ok(id) = add_article_http(ArticleCompleteHttp {
+                        id: None,
+                        user_id: 1,
+                        title: input_title,
+                        outline: input_outline,
+                        content: Some(content),
+                        tag_list: None
+                    }).await {
+                        log!(format!("Article id: {:?}", id));
+                    }
+                });
 
                 false
             }

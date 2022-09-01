@@ -17,6 +17,25 @@ impl ArticleListItem {
 
 }
 
+impl ArticleListItem {
+    fn render_tag_list(&self, ctx: &Context<Self>) -> Html {
+        let tmp = Vec::new();
+
+        let tag_list = ctx.props().article.tag_list
+            .as_ref().unwrap_or(&tmp);
+
+        html! {
+            {
+                for tag_list.iter().map(|tag| {
+                    html! {
+                        <button class="for-article-tag">{ tag.name.clone() }</button>
+                    }
+                })
+            }
+        }
+    }
+}
+
 impl Component for ArticleListItem {
     type Message = ();
     type Properties = ArticleListItemProps;
@@ -39,12 +58,7 @@ impl Component for ArticleListItem {
                         <hr class="article-border-line" />
                         <div class="article-tag">
                             {
-                                for ctx.props().article.tag_list.as_ref().unwrap().iter().map(|tag| {
-
-                                    html! {
-                                        <button class="for-article-tag">{ tag.name.clone() }</button>
-                                    }
-                                })
+                                self.render_tag_list(ctx)
                             }
                         </div>
                         <hr class="article-border-line" />
@@ -52,7 +66,8 @@ impl Component for ArticleListItem {
                             <div class="for-article-info">{ ctx.props().article.user.as_ref().unwrap().name.clone() }</div>
                             <div class="for-article-info">{ ctx.props().article.create_time.unwrap().date() }</div>
                             // <div class="for-article-info">{ "三年前" }</div>
-                            <div class="for-article-info">{ ctx.props().article.statistics.as_ref().unwrap().read_count }</div>
+                            <div class="for-article-info">{ ctx.props().article.statistics.as_ref()
+                                .map(|statistics| statistics.read_count).unwrap_or(0) }</div>
                         </div>
                         <button class="article-detail-button">
                             <Link<IndexRoute> to={ IndexRoute::Article{ article_id: ctx.props().article.id.unwrap() } }>
