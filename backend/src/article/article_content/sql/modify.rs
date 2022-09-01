@@ -2,7 +2,7 @@ use diesel::{QueryResult, RunQueryDsl};
 use crate::article::article_content::sql::model::{article_content, ArticleContentDB};
 use crate::utils::sql::sql_conn::get_connection;
 
-pub fn insert(article_content_: ArticleContentDB) -> QueryResult<usize> {
+pub fn insert_article_content(article_content_: ArticleContentDB) -> QueryResult<usize> {
     let conn = &mut get_connection();
 
     diesel::insert_into(article_content::table)
@@ -21,7 +21,7 @@ fn test_insert() {
         modify_time: None,
     };
 
-    match insert(article_content) {
+    match insert_article_content(article_content) {
         Ok(n) => {
             println!("{:?}", n);
         },

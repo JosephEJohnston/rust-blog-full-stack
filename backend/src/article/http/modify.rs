@@ -11,13 +11,15 @@ pub fn stage() -> AdHoc {
 }
 
 #[post("/add", data = "<article>")]
-fn add_article(article: Json<ArticleCompleteHttp>) -> Json<()> {
+fn add_article(article: Json<ArticleCompleteHttp>) -> Json<i64> {
     let article = article.into_inner();
 
     let mut service = InsertArticleService::new(article);
 
-    service.insert_article_base();
+    service.insert_article_base()
+        .insert_article_content()
+        .insert_article_statistics();
 
-    Json(())
+    Json(service.done())
 }
 
