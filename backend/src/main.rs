@@ -2,7 +2,7 @@ mod cors;
 mod user;
 mod tag;
 mod article;
-mod sql_conn;
+mod utils;
 
 use rocket::{get, launch, routes};
 use crate::cors::CORS;

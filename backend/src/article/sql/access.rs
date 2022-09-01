@@ -4,7 +4,7 @@ use diesel::{QueryDsl, RunQueryDsl};
 use diesel::prelude::*;
 use crate::article::sql::model::article::dsl::*;
 use crate::article::sql::model::ArticleDB;
-use crate::sql_conn::get_connection;
+use crate::utils::sql::sql_conn::get_connection;
 
 pub fn list_article_sql(user_id_: i64) -> Option<Vec<ArticleDB>> {
     let conn = &mut get_connection();

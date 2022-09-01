@@ -1,4 +1,4 @@
-use crate::sql_conn::get_connection;
+use crate::utils::sql::sql_conn::get_connection;
 use diesel::{QueryDsl, RunQueryDsl};
 use diesel::prelude::*;
 use crate::tag::tag_relation::sql::model::tag_relation::dsl::*;

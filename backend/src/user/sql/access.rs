@@ -3,7 +3,7 @@
 use diesel::{ExpressionMethods, QueryResult, RunQueryDsl};
 use diesel::sql_types::Varchar;
 use diesel::prelude::*;
-use crate::sql_conn::get_connection;
+use crate::utils::sql::sql_conn::get_connection;
 use crate::user::sql::model::user::dsl::*;
 use crate::user::sql::model::UserDB;
 

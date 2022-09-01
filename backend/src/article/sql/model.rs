@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use diesel::{Insertable, Queryable, QueryableByName, table};
+use diesel::{Insertable, Queryable, table};
 use serde::{Deserialize, Serialize};
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
@@ -10,13 +10,13 @@ table! {
         user_id -> Bigint,
         title -> Varchar,
         outline -> Varchar,
-        status -> Tinyint,
+        status -> TinyInt,
         create_time -> Nullable<Datetime>,
         modify_time -> Nullable<Datetime>,
     }
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize, Queryable, Insertable, QueryableByName)]
+#[derive(Debug, PartialEq, Clone, Deserialize, Serialize, Queryable, Insertable)]
 #[diesel(table_name = article)]
 pub struct ArticleDB {
     pub id: Option<i64>,

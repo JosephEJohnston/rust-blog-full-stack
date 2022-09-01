@@ -3,7 +3,7 @@
 use diesel::{QueryResult, RunQueryDsl};
 use diesel::sql_types::Bigint;
 use diesel::prelude::*;
-use crate::sql_conn::get_connection;
+use crate::utils::sql::sql_conn::get_connection;
 use crate::tag::sql::model::tag::dsl::*;
 use crate::tag::sql::model::TagDB;
 

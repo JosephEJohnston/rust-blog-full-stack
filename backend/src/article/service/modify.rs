@@ -16,11 +16,11 @@ impl InsertArticleService {
     }
 
     pub fn insert_article_base(&mut self) {
-        let article = insert(ArticleDB::from(
+        let result = insert(ArticleDB::from(
             self.article.clone()));
 
-        if let Ok(article) = article {
-            self.id = article.id;
+        if let Ok(article_id) = result {
+            self.id = Some(article_id);
         }
     }
 }

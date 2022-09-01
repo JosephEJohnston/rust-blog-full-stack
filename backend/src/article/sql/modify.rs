@@ -1,19 +1,31 @@
 #![allow(dead_code)]
 
+use diesel::{select};
 use diesel::prelude::*;
+use diesel::result::Error;
 use crate::article::sql::model::ArticleDB;
-use crate::sql_conn::get_connection;
-use crate::article::sql::model::article;
+use crate::utils::sql::sql_conn::get_connection;
 use crate::article::sql::model::article::dsl::*;
+use crate::utils::sql::function::last_insert_id;
 
-pub fn insert(article: ArticleDB) -> QueryResult<ArticleDB> {
+pub fn insert(article_: ArticleDB) -> QueryResult<i64> {
     let conn = &mut get_connection();
 
-    // todo
-    diesel::insert_into(article::table)
-        .values(vec![article])
-        .get_result(conn)
+    let insert_id = conn.transaction(|conn| {
+        let result = diesel::insert_into(article)
+            .values(vec![article_])
+            .execute(conn);
+
+        if let Ok(_n) = result {
+            Ok(select(last_insert_id()).get_result::<i64>(conn))
+        } else {
+            Err(Error::RollbackTransaction)
+        }
+    })?;
+
+    insert_id
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -25,15 +37,15 @@ mod tests {
         let article = ArticleDB {
             id: None,
             user_id: 1,
-            title: "测试文章插入2".to_string(),
-            outline: "测试文章插入2".to_string(),
+            title: "测试文章插入4".to_string(),
+            outline: "测试文章插入4".to_string(),
             status: 0,
             create_time: None,
             modify_time: None
         };
 
-        if let Ok(article) = insert(article) {
-            println!("Insert article: {:?}", article);
+        if let Ok(article_id) = insert(article) {
+            println!("Insert article id: {:?}", article_id);
         }
     }
 }
