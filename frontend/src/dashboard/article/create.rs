@@ -53,7 +53,8 @@ impl Component for DashboardArticleCreate {
             },
 
             DashboardArticleCreateMsg::Create => {
-                let content = self.create_content.editor.as_ref().unwrap().value().clone();
+                let content = self.create_content.editor.as_ref()
+                    .map(|editor| editor.value()).unwrap_or("".to_string()).clone();
 
                 let input_title = self.create_content.input_title.cast::<HtmlInputElement>()
                     .map(|input| input.value()).unwrap_or("".to_string()).clone();

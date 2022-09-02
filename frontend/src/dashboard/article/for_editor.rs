@@ -2,6 +2,8 @@ use yew::function_component;
 use yew::prelude::*;
 use crate::dashboard::article::simplemde_interop::*;
 
+static mut INIT: bool = false;
+
 #[derive(Properties, Clone, PartialEq)]
 pub struct ForEditorProps {
     pub editor_callback: Callback<SimpleMDE>,
@@ -26,14 +28,21 @@ pub struct EditorProps {
 
 #[function_component(Editor)]
 pub fn editor(props: &EditorProps) -> Html {
-    let load_done = use_simplemde();
+
+    let load_done = unsafe {
+        !INIT && use_simplemde()
+    };
 
     {
         let callback = props.editor_callback.clone();
         let load_done = load_done.clone();
         use_effect(move || {
             if load_done {
-                callback.emit(create_editor());
+                create_editor();
+                unsafe {
+                    INIT = true;
+                }
+                // callback.emit(create_editor());
             }
 
             || ()
