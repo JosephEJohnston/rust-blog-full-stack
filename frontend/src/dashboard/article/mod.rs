@@ -7,7 +7,7 @@ use crate::dashboard::article::manage::DashboardArticleManage;
 
 pub mod create;
 pub mod manage;
-mod simplemde_interop;
+mod simplemde;
 mod for_editor;
 mod http;
 

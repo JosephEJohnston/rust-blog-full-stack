@@ -1,5 +1,5 @@
+use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
-use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
 use crate::index::article_list_item::ArticleListItem;
 use crate::index::http::list_article_http;

@@ -538,11 +538,11 @@ dependencies = [
  "share",
  "stylist",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "web-sys",
  "yew",
  "yew-agent",
  "yew-feather",
- "yew-interop",
  "yew-router",
 ]
 
@@ -2489,41 +2489,6 @@ dependencies = [
  "convert_case",
  "serde_json",
  "yew",
-]
-
-[[package]]
-name = "yew-interop"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17060a82412a5ca3143d0684ea8f685f5972dadb4c5cee6ccf54d076faf085a2"
-dependencies = [
- "js-sys",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "yew",
- "yew-interop-core",
- "yew-interop-macro",
-]
-
-[[package]]
-name = "yew-interop-core"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9abf603c0095ac68d65f926eea8c30ddd0f7c299615d45cfab1b870656a0a44d"
-
-[[package]]
-name = "yew-interop-macro"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fdc7546c53e5662e96f466adcdfb666dc0aea6b27aad15df6bb5a276a5457c87"
-dependencies = [
- "itertools",
- "proc-macro2",
- "quote",
- "syn",
- "url",
- "yew-interop-core",
 ]
 
 [[package]]

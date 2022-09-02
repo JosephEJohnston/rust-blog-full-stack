@@ -1,13 +1,13 @@
 use gloo::console::log;
 use stylist::Style;
+use wasm_bindgen_futures::spawn_local;
 use web_sys::HtmlInputElement;
 use yew::{Component, Context, Html, html, NodeRef};
-use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::for_editor::{ForEditor};
 use crate::dashboard::article::http::add_article_http;
-use crate::dashboard::article::simplemde_interop::SimpleMDE;
+use crate::dashboard::article::simplemde::SimpleMDE;
 
 pub struct ArticleCreateContent {
     pub input_title: NodeRef,

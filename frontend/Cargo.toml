@@ -17,12 +17,11 @@ yew-router = "0.16.0"
 # icon 库
 yew-feather = "0.2.1"
 
-# js、css 引入
-yew-interop = { version = "0.3.0", features = ["script"] }
-
 yew-agent = "0.1.0"
 
 wasm-bindgen = { version = "0.2.82", features = ["serde-serialize"]  }
+
+wasm-bindgen-futures = "0.4.32"
 
 js-sys = { version = "0.3.59"}
 

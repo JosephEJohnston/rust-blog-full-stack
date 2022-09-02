@@ -1,5 +1,5 @@
+use wasm_bindgen_futures::spawn_local;
 use yew::{Component, Context, Html, html, Properties};
-use yew_interop::script::wasm_bindgen_futures::spawn_local;
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::index::http::get_article_http;
 

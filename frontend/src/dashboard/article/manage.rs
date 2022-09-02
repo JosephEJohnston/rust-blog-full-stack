@@ -2,7 +2,7 @@ use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use yew_feather::search::Search;
 use stylist::Style;
-use yew_interop::script::wasm_bindgen_futures::spawn_local;
+use wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
