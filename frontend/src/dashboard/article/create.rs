@@ -1,10 +1,11 @@
 use gloo::console::log;
 use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
-use web_sys::HtmlInputElement;
 use yew::{Component, Context, Html, html, NodeRef};
+use yew_router::prelude::*;
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
+use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::article::for_editor::{ForEditor};
 use crate::dashboard::article::http::add_article_http;
 use crate::dashboard::article::simplemde::SimpleMDE;
@@ -35,6 +36,60 @@ pub enum DashboardArticleCreateMsg {
     Create,
 }
 
+impl DashboardArticleCreate {
+    fn create_article(&self) -> ArticleCompleteHttp {
+        let content = self.create_content.editor.as_ref()
+            .map(|editor| editor.value())
+            .unwrap_or("".to_string()).clone();
+
+        let input_title = to_input(&self.create_content.input_title)
+            .map(|input| input.value())
+            .unwrap_or("".to_string()).clone();
+
+        let input_outline = to_input(&self.create_content.input_outline)
+            .map(|input| input.value())
+            .unwrap_or("".to_string()).clone();
+
+        ArticleCompleteHttp {
+            id: None,
+            user_id: 1,
+            title: input_title,
+            outline: input_outline,
+            content: Some(content),
+            tag_list: None
+        }
+    }
+
+    fn validate_article(&mut self, article: &ArticleCompleteHttp) -> bool {
+        if article.title.len() <= 0 {
+            return false;
+        }
+
+        if article.outline.len() <= 0 {
+            return false;
+        }
+
+        if let Some(content) = article.content.as_ref() {
+            if content.len() <= 0 {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    fn send_article(&mut self, article: ArticleCompleteHttp) {
+        spawn_local(async move {
+            if let Ok(id) = add_article_http(&article).await {
+                log!(format!("Article id: {:?}", id));
+            }
+        });
+    }
+}
+
 impl Component for DashboardArticleCreate {
     type Message = DashboardArticleCreateMsg;
     type Properties = ();
@@ -54,30 +109,11 @@ impl Component for DashboardArticleCreate {
             },
 
             DashboardArticleCreateMsg::Create => {
-                let content = self.create_content.editor.as_ref()
-                    .map(|editor| editor.value())
-                    .unwrap_or("".to_string()).clone();
+                let article = self.create_article();
 
-                let input_title = to_input(&self.create_content.input_title)
-                    .map(|input| input.value())
-                    .unwrap_or("".to_string()).clone();
-
-                let input_outline = to_input(&self.create_content.input_outline)
-                    .map(|input| input.value())
-                    .unwrap_or("".to_string()).clone();
-
-                spawn_local(async move {
-                    if let Ok(id) = add_article_http(ArticleCompleteHttp {
-                        id: None,
-                        user_id: 1,
-                        title: input_title,
-                        outline: input_outline,
-                        content: Some(content),
-                        tag_list: None
-                    }).await {
-                        log!(format!("Article id: {:?}", id));
-                    }
-                });
+                if self.validate_article(&article) {
+                    self.send_article(article);
+                }
 
                 false
             }
