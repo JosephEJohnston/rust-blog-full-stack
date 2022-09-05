@@ -1,3 +1,4 @@
+use gloo::console::log;
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use yew_feather::search::Search;
@@ -60,6 +61,8 @@ impl Component for DashboardArticleManage {
             })
         }
 
+        log!(format!("init!"));
+
         DashboardArticleManage {
             article_list: None
         }
@@ -69,6 +72,8 @@ impl Component for DashboardArticleManage {
         match msg {
             Msg::FetchArticleListHttp(articles) => {
                 self.article_list = Some(articles);
+
+                log!(format!("get http!"));
 
                 true
             }

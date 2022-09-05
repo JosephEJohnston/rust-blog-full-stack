@@ -88,6 +88,17 @@ impl DashboardArticleCreate {
                 .unwrap()
                 .expect("");
             check = false;
+        } else {
+            self.create_content.validate_title.cast::<HtmlElement>()
+                .map(|ele| ele.style().set_property("display", "none"))
+                .unwrap()
+                .expect("");
+
+            self.create_content.title_container.cast::<Element>()
+                .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
+                .unwrap()
+                .expect("");
+            check = true;
         }
 
         if article.outline.len() <= 0 {
@@ -101,6 +112,17 @@ impl DashboardArticleCreate {
                 .unwrap()
                 .expect("");
             check = false;
+        } else {
+            self.create_content.validate_outline.cast::<HtmlElement>()
+                .map(|ele| ele.style().set_property("display", "none"))
+                .unwrap()
+                .expect("");
+
+            self.create_content.outline_container.cast::<Element>()
+                .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
+                .unwrap()
+                .expect("");
+            check = true;
         }
 
         if let Some(content) = article.content.as_ref() {
@@ -116,6 +138,18 @@ impl DashboardArticleCreate {
                     .expect("");
 
                 check = false;
+            } else {
+                self.create_content.validate_editor.cast::<HtmlElement>()
+                    .map(|ele| ele.style().set_property("display", "none"))
+                    .unwrap()
+                    .expect("");
+
+                self.create_content.editor_container.cast::<Element>()
+                    .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
+                    .unwrap()
+                    .expect("");
+
+                check = true;
             }
 
         } else {
@@ -125,12 +159,16 @@ impl DashboardArticleCreate {
         return check;
     }
 
-    fn send_article(&mut self, article: ArticleCompleteHttp) {
+    fn send_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
         spawn_local(async move {
-            if let Ok(id) = add_article_http(&article).await {
-                log!(format!("Article id: {:?}", id));
+            if let Ok(_id) = add_article_http(&article).await {
+                any_history.push(DashboardArticleRoute::Manage);
             }
         });
+    }
+
+    fn render_create_button() {
+
     }
 }
 
@@ -144,7 +182,7 @@ impl Component for DashboardArticleCreate {
         }
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             DashboardArticleCreateMsg::FetchEditor(editor) => {
                 self.create_content.editor = Some(editor);
@@ -155,11 +193,15 @@ impl Component for DashboardArticleCreate {
             DashboardArticleCreateMsg::Create => {
                 let article = self.create_article();
 
-                if self.validate_article(&article) {
-                    self.send_article(article);
-                }
+                return if self.validate_article(&article) {
+                    let history = ctx.link().history().unwrap();
 
-                false
+                    self.send_article_and_redirect(history, article);
+
+                    true
+                } else {
+                    false
+                }
             }
         }
     }
