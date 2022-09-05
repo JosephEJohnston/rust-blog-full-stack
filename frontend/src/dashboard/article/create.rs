@@ -1,6 +1,7 @@
 use gloo::console::log;
 use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
+use web_sys::{Element, HtmlElement};
 use yew::{Component, Context, Html, html, NodeRef};
 use yew_router::prelude::*;
 use share::article::article_complete::ArticleCompleteHttp;
@@ -12,16 +13,30 @@ use crate::dashboard::article::simplemde::SimpleMDE;
 use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
+    pub title_container: NodeRef,
+    pub validate_title: NodeRef,
     pub input_title: NodeRef,
+
+    pub editor_container: NodeRef,
+    pub validate_editor: NodeRef,
     pub editor: Option<SimpleMDE>,
+
+    pub outline_container: NodeRef,
+    pub validate_outline: NodeRef,
     pub input_outline: NodeRef,
 }
 
 impl Default for ArticleCreateContent {
     fn default() -> Self {
         Self {
+            title_container: NodeRef::default(),
+            validate_title: NodeRef::default(),
             input_title: NodeRef::default(),
+            editor_container: NodeRef::default(),
+            validate_editor: NodeRef::default(),
             editor: None,
+            outline_container: NodeRef::default(),
+            validate_outline: NodeRef::default(),
             input_outline: NodeRef::default(),
         }
     }
@@ -61,24 +76,53 @@ impl DashboardArticleCreate {
     }
 
     fn validate_article(&mut self, article: &ArticleCompleteHttp) -> bool {
+        let mut check = true;
         if article.title.len() <= 0 {
-            return false;
+            self.create_content.validate_title.cast::<HtmlElement>()
+                .map(|ele| ele.style().set_property("display", "block"))
+                .unwrap()
+                .expect("");
+
+            self.create_content.title_container.cast::<Element>()
+                .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
+                .unwrap()
+                .expect("");
+            check = false;
         }
 
         if article.outline.len() <= 0 {
-            return false;
+            self.create_content.validate_outline.cast::<HtmlElement>()
+                .map(|ele| ele.style().set_property("display", "block"))
+                .unwrap()
+                .expect("");
+
+            self.create_content.outline_container.cast::<Element>()
+                .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
+                .unwrap()
+                .expect("");
+            check = false;
         }
 
         if let Some(content) = article.content.as_ref() {
             if content.len() <= 0 {
-                return false;
+                self.create_content.validate_editor.cast::<HtmlElement>()
+                    .map(|ele| ele.style().set_property("display", "block"))
+                    .unwrap()
+                    .expect("");
+
+                self.create_content.editor_container.cast::<Element>()
+                    .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
+                    .unwrap()
+                    .expect("");
+
+                check = false;
             }
 
         } else {
             return false;
         }
 
-        return true;
+        return check;
     }
 
     fn send_article(&mut self, article: ArticleCompleteHttp) {
@@ -144,7 +188,12 @@ impl Component for DashboardArticleCreate {
                     </div>
                     <hr class="article-create-title-border-line"/>
                     <div class="article-create-input-container">
-                        <div class="for-each-input-container">
+                        <div class="for-each-input-container"
+                            ref={self.create_content.title_container.clone()}>
+                            <div class="input-validate-notice"
+                                ref={self.create_content.validate_title.clone()}>
+                                {"标题不能为空"}
+                            </div>
                             <div class="input-name-container">
                                 <div class="input-name">{"标题"}</div>
                             </div>
@@ -170,7 +219,12 @@ impl Component for DashboardArticleCreate {
                             </label>
                             <button class="update-file-button">{"上传文件"}</button>
                         </div>*/
-                        <div class="editor-container">
+                        <div class="editor-container"
+                            ref={self.create_content.editor_container.clone()}>
+                            <div class="input-validate-notice"
+                                ref={self.create_content.validate_editor.clone()}>
+                                {"内容不能为空"}
+                            </div>
                             <div class="input-name-container content-input">
                                 <div class="input-name">{"内容"}</div>
                             </div>
@@ -184,7 +238,12 @@ impl Component for DashboardArticleCreate {
                                 <input class="each-input" type="text" placeholder="选择标签"/>
                             </label>
                         </div>
-                        <div class="for-each-input-container">
+                        <div class="for-each-input-container"
+                            ref={self.create_content.outline_container.clone()}>
+                            <div class="input-validate-notice"
+                                ref={self.create_content.validate_outline.clone()}>
+                                {"主要描述不能为空"}
+                            </div>
                             <div class="input-name-container">
                                 <div class="input-name">{"主要描述"}</div>
                             </div>

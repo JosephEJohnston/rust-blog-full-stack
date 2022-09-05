@@ -35,6 +35,8 @@ web-sys = { version = "0.3.58", features = [
 #    "HtmlElement",
 #    "Element",
 #    "Node"
+    "CssStyleDeclaration",
+    "DomTokenList",
 ]}
 
 #stdweb = "0.4.20"

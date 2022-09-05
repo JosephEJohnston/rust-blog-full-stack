@@ -34,10 +34,24 @@
     flex-direction: column;
 }
 
+.input-validate-notice {
+    margin-left: 13%;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: red;
+    display: none;
+}
+
 .for-each-input-container {
     width: 60%;
     height: 60px;
-    padding-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+.for-each-input-container-wrong {
+    border: 2px red solid;
+    border-radius: 10px;
 }
 
 .editor-container {
