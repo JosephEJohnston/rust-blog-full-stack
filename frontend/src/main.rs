@@ -2,6 +2,7 @@ mod tests;
 mod css;
 mod index;
 mod dashboard;
+mod utils;
 
 use yew::prelude::*;
 use yew_router::{Routable, BrowserRouter};

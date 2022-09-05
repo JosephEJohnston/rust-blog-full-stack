@@ -8,6 +8,7 @@ use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::for_editor::{ForEditor};
 use crate::dashboard::article::http::add_article_http;
 use crate::dashboard::article::simplemde::SimpleMDE;
+use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
     pub input_title: NodeRef,
@@ -54,13 +55,16 @@ impl Component for DashboardArticleCreate {
 
             DashboardArticleCreateMsg::Create => {
                 let content = self.create_content.editor.as_ref()
-                    .map(|editor| editor.value()).unwrap_or("".to_string()).clone();
+                    .map(|editor| editor.value())
+                    .unwrap_or("".to_string()).clone();
 
-                let input_title = self.create_content.input_title.cast::<HtmlInputElement>()
-                    .map(|input| input.value()).unwrap_or("".to_string()).clone();
+                let input_title = to_input(&self.create_content.input_title)
+                    .map(|input| input.value())
+                    .unwrap_or("".to_string()).clone();
 
-                let input_outline = self.create_content.input_outline.cast::<HtmlInputElement>()
-                    .map(|input| input.value()).unwrap_or("".to_string()).clone();
+                let input_outline = to_input(&self.create_content.input_outline)
+                    .map(|input| input.value())
+                    .unwrap_or("".to_string()).clone();
 
                 spawn_local(async move {
                     if let Ok(id) = add_article_http(ArticleCompleteHttp {
@@ -106,14 +110,6 @@ impl Component for DashboardArticleCreate {
                     <div class="article-create-input-container">
                         <div class="for-each-input-container">
                             <div class="input-name-container">
-                                <div class="input-name">{"标签"}</div>
-                            </div>
-                            <label>
-                                <input class="each-input" type="text" placeholder="选择标签"/>
-                            </label>
-                        </div>
-                        <div class="for-each-input-container">
-                            <div class="input-name-container">
                                 <div class="input-name">{"标题"}</div>
                             </div>
                             <label>
@@ -121,15 +117,15 @@ impl Component for DashboardArticleCreate {
                                     ref={self.create_content.input_title.clone()}/>
                             </label>
                         </div>
-                        <div class="for-each-input-container">
+                        /*<div class="for-each-input-container">
                             <div class="input-name-container">
                                 <div class="input-name">{"副标题"}</div>
                             </div>
                             <label>
                                 <input class="each-input" type="text"/>
                             </label>
-                        </div>
-                        <div class="for-each-input-container">
+                        </div>*/
+                        /*<div class="for-each-input-container">
                             <div class="input-name-container">
                                 <div class="input-name">{"页面图像"}</div>
                             </div>
@@ -137,7 +133,7 @@ impl Component for DashboardArticleCreate {
                                 <input class="each-input" type="text" placeholder=""/>
                             </label>
                             <button class="update-file-button">{"上传文件"}</button>
-                        </div>
+                        </div>*/
                         <div class="editor-container">
                             <div class="input-name-container content-input">
                                 <div class="input-name">{"内容"}</div>
@@ -161,7 +157,7 @@ impl Component for DashboardArticleCreate {
                                     ref={self.create_content.input_outline.clone()}/>
                             </label>
                         </div>
-                        <div class="for-each-input-container">
+                        /*<div class="for-each-input-container">
                             <div class="input-name-container">
                                 <div class="input-name">{"日期时间"}</div>
                             </div>
@@ -176,7 +172,7 @@ impl Component for DashboardArticleCreate {
                             <label>
                                 <input class="input-check-button" type="text" placeholder="是否原创？"/>
                             </label>
-                        </div>
+                        </div>*/
                         <button class="article-create-create-button" onclick={ create_callback }>
                             {"创建"}
                         </button>
