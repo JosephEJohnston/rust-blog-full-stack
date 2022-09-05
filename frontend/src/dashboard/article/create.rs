@@ -2,7 +2,8 @@ use gloo::console::log;
 use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::{Element, HtmlElement};
-use yew::{Component, Context, Html, html, NodeRef};
+use yew::prelude::*;
+use yew::props;
 use yew_router::prelude::*;
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
@@ -10,12 +11,15 @@ use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::article::for_editor::{ForEditor};
 use crate::dashboard::article::http::add_article_http;
 use crate::dashboard::article::simplemde::SimpleMDE;
+use crate::dashboard::article::create_input::{CreateInput, ValidateMaintain};
 use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
     pub title_container: NodeRef,
     pub validate_title: NodeRef,
     pub input_title: NodeRef,
+
+    pub input_sub_title: ValidateMaintain,
 
     pub editor_container: NodeRef,
     pub validate_editor: NodeRef,
@@ -32,9 +36,13 @@ impl Default for ArticleCreateContent {
             title_container: NodeRef::default(),
             validate_title: NodeRef::default(),
             input_title: NodeRef::default(),
+
+            input_sub_title: ValidateMaintain::new(),
+
             editor_container: NodeRef::default(),
             validate_editor: NodeRef::default(),
             editor: None,
+
             outline_container: NodeRef::default(),
             validate_outline: NodeRef::default(),
             input_outline: NodeRef::default(),
@@ -101,6 +109,12 @@ impl DashboardArticleCreate {
             check = true;
         }
 
+        if article.title.len() <= 0 {
+            self.create_content.input_sub_title.set_wrong("副标题不能为空".to_string());
+        } else {
+            self.create_content.input_sub_title.set_right();
+        }
+
         if article.outline.len() <= 0 {
             self.create_content.validate_outline.cast::<HtmlElement>()
                 .map(|ele| ele.style().set_property("display", "block"))
@@ -165,10 +179,6 @@ impl DashboardArticleCreate {
                 any_history.push(DashboardArticleRoute::Manage);
             }
         });
-    }
-
-    fn render_create_button() {
-
     }
 }
 
@@ -244,6 +254,14 @@ impl Component for DashboardArticleCreate {
                                     ref={self.create_content.input_title.clone()}/>
                             </label>
                         </div>
+                        <CreateInput input_name={"副标题"}
+                                    validate_result={self.create_content.input_sub_title.validate_result.clone()}
+                                    validate_msg={self.create_content.input_sub_title.validate_msg.clone()}>
+                            <label>
+                                <input class="each-input" type="text"
+                                    ref={self.create_content.input_sub_title.input.clone()}/>
+                            </label>
+                        </CreateInput>
                         /*<div class="for-each-input-container">
                             <div class="input-name-container">
                                 <div class="input-name">{"副标题"}</div>

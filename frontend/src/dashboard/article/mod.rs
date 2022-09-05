@@ -10,6 +10,7 @@ pub mod manage;
 mod simplemde;
 mod for_editor;
 mod http;
+mod create_input;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum DashboardArticleRoute {
