@@ -3,7 +3,6 @@ use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::{Element, HtmlElement};
 use yew::prelude::*;
-use yew::props;
 use yew_router::prelude::*;
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
@@ -84,7 +83,6 @@ impl DashboardArticleCreate {
     }
 
     fn validate_article(&mut self, article: &ArticleCompleteHttp) -> bool {
-        let mut check = true;
         if article.title.len() <= 0 {
             self.create_content.validate_title.cast::<HtmlElement>()
                 .map(|ele| ele.style().set_property("display", "block"))
@@ -95,7 +93,6 @@ impl DashboardArticleCreate {
                 .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
                 .unwrap()
                 .expect("");
-            check = false;
         } else {
             self.create_content.validate_title.cast::<HtmlElement>()
                 .map(|ele| ele.style().set_property("display", "none"))
@@ -106,7 +103,6 @@ impl DashboardArticleCreate {
                 .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
                 .unwrap()
                 .expect("");
-            check = true;
         }
 
         if article.title.len() <= 0 {
@@ -125,7 +121,6 @@ impl DashboardArticleCreate {
                 .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
                 .unwrap()
                 .expect("");
-            check = false;
         } else {
             self.create_content.validate_outline.cast::<HtmlElement>()
                 .map(|ele| ele.style().set_property("display", "none"))
@@ -136,7 +131,6 @@ impl DashboardArticleCreate {
                 .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
                 .unwrap()
                 .expect("");
-            check = true;
         }
 
         if let Some(content) = article.content.as_ref() {
@@ -151,7 +145,6 @@ impl DashboardArticleCreate {
                     .unwrap()
                     .expect("");
 
-                check = false;
             } else {
                 self.create_content.validate_editor.cast::<HtmlElement>()
                     .map(|ele| ele.style().set_property("display", "none"))
@@ -162,15 +155,10 @@ impl DashboardArticleCreate {
                     .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
                     .unwrap()
                     .expect("");
-
-                check = true;
             }
-
-        } else {
-            return false;
         }
 
-        return check;
+        return false;
     }
 
     fn send_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
@@ -203,15 +191,13 @@ impl Component for DashboardArticleCreate {
             DashboardArticleCreateMsg::Create => {
                 let article = self.create_article();
 
-                return if self.validate_article(&article) {
+                if self.validate_article(&article) {
                     let history = ctx.link().history().unwrap();
 
                     self.send_article_and_redirect(history, article);
-
-                    true
-                } else {
-                    false
                 }
+
+                true
             }
         }
     }
@@ -225,6 +211,10 @@ impl Component for DashboardArticleCreate {
 
         let create_callback = ctx.link()
             .callback(|_| DashboardArticleCreateMsg::Create);
+
+        log!(format!("parent view: {:?} {:?}",
+            self.create_content.input_sub_title.validate_msg,
+            self.create_content.input_sub_title.validate_result));
 
         html! {
             <>
@@ -334,11 +324,6 @@ impl Component for DashboardArticleCreate {
                     </div>
                 </div>
             </>
-        }
-    }
-
-    fn rendered(&mut self, _ctx: &Context<Self>, first_render: bool) {
-        if first_render {
         }
     }
 }

@@ -1,42 +1,37 @@
-use std::cell::RefCell;
-use std::rc::Rc;
+use gloo::console::log;
 use web_sys::{Element, HtmlElement};
 use yew::prelude::*;
 
 pub struct ValidateMaintain {
     pub input: NodeRef,
-    pub validate_result: Rc<RefCell<bool>>,
-    pub validate_msg: Rc<RefCell<String>>,
+    pub validate_result: bool,
+    pub validate_msg: String,
 }
 
 impl ValidateMaintain {
     pub fn new() -> ValidateMaintain {
         ValidateMaintain {
             input: NodeRef::default(),
-            validate_result: Rc::new(RefCell::new(true)),
-            validate_msg: Rc::new(RefCell::new("".to_string())),
+            validate_result: true,
+            validate_msg: "".to_string(),
         }
     }
 
     pub fn set_wrong(&mut self, msg: String) {
-        let mut ref_result = self.validate_result.borrow_mut();
-        *ref_result = false;
-
-        let mut ref_msg = self.validate_msg.borrow_mut();
-        *ref_msg = msg;
+        self.validate_result = false;
+        self.validate_msg = msg;
     }
 
     pub fn set_right(&mut self) {
-        let mut ref_mut = self.validate_result.borrow_mut();
-        *ref_mut = true;
+        self.validate_result = true;
     }
 }
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct CreateInputProps {
     pub input_name: String,
-    pub validate_result: Rc<RefCell<bool>>,
-    pub validate_msg: Rc<RefCell<String>>,
+    pub validate_result: bool,
+    pub validate_msg: String,
     pub children: Children,
 }
 
@@ -46,28 +41,9 @@ pub struct CreateInput {
 }
 
 impl CreateInput {
-    fn render_validate(&self, ctx: &Context<Self>) -> Html {
-        match *ctx.props().validate_result.borrow() {
-            true => {
-                html! {
-
-                }
-            },
-
+    fn render_validate_css(&self, ctx: &Context<Self>) {
+        match ctx.props().validate_result {
             false => {
-                html! {
-                    <div class="input-validate-notice"
-                        ref={self.validate_input.clone()}>
-                        {(*ctx.props().validate_msg.borrow()).clone()}
-                    </div>
-                }
-            }
-        }
-    }
-
-    fn render_container_class(&self, ctx: &Context<Self>) {
-        match *ctx.props().validate_result.borrow() {
-            true => {
                 self.set_input_property("display", "block");
 
                 self.validate_container.cast::<Element>()
@@ -76,7 +52,7 @@ impl CreateInput {
                     .expect("");
             },
 
-            false => {
+            true => {
                 self.set_input_property("display", "none");
 
                 self.validate_container.cast::<Element>()
@@ -99,11 +75,19 @@ impl Component for CreateInput {
     type Message = ();
     type Properties = CreateInputProps;
 
-    fn create(_ctx: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
+        log!(format!("{:?}", ctx.props().validate_msg));
+
         CreateInput {
             validate_input: NodeRef::default(),
             validate_container: NodeRef::default()
         }
+    }
+
+    fn changed(&mut self, ctx: &Context<Self>) -> bool {
+        self.render_validate_css(ctx);
+
+        true
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
@@ -111,7 +95,10 @@ impl Component for CreateInput {
             <>
                 <div class="for-each-input-container"
                     ref={self.validate_container.clone()}>
-                    { self.render_validate(ctx) }
+                    <div class="input-validate-notice"
+                        ref={self.validate_input.clone()}>
+                        {ctx.props().validate_msg.clone()}
+                    </div>
                     <div class="input-name-container">
                         <div class="input-name">{ctx.props().input_name.clone()}</div>
                     </div>
