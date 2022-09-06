@@ -13,7 +13,6 @@ use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
     pub title_validate: ValidateMaintain,
-    pub sub_title_validate: ValidateMaintain,
 
     pub editor_validate: ValidateMaintain,
     pub editor: Option<SimpleMDE>,
@@ -25,7 +24,6 @@ impl Default for ArticleCreateContent {
     fn default() -> Self {
         Self {
             title_validate: ValidateMaintain::new(),
-            sub_title_validate: ValidateMaintain::new(),
 
             editor_validate: ValidateMaintain::new(),
             editor: None,
@@ -69,14 +67,20 @@ impl DashboardArticleCreate {
     }
 
     fn validate_article(&mut self, article: &ArticleCompleteHttp) -> bool {
+        let mut res = true;
+
         if article.title.len() <= 0 {
             self.create_content.title_validate.set_wrong("标题不能为空".to_string());
+
+            res = false;
         } else {
             self.create_content.title_validate.set_right();
         }
 
         if article.outline.len() <= 0 {
             self.create_content.outline_validate.set_wrong("主要描述不能为空".to_string());
+
+            res = false;
         } else {
             self.create_content.outline_validate.set_right();
         }
@@ -84,12 +88,14 @@ impl DashboardArticleCreate {
         if let Some(content) = article.content.as_ref() {
             if content.len() <= 0 {
                 self.create_content.editor_validate.set_wrong("内容不能为空".to_string());
+
+                res = false;
             } else {
                 self.create_content.editor_validate.set_right();
             }
         }
 
-        return false;
+        return res;
     }
 
     fn send_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
@@ -165,30 +171,14 @@ impl Component for DashboardArticleCreate {
                                     ref={self.create_content.title_validate.input.clone()}/>
                             </label>
                         </CreateInput>
-                        <CreateInput input_name={"副标题"}
-                                    validate_result={self.create_content.sub_title_validate.validate_result.clone()}
-                                    validate_msg={self.create_content.sub_title_validate.validate_msg.clone()}>
-                            <label>
-                                <input class="each-input" type="text"
-                                    ref={self.create_content.sub_title_validate.input.clone()}/>
-                            </label>
-                        </CreateInput>
                         <CreateInput input_name={"内容"}
-                                    validate_result={self.create_content.sub_title_validate.validate_result.clone()}
-                                    validate_msg={self.create_content.sub_title_validate.validate_msg.clone()}>
+                                    validate_result={self.create_content.editor_validate.validate_result.clone()}
+                                    validate_msg={self.create_content.editor_validate.validate_msg.clone()}>
                             <ForEditor editor_callback={editor_callback} />
                         </CreateInput>
-                        <div class="for-each-input-container">
-                            <div class="input-name-container">
-                                <div class="input-name">{"标签"}</div>
-                            </div>
-                            <label>
-                                <input class="each-input" type="text" placeholder="选择标签"/>
-                            </label>
-                        </div>
                         <CreateInput input_name={"主要描述"}
-                                    validate_result={self.create_content.sub_title_validate.validate_result.clone()}
-                                    validate_msg={self.create_content.sub_title_validate.validate_msg.clone()}>
+                                    validate_result={self.create_content.outline_validate.validate_result.clone()}
+                                    validate_msg={self.create_content.outline_validate.validate_msg.clone()}>
                             <label>
                                 <input class="each-input" type="text"
                                     ref={self.create_content.outline_validate.input.clone()}/>

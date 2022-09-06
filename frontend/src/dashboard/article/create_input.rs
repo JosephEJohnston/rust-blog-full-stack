@@ -1,4 +1,3 @@
-use gloo::console::log;
 use web_sys::{Element, HtmlElement};
 use yew::prelude::*;
 
@@ -75,9 +74,7 @@ impl Component for CreateInput {
     type Message = ();
     type Properties = CreateInputProps;
 
-    fn create(ctx: &Context<Self>) -> Self {
-        log!(format!("{:?}", ctx.props().validate_msg));
-
+    fn create(_ctx: &Context<Self>) -> Self {
         CreateInput {
             validate_input: NodeRef::default(),
             validate_container: NodeRef::default()
