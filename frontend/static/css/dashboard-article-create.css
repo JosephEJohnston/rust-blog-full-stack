@@ -44,7 +44,7 @@
 
 .for-each-input-container {
     width: 60%;
-    height: 60px;
+    /*height: 60px;*/
     margin-top: 3px;
     margin-bottom: 3px;
     padding-top: 10px;
@@ -64,6 +64,7 @@
 .editor-inner-container {
     width: 70%;
     float: left;
+    margin-left: 20px;
 }
 
 .content-input {
