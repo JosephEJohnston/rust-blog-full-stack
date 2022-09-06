@@ -1,3 +1,4 @@
+use gloo::console::log;
 use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
@@ -100,8 +101,9 @@ impl DashboardArticleCreate {
 
     fn send_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
         spawn_local(async move {
-            if let Ok(_id) = add_article_http(&article).await {
-                any_history.push(DashboardArticleRoute::Manage);
+            match add_article_http(&article).await {
+                Ok(_id) => any_history.push(DashboardArticleRoute::Manage),
+                Err(e) => log!(format!("{:?}", e)),
             }
         });
     }
@@ -158,7 +160,9 @@ impl Component for DashboardArticleCreate {
                         </div>
                         <div class="article-create-title-blank-fill"></div>
                         <button class="article-create-back-button">
-                            {"返回"}
+                            <Link<DashboardArticleRoute> to={ DashboardArticleRoute::Manage }>
+                                {"返回"}
+                            </Link<DashboardArticleRoute>>
                         </button>
                     </div>
                     <hr class="article-create-title-border-line"/>

@@ -1,3 +1,4 @@
+use gloo::console::log;
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use yew_feather::search::Search;
@@ -13,21 +14,28 @@ pub struct DashboardArticleManage {
 }
 
 impl DashboardArticleManage {
-    fn render_article_list(&self) -> Html {
+    fn render_article_list(&self, ctx: &Context<Self>) -> Html {
         if let Some(articles) = self.article_list.as_ref() {
             html! {
                 {
                     for articles.iter().map(|article| -> Html {
+                        let id = article.id.unwrap().clone();
                         html! {
                             <tr class="article-list-row">
-                                <td class="article-list-column article-id">{ article.id.unwrap().clone() }</td>
+                                <td class="article-list-column article-id">{ id }</td>
                                 <td class="article-list-column">{ article.title.clone() }</td>
                                 <td class="article-list-column">{ article.outline.clone() }</td>
                                 <td class="article-list-column">{"50"}</td>
                                 <td class="article-list-column">{ article.create_time.unwrap().clone() }</td>
                                 <td class="article-list-column">
-                                    <button class="article-list-column-button article-list-column-button-update">{"修改"}</button>
-                                    <button class="article-list-column-button article-list-column-button-delete">{"删除"}</button>
+                                    <button class="article-list-column-button article-list-column-button-update"
+                                        onclick={ctx.link().callback(move |_| Msg::ModifyArticle(id.clone()))}>
+                                        {"修改"}
+                                    </button>
+                                    <button class="article-list-column-button article-list-column-button-delete"
+                                        onclick={ctx.link().callback(move |_| Msg::DeleteArticle(id.clone()))}>
+                                        {"删除"}
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -44,6 +52,8 @@ impl DashboardArticleManage {
 
 pub enum Msg {
     FetchArticleListHttp(Vec<ArticleListItemHttp>),
+    ModifyArticle(i64),
+    DeleteArticle(i64),
 }
 
 impl Component for DashboardArticleManage {
@@ -71,11 +81,21 @@ impl Component for DashboardArticleManage {
                 self.article_list = Some(articles);
 
                 true
-            }
+            },
+
+            Msg::ModifyArticle(id) => {
+                log!(format!("modify: {:?}", id));
+                true
+            },
+
+            Msg::DeleteArticle(id) => {
+                log!(format!("delete: {:?}", id));
+                true
+            },
         }
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
         let dashboard_css = Style::new(DASHBOARD_MAIN_COMMON).unwrap();
         let manage_css = Style::new(DASHBOARD_ARTICLE_MANAGE_CSS).unwrap();
 
@@ -112,7 +132,7 @@ impl Component for DashboardArticleManage {
                                 <td class="article-list-column">{"发布时间"}</td>
                                 <td class="article-list-column">{"操作"}</td>
                             </tr>
-                            { self.render_article_list() }
+                            { self.render_article_list(ctx) }
                         </tbody>
                     </table>
                 </div>

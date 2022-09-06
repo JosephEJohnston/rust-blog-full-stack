@@ -36,7 +36,7 @@ impl Component for DashboardSideBar {
                 <aside class="page-column-left">
                     <div class="user-info">
                         <div class="user-info-detail">
-                            <img class="user-img" src="../resource/img/dashboard-img.jpg" alt="" />
+                            <img class="user-img" src="/static/resource/img/dashboard-img.jpg" alt="" />
                             <div class="user-name">{"admin"}</div>
                             <div class="user-email">{"admin@pigjian.com"}</div>
                         </div>
