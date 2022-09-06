@@ -1,7 +1,5 @@
-use gloo::console::log;
 use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
-use web_sys::{Element, HtmlElement};
 use yew::prelude::*;
 use yew_router::prelude::*;
 use share::article::article_complete::ArticleCompleteHttp;
@@ -14,37 +12,25 @@ use crate::dashboard::article::create_input::{CreateInput, ValidateMaintain};
 use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
-    pub title_container: NodeRef,
-    pub validate_title: NodeRef,
-    pub input_title: NodeRef,
+    pub title_validate: ValidateMaintain,
+    pub sub_title_validate: ValidateMaintain,
 
-    pub input_sub_title: ValidateMaintain,
-
-    pub editor_container: NodeRef,
-    pub validate_editor: NodeRef,
+    pub editor_validate: ValidateMaintain,
     pub editor: Option<SimpleMDE>,
 
-    pub outline_container: NodeRef,
-    pub validate_outline: NodeRef,
-    pub input_outline: NodeRef,
+    pub outline_validate: ValidateMaintain,
 }
 
 impl Default for ArticleCreateContent {
     fn default() -> Self {
         Self {
-            title_container: NodeRef::default(),
-            validate_title: NodeRef::default(),
-            input_title: NodeRef::default(),
+            title_validate: ValidateMaintain::new(),
+            sub_title_validate: ValidateMaintain::new(),
 
-            input_sub_title: ValidateMaintain::new(),
-
-            editor_container: NodeRef::default(),
-            validate_editor: NodeRef::default(),
+            editor_validate: ValidateMaintain::new(),
             editor: None,
 
-            outline_container: NodeRef::default(),
-            validate_outline: NodeRef::default(),
-            input_outline: NodeRef::default(),
+            outline_validate: ValidateMaintain::new(),
         }
     }
 }
@@ -64,11 +50,11 @@ impl DashboardArticleCreate {
             .map(|editor| editor.value())
             .unwrap_or("".to_string()).clone();
 
-        let input_title = to_input(&self.create_content.input_title)
+        let input_title = to_input(&self.create_content.title_validate.input)
             .map(|input| input.value())
             .unwrap_or("".to_string()).clone();
 
-        let input_outline = to_input(&self.create_content.input_outline)
+        let input_outline = to_input(&self.create_content.outline_validate.input)
             .map(|input| input.value())
             .unwrap_or("".to_string()).clone();
 
@@ -84,77 +70,22 @@ impl DashboardArticleCreate {
 
     fn validate_article(&mut self, article: &ArticleCompleteHttp) -> bool {
         if article.title.len() <= 0 {
-            self.create_content.validate_title.cast::<HtmlElement>()
-                .map(|ele| ele.style().set_property("display", "block"))
-                .unwrap()
-                .expect("");
-
-            self.create_content.title_container.cast::<Element>()
-                .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
-                .unwrap()
-                .expect("");
+            self.create_content.title_validate.set_wrong("标题不能为空".to_string());
         } else {
-            self.create_content.validate_title.cast::<HtmlElement>()
-                .map(|ele| ele.style().set_property("display", "none"))
-                .unwrap()
-                .expect("");
-
-            self.create_content.title_container.cast::<Element>()
-                .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
-                .unwrap()
-                .expect("");
-        }
-
-        if article.title.len() <= 0 {
-            self.create_content.input_sub_title.set_wrong("副标题不能为空".to_string());
-        } else {
-            self.create_content.input_sub_title.set_right();
+            self.create_content.title_validate.set_right();
         }
 
         if article.outline.len() <= 0 {
-            self.create_content.validate_outline.cast::<HtmlElement>()
-                .map(|ele| ele.style().set_property("display", "block"))
-                .unwrap()
-                .expect("");
-
-            self.create_content.outline_container.cast::<Element>()
-                .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
-                .unwrap()
-                .expect("");
+            self.create_content.outline_validate.set_wrong("主要描述不能为空".to_string());
         } else {
-            self.create_content.validate_outline.cast::<HtmlElement>()
-                .map(|ele| ele.style().set_property("display", "none"))
-                .unwrap()
-                .expect("");
-
-            self.create_content.outline_container.cast::<Element>()
-                .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
-                .unwrap()
-                .expect("");
+            self.create_content.outline_validate.set_right();
         }
 
         if let Some(content) = article.content.as_ref() {
             if content.len() <= 0 {
-                self.create_content.validate_editor.cast::<HtmlElement>()
-                    .map(|ele| ele.style().set_property("display", "block"))
-                    .unwrap()
-                    .expect("");
-
-                self.create_content.editor_container.cast::<Element>()
-                    .map(|ele| ele.class_list().add_1("for-each-input-container-wrong"))
-                    .unwrap()
-                    .expect("");
-
+                self.create_content.editor_validate.set_wrong("内容不能为空".to_string());
             } else {
-                self.create_content.validate_editor.cast::<HtmlElement>()
-                    .map(|ele| ele.style().set_property("display", "none"))
-                    .unwrap()
-                    .expect("");
-
-                self.create_content.editor_container.cast::<Element>()
-                    .map(|ele| ele.class_list().remove_1("for-each-input-container-wrong"))
-                    .unwrap()
-                    .expect("");
+                self.create_content.editor_validate.set_right();
             }
         }
 
@@ -212,10 +143,6 @@ impl Component for DashboardArticleCreate {
         let create_callback = ctx.link()
             .callback(|_| DashboardArticleCreateMsg::Create);
 
-        log!(format!("parent view: {:?} {:?}",
-            self.create_content.input_sub_title.validate_msg,
-            self.create_content.input_sub_title.validate_result));
-
         html! {
             <>
                 <div class={ vec![create_css, dashboard_css] }>
@@ -230,56 +157,27 @@ impl Component for DashboardArticleCreate {
                     </div>
                     <hr class="article-create-title-border-line"/>
                     <div class="article-create-input-container">
-                        <div class="for-each-input-container"
-                            ref={self.create_content.title_container.clone()}>
-                            <div class="input-validate-notice"
-                                ref={self.create_content.validate_title.clone()}>
-                                {"标题不能为空"}
-                            </div>
-                            <div class="input-name-container">
-                                <div class="input-name">{"标题"}</div>
-                            </div>
+                        <CreateInput input_name={"标题"}
+                                    validate_result={self.create_content.title_validate.validate_result.clone()}
+                                    validate_msg={self.create_content.title_validate.validate_msg.clone()}>
                             <label>
                                 <input class="each-input" type="text"
-                                    ref={self.create_content.input_title.clone()}/>
-                            </label>
-                        </div>
-                        <CreateInput input_name={"副标题"}
-                                    validate_result={self.create_content.input_sub_title.validate_result.clone()}
-                                    validate_msg={self.create_content.input_sub_title.validate_msg.clone()}>
-                            <label>
-                                <input class="each-input" type="text"
-                                    ref={self.create_content.input_sub_title.input.clone()}/>
+                                    ref={self.create_content.title_validate.input.clone()}/>
                             </label>
                         </CreateInput>
-                        /*<div class="for-each-input-container">
-                            <div class="input-name-container">
-                                <div class="input-name">{"副标题"}</div>
-                            </div>
+                        <CreateInput input_name={"副标题"}
+                                    validate_result={self.create_content.sub_title_validate.validate_result.clone()}
+                                    validate_msg={self.create_content.sub_title_validate.validate_msg.clone()}>
                             <label>
-                                <input class="each-input" type="text"/>
+                                <input class="each-input" type="text"
+                                    ref={self.create_content.sub_title_validate.input.clone()}/>
                             </label>
-                        </div>*/
-                        /*<div class="for-each-input-container">
-                            <div class="input-name-container">
-                                <div class="input-name">{"页面图像"}</div>
-                            </div>
-                            <label>
-                                <input class="each-input" type="text" placeholder=""/>
-                            </label>
-                            <button class="update-file-button">{"上传文件"}</button>
-                        </div>*/
-                        <div class="editor-container"
-                            ref={self.create_content.editor_container.clone()}>
-                            <div class="input-validate-notice"
-                                ref={self.create_content.validate_editor.clone()}>
-                                {"内容不能为空"}
-                            </div>
-                            <div class="input-name-container content-input">
-                                <div class="input-name">{"内容"}</div>
-                            </div>
+                        </CreateInput>
+                        <CreateInput input_name={"内容"}
+                                    validate_result={self.create_content.sub_title_validate.validate_result.clone()}
+                                    validate_msg={self.create_content.sub_title_validate.validate_msg.clone()}>
                             <ForEditor editor_callback={editor_callback} />
-                        </div>
+                        </CreateInput>
                         <div class="for-each-input-container">
                             <div class="input-name-container">
                                 <div class="input-name">{"标签"}</div>
@@ -288,36 +186,14 @@ impl Component for DashboardArticleCreate {
                                 <input class="each-input" type="text" placeholder="选择标签"/>
                             </label>
                         </div>
-                        <div class="for-each-input-container"
-                            ref={self.create_content.outline_container.clone()}>
-                            <div class="input-validate-notice"
-                                ref={self.create_content.validate_outline.clone()}>
-                                {"主要描述不能为空"}
-                            </div>
-                            <div class="input-name-container">
-                                <div class="input-name">{"主要描述"}</div>
-                            </div>
+                        <CreateInput input_name={"主要描述"}
+                                    validate_result={self.create_content.sub_title_validate.validate_result.clone()}
+                                    validate_msg={self.create_content.sub_title_validate.validate_msg.clone()}>
                             <label>
                                 <input class="each-input" type="text"
-                                    ref={self.create_content.input_outline.clone()}/>
+                                    ref={self.create_content.outline_validate.input.clone()}/>
                             </label>
-                        </div>
-                        /*<div class="for-each-input-container">
-                            <div class="input-name-container">
-                                <div class="input-name">{"日期时间"}</div>
-                            </div>
-                            <label>
-                                <input class="each-input" type="text" placeholder="发布时间"/>
-                            </label>
-                        </div>
-                        <div class="for-each-input-container bottom-check-container">
-                            <label>
-                                <input class="input-check-button" type="text" placeholder="是否草稿？"/>
-                            </label>
-                            <label>
-                                <input class="input-check-button" type="text" placeholder="是否原创？"/>
-                            </label>
-                        </div>*/
+                        </CreateInput>
                         <button class="article-create-create-button" onclick={ create_callback }>
                             {"创建"}
                         </button>
