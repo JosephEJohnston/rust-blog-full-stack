@@ -1,0 +1,3 @@
+[serve]
+# The port to serve on.
+port = 80
