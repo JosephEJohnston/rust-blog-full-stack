@@ -26,3 +26,5 @@ dotenvy = "0.15"
 
 # 编译期字符串连接
 const_format = "0.2.26"
+
+markdown = "0.3.0"

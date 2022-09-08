@@ -20,8 +20,14 @@ pub fn list_article_content(article_id_list: Vec<i64>) -> Option<Vec<ArticleCont
     };
 }
 
+pub fn get_article_content(article_id_: i64) -> Option<ArticleContentDB> {
+    list_article_content(vec![article_id_])
+        .filter(|list| list.len() != 0)
+        .map(|mut list| list.pop().unwrap())
+}
+
 #[test]
 fn test() {
-    println!("{:?}", list_article_content(vec![1]));
+    println!("{:?}", get_article_content(1));
 }
 

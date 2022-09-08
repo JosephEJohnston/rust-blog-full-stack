@@ -3,7 +3,7 @@ use share::article::Article;
 use share::article::article_statistics::ArticleStatisticsHttp;
 use share::tag::tag_base::TagHttp;
 use share::user::simple_user::SimpleUserHttp;
-use crate::article::article_content::sql::access::list_article_content;
+use crate::article::article_content::sql::access::{get_article_content};
 use crate::article::article_statistics::sql::access::list_article_statistics;
 use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
@@ -145,7 +145,7 @@ impl <T: Article> ArticleSingleService<T> {
         self.article
     }
 
-    pub fn set_tag_list(&mut self) {
+    pub fn set_tag_list(&mut self) -> &mut Self {
         if let Some(tag_relation_list) = list_tag_relation_sql(vec![self.article.get_id()], 1) {
             let tag_id_list = tag_relation_list
                 .iter()
@@ -160,17 +160,15 @@ impl <T: Article> ArticleSingleService<T> {
                 self.article.set_tag_list(tag_list);
             }
         }
+
+        self
     }
 
-    pub fn set_content(&mut self) {
-        if let Some(mut content_list) = list_article_content(vec![self.article.get_id()]) {
-            if content_list.len() == 0 {
-                return;
-            }
-
-            let content = content_list.pop().unwrap();
-
+    pub fn set_content(&mut self) -> &mut Self {
+        if let Some(content) = get_article_content(self.article.get_id()) {
             self.article.set_content(content.content.clone());
         }
+
+        self
     }
 }

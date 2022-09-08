@@ -51,6 +51,4 @@ stylist = { version = "0.10.1", features = ["yew_integration"] }
 serde = { version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.82"
 
-markdown = "0.3.0"
-
 chrono = { version = "0.4.19", features = ["serde", "wasmbind", "rkyv"]}

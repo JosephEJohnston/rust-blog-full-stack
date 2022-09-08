@@ -1,7 +1,10 @@
+use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
 use yew::{Component, Context, Html, html, Properties};
 use share::article::article_complete::ArticleCompleteHttp;
+use crate::css::GITHUB_MARKDOWN_DARK_CSS;
 use crate::index::http::get_article_http;
+use crate::utils::raw_html::RawHtml;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct ArticleProps {
@@ -47,6 +50,8 @@ impl Component for Article {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
+        let style = Style::new(GITHUB_MARKDOWN_DARK_CSS).unwrap();
+
         if let Some(article) = self.article.as_ref() {
             html! {
                 <>
@@ -63,10 +68,11 @@ impl Component for Article {
                             }
                         </div>
                     </div>
-                    <article>
+                    <article class={ vec![style] }>
                         <div id="user-article">
                             <article class="markdown-body">
-                                { article.content.as_ref().unwrap_or(&"".to_string()).clone() }
+                                <RawHtml inner_html={article.content.as_ref()
+                                    .unwrap_or(&"".to_string()).clone()} />
                             </article>
                         </div>
                     </article>
