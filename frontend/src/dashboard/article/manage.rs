@@ -25,7 +25,7 @@ impl DashboardArticleManage {
                                 <td class="article-list-column article-id">{ id }</td>
                                 <td class="article-list-column">{ article.title.clone() }</td>
                                 <td class="article-list-column">{ article.outline.clone() }</td>
-                                <td class="article-list-column">{"50"}</td>
+                                <td class="article-list-column">{"0"}</td>
                                 <td class="article-list-column">{ article.create_time.unwrap().clone() }</td>
                                 <td class="article-list-column">
                                     <button class="article-list-column-button article-list-column-button-update"

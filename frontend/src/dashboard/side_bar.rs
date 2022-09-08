@@ -15,6 +15,7 @@ use yew_feather::fast_forward::FastForward;
 use yew_feather::key::Key;
 use yew_feather::server::Server;
 use crate::dashboard::DashboardRoute;
+use crate::index::IndexRoute;
 
 pub struct DashboardSideBar {
 
@@ -42,7 +43,9 @@ impl Component for DashboardSideBar {
                         </div>
                         <div class="user-info-button">
                             <button class="for-user-info-button">
-                                <Home class="user-info-icon" />
+                                <Link<IndexRoute> to={ IndexRoute::AsIndex }>
+                                    <Home class="user-info-icon" />
+                                </Link<IndexRoute>>
                             </button>
                             <button class="for-user-info-button">
                                 <User class="user-info-icon" />
