@@ -10,7 +10,6 @@ temp_dir = "/tmp"
 cli_colors = true
 ## NOTE: Don't (!) use this key! Generate your own!
 #secret_key = "hPRYyVRiMyxpw5sBB1XeCMN1kFsDCqKvBi2QJxBVHQk="
-uri_root = "/api"
 
 [default.limits]
 #form = "64 kB"

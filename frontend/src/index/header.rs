@@ -23,7 +23,7 @@ impl Component for IndexHeader {
                         <div class="nav-middle">
                             <div class="nav-button-left">
                                 <img class="log-img" src="/static/resource/img/logo-w.png" alt="#"/>
-                                <button class="nav-button nav-button-big">{ "PJ Blog" }</button>
+                                <button class="nav-button nav-button-big">{ "NB Blog" }</button>
                                 <button class="nav-button nav-button-size-small">{ "文章" }</button>
                                 <button class="nav-button nav-button-size-small">{ "分享" }</button>
                                 <button class="nav-button nav-button-size-small">{ "文档" }</button>

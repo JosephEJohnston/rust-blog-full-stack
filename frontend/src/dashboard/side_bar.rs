@@ -39,7 +39,7 @@ impl Component for DashboardSideBar {
                         <div class="user-info-detail">
                             <img class="user-img" src="/static/resource/img/dashboard-img.jpg" alt="" />
                             <div class="user-name">{"admin"}</div>
-                            <div class="user-email">{"admin@pigjian.com"}</div>
+                            <div class="user-email">{"admin@noob.com"}</div>
                         </div>
                         <div class="user-info-button">
                             <button class="for-user-info-button">
