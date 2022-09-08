@@ -2,11 +2,11 @@ use rocket::fairing::AdHoc;
 use rocket::{post, routes};
 use rocket::serde::json::Json;
 use share::article::article_complete::ArticleCompleteHttp;
-use crate::article::service::modify::InsertArticleService;
+use crate::article::service::modify::{InsertArticleService, UpdateArticleService};
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
-        rocket.mount("/article", routes![add_article])
+        rocket.mount("/api/article", routes![add_article, update_article])
     })
 }
 
@@ -23,3 +23,15 @@ fn add_article(article: Json<ArticleCompleteHttp>) -> Json<i64> {
     Json(service.done())
 }
 
+#[post("/update", data = "<article>")]
+fn update_article(article: Json<ArticleCompleteHttp>) -> Json<i64> {
+    let article = article.into_inner();
+
+    let service = UpdateArticleService::new(article);
+
+    service.update_base()
+        .update_content()
+        .update_tag_list();
+
+    Json(service.done())
+}

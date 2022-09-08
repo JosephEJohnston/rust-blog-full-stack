@@ -23,5 +23,5 @@ fn rocket() -> _ {
     rocket::build()
         .attach(CORS)
         .attach(article::http::stage())
-        .mount("/", routes![index, all_options])
+        .mount("/api", routes![index, all_options])
 }

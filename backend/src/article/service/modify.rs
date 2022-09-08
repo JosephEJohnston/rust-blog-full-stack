@@ -69,3 +69,34 @@ impl InsertArticleService {
         }
     }
 }
+
+pub struct UpdateArticleService {
+    article: ArticleCompleteHttp,
+}
+
+impl UpdateArticleService {
+    pub fn new(article: ArticleCompleteHttp) -> UpdateArticleService {
+        UpdateArticleService {
+            article
+        }
+    }
+
+    pub fn update_base(&self) -> &Self {
+
+        self
+    }
+
+    pub fn update_content(&self) -> &Self {
+
+        self
+    }
+
+    pub fn update_tag_list(&self) -> &Self {
+
+        self
+    }
+
+    pub fn done(self) -> i64 {
+        self.article.id.unwrap()
+    }
+}

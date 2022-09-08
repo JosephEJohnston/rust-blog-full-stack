@@ -5,7 +5,7 @@ use share::article::article_complete::ArticleCompleteHttp;
 
 // todo 全局文章接口和用户文章接口
 pub async fn list_article_http() -> Result<Vec<ArticleListItemHttp>, Box<dyn Error>> {
-    let url = "http://localhost:8000/article/list?user_id=1";
+    let url = "http://localhost:8000/api/article/list?user_id=1";
 
     let articles: Vec<ArticleListItemHttp> =
         Request::get(url)
@@ -16,7 +16,7 @@ pub async fn list_article_http() -> Result<Vec<ArticleListItemHttp>, Box<dyn Err
 }
 
 pub async fn get_article_http(article_id: i64) -> Result<ArticleCompleteHttp, Box<dyn Error>> {
-    let mut url = "http://localhost:8000/article/get?id=".to_string();
+    let mut url = "http://localhost:8000/api/article/get?id=".to_string();
     url.push_str(article_id.to_string().as_str());
 
     let article: ArticleCompleteHttp =

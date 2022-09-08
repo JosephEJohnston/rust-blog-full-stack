@@ -4,7 +4,7 @@ use share::article::article_complete::ArticleCompleteHttp;
 
 // todo http 接口 result
 pub async fn add_article_http(article: &ArticleCompleteHttp) -> Result<i64, Box<dyn Error>> {
-    let url = "http://localhost:8000/article/add";
+    let url = "http://localhost:8000/api/article/add";
 
     // todo 继续修错
     let id: i64 = Request::post(url)

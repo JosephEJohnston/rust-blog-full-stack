@@ -9,7 +9,7 @@ use crate::article::sql::model::ArticleDB;
 
 pub fn stage() -> AdHoc {
     AdHoc::on_ignite("Article", |rocket| async {
-        rocket.mount("/article", routes![list_article, get_article])
+        rocket.mount("/api/article", routes![list_article, get_article])
     })
 }
 
