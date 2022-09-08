@@ -4,3 +4,11 @@ members = [
     "backend",
     "share",
 ]
+
+[profile.release]
+lto = true
+# s（速度）或 z（大小），多试试
+opt-level = 'z'
+
+[profile.release.package.backend]
+opt-level = 3
