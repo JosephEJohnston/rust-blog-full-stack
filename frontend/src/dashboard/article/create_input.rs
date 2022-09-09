@@ -1,8 +1,9 @@
 use web_sys::{Element, HtmlElement};
 use yew::prelude::*;
+use crate::utils::input_ref::InputRef;
 
 pub struct ValidateMaintain {
-    pub input: NodeRef,
+    pub input: InputRef,
     pub validate_result: bool,
     pub validate_msg: String,
 }
@@ -10,7 +11,7 @@ pub struct ValidateMaintain {
 impl ValidateMaintain {
     pub fn new() -> ValidateMaintain {
         ValidateMaintain {
-            input: NodeRef::default(),
+            input: InputRef::default(),
             validate_result: true,
             validate_msg: "".to_string(),
         }

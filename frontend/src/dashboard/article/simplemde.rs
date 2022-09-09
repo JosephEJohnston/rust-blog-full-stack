@@ -12,13 +12,16 @@ extern "C" {
     #[wasm_bindgen(constructor, js_class = "SimpleMDE")]
     pub fn new(config: &JsValue) -> SimpleMDE;
 
-    #[wasm_bindgen(method, structural, js_class = "SimpleMDE")]
-    pub fn value(this: &SimpleMDE) -> String;
+    #[wasm_bindgen(method, structural, js_name = "value", js_class = "SimpleMDE")]
+    pub fn get_value(this: &SimpleMDE) -> String;
+
+    #[wasm_bindgen(method, structural, js_name = "value", js_class = "SimpleMDE")]
+    pub fn set_value(this: &SimpleMDE, value: String);
 }
 
 impl Debug for SimpleMDE {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "SimpleMDE[value: {:?}]", self.value())
+        write!(f, "SimpleMDE[value: {:?}]", self.get_value())
     }
 }
 

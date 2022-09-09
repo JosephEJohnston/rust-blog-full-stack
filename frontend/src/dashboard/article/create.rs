@@ -11,7 +11,6 @@ use crate::dashboard::article::http::add_article_http;
 use crate::dashboard::article::simplemde::SimpleMDE;
 use crate::dashboard::article::create_input::{CreateInput, ValidateMaintain};
 use crate::index::http::{get_article_http, GetArticleOptions};
-use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
     pub title_validate: ValidateMaintain,
@@ -42,16 +41,14 @@ pub struct DashboardArticleCreate {
 impl DashboardArticleCreate {
     fn create_article(&self) -> ArticleCompleteHttp {
         let content = self.create_content.editor.as_ref()
-            .map(|editor| editor.value())
+            .map(|editor| editor.get_value())
             .unwrap_or("".to_string()).clone();
 
-        let input_title = to_input(&self.create_content.title_validate.input)
-            .map(|input| input.value())
-            .unwrap_or("".to_string()).clone();
+        let input_title = self.create_content
+            .title_validate.input.get_value();
 
-        let input_outline = to_input(&self.create_content.outline_validate.input)
-            .map(|input| input.value())
-            .unwrap_or("".to_string()).clone();
+        let input_outline = self.create_content
+            .outline_validate.input.get_value();
 
         ArticleCompleteHttp {
             id: None,
@@ -164,7 +161,11 @@ impl Component for DashboardArticleCreate {
             },
 
             DashboardArticleCreateMsg::UpdateInit(article) => {
-                log!(format!("{:?}", article));
+
+                self.create_content.title_validate.input.set_value(article.title);
+                self.create_content.outline_validate.input.set_value(article.outline);
+                self.create_content.editor.as_ref()
+                    .map(|editor| editor.set_value(article.content.unwrap()));
 
                 true
             },
@@ -202,7 +203,7 @@ impl Component for DashboardArticleCreate {
                                     validate_msg={self.create_content.title_validate.validate_msg.clone()}>
                             <label>
                                 <input class="each-input" type="text"
-                                    ref={self.create_content.title_validate.input.clone()}/>
+                                    ref={self.create_content.title_validate.input.get_node_ref()}/>
                             </label>
                         </CreateInput>
                         <CreateInput input_name={"内容"}
@@ -215,7 +216,7 @@ impl Component for DashboardArticleCreate {
                                     validate_msg={self.create_content.outline_validate.validate_msg.clone()}>
                             <label>
                                 <input class="each-input" type="text"
-                                    ref={self.create_content.outline_validate.input.clone()}/>
+                                    ref={self.create_content.outline_validate.input.get_node_ref()}/>
                             </label>
                         </CreateInput>
                         <button class="article-create-create-button" onclick={ create_callback }>
