@@ -41,7 +41,7 @@ impl From<ArticleListItemHttp> for ArticleDB {
             user_id: article.user_id,
             title: article.title,
             outline: article.outline,
-            status: 0,
+            status: article.status,
             create_time: None,
             modify_time: None
         }
@@ -58,6 +58,7 @@ impl Into<ArticleListItemHttp> for ArticleDB {
             user: None,
             statistics: None,
             tag_list: None,
+            status: self.status,
             create_time: self.create_time,
         }
     }
@@ -70,7 +71,7 @@ impl From<&ArticleCompleteHttp> for ArticleDB {
             user_id: article.user_id,
             title: article.title.clone(),
             outline: article.outline.clone(),
-            status: 0,
+            status: article.status,
             create_time: None,
             modify_time: None
         }
@@ -82,10 +83,11 @@ impl Into<ArticleCompleteHttp> for ArticleDB {
         ArticleCompleteHttp {
             id: self.id,
             user_id: self.user_id,
-            title: self.title.clone(),
-            outline: self.outline.clone(),
+            title: self.title,
+            outline: self.outline,
             content: None,
-            tag_list: None
+            tag_list: None,
+            status: self.status,
         }
     }
 }

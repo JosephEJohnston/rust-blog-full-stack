@@ -28,7 +28,7 @@ mod tests {
             phone: "18760257158".to_string(),
             password: "731320092".to_string(),
             encrypted_password: "".to_string(),
-            status: 0,
+            status: 1,
             create_time: None,
             modify_time: None,
         };

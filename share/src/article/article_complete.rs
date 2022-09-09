@@ -17,6 +17,8 @@ pub struct ArticleCompleteHttp {
     pub content: Option<String>,
 
     pub tag_list: Option<Vec<TagHttp>>,
+
+    pub status: i8,
 }
 
 impl Default for ArticleCompleteHttp {
@@ -27,7 +29,8 @@ impl Default for ArticleCompleteHttp {
             title: "".to_string(),
             outline: "".to_string(),
             content: None,
-            tag_list: None
+            tag_list: None,
+            status: 1,
         }
     }
 }

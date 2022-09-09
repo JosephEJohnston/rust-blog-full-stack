@@ -21,6 +21,8 @@ pub struct ArticleListItemHttp {
 
     pub tag_list: Option<Vec<TagHttp>>,
 
+    pub status: i8,
+
     pub create_time: Option<NaiveDateTime>,
 }
 

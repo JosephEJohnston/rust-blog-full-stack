@@ -56,7 +56,8 @@ impl DashboardArticleCreate {
             title: input_title,
             outline: input_outline,
             content: Some(content),
-            tag_list: None
+            tag_list: None,
+            status: 1,
         }
     }
 

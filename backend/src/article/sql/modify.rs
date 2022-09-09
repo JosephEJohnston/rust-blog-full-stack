@@ -44,6 +44,18 @@ pub fn update_sql(article_: ArticleDB) -> QueryResult<usize> {
     result
 }
 
+pub fn update_status_sql(article_id: i64, status_: i8) -> QueryResult<usize> {
+    let conn = &mut get_connection();
+
+    diesel::update(article
+        .filter(id.eq(article_id)))
+        .set((
+            status.eq(status_),
+            modify_time.eq(NaiveDateTime::from_timestamp_opt(
+                Local::now().timestamp(), 0)),
+        ))
+        .execute(conn)
+}
 
 #[cfg(test)]
 mod tests {

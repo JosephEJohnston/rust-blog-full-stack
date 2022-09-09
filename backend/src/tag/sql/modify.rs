@@ -18,7 +18,7 @@ fn test_insert() {
         id: None,
         user_id: 1,
         name: "init-2".to_string(),
-        status: 0,
+        status: 1,
         create_time: None,
         modify_time: None,
     };
