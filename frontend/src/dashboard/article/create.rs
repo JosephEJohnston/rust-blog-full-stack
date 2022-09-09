@@ -110,6 +110,22 @@ impl DashboardArticleCreate {
         });
     }
 
+    fn render_page_title(&self, ctx: &Context<Self>) -> Html {
+        if ctx.props().article_id.is_none() {
+            html! {
+                <div class="main-name article-create-name">
+                    {"创建文章"}
+                </div>
+            }
+        } else {
+            html! {
+                <div class="main-name article-create-name">
+                    {"修改文章"}
+                </div>
+            }
+        }
+    }
+
     fn render_button(&self, ctx: &Context<Self>) -> Html {
         if ctx.props().article_id.is_none() {
             html! {
@@ -223,9 +239,7 @@ impl Component for DashboardArticleCreate {
             <>
                 <div class={ vec![create_css, dashboard_css] }>
                     <div class="main-title">
-                        <div class="main-name article-create-name">
-                            {"创建文章"}
-                        </div>
+                        { self.render_page_title(ctx) }
                         <div class="article-create-title-blank-fill"></div>
                         <button class="article-create-back-button">
                             <Link<DashboardArticleRoute> to={ DashboardArticleRoute::Manage }>
