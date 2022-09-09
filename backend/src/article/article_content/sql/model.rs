@@ -1,6 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::{Insertable, Queryable, QueryableByName, table};
 use serde::{Deserialize, Serialize};
+use share::article::article_complete::ArticleCompleteHttp;
 
 table! {
     article_content (id) {
@@ -30,3 +31,15 @@ pub struct ArticleContentDB {
     pub modify_time: Option<NaiveDateTime>,
 }
 
+impl From<&ArticleCompleteHttp> for ArticleContentDB {
+    fn from(article: &ArticleCompleteHttp) -> Self {
+        ArticleContentDB {
+            id: None,
+            article_id: article.id.unwrap().clone(),
+            content: article.content.as_ref().unwrap().clone(),
+            status: 0,
+            create_time: None,
+            modify_time: None
+        }
+    }
+}

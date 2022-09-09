@@ -1,10 +1,10 @@
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::article::article_content::sql::model::ArticleContentDB;
-use crate::article::article_content::sql::modify::insert_article_content;
+use crate::article::article_content::sql::modify::{insert_article_content, update_article_content_sql};
 use crate::article::article_statistics::sql::model::ArticleStatisticsDB;
 use crate::article::article_statistics::sql::modify::insert_article_statistics;
 use crate::article::sql::model::ArticleDB;
-use crate::article::sql::modify::insert;
+use crate::article::sql::modify::{insert, update_sql};
 
 pub struct InsertArticleService {
     article: ArticleCompleteHttp,
@@ -21,7 +21,7 @@ impl InsertArticleService {
 
     pub fn insert_article_base(&mut self) -> &Self {
         let result = insert(ArticleDB::from(
-            self.article.clone()));
+            &self.article));
 
         if let Ok(article_id) = result {
             self.id = Some(article_id);
@@ -82,11 +82,20 @@ impl UpdateArticleService {
     }
 
     pub fn update_base(&self) -> &Self {
+        // todo 未来再说
+        match update_sql(ArticleDB::from(&self.article)) {
+            Ok(_id) => (),
+            Err(_e) => (),
+        }
 
         self
     }
 
     pub fn update_content(&self) -> &Self {
+        match update_article_content_sql(ArticleContentDB::from(&self.article)) {
+            Ok(_id) => (),
+            Err(_e) => (),
+        }
 
         self
     }

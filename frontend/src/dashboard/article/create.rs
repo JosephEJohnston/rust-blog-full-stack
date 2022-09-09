@@ -7,7 +7,7 @@ use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::{DASHBOARD_ARTICLE_CREATE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::article::for_editor::{ForEditor};
-use crate::dashboard::article::http::add_article_http;
+use crate::dashboard::article::http::{add_article_http, update_article_http};
 use crate::dashboard::article::simplemde::SimpleMDE;
 use crate::dashboard::article::create_input::{CreateInput, ValidateMaintain};
 use crate::index::http::{get_article_http, GetArticleOptions};
@@ -39,7 +39,7 @@ pub struct DashboardArticleCreate {
 }
 
 impl DashboardArticleCreate {
-    fn create_article(&self) -> ArticleCompleteHttp {
+    fn create_article(&self, ctx: &Context<Self>) -> ArticleCompleteHttp {
         let content = self.create_content.editor.as_ref()
             .map(|editor| editor.get_value())
             .unwrap_or("".to_string()).clone();
@@ -51,7 +51,7 @@ impl DashboardArticleCreate {
             .outline_validate.input.get_value();
 
         ArticleCompleteHttp {
-            id: None,
+            id: ctx.props().article_id.clone(),
             user_id: 1,
             title: input_title,
             outline: input_outline,
@@ -92,13 +92,40 @@ impl DashboardArticleCreate {
         return res;
     }
 
-    fn send_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
+    fn send_add_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
         spawn_local(async move {
             match add_article_http(&article).await {
                 Ok(_id) => any_history.push(DashboardArticleRoute::Manage),
                 Err(e) => log!(format!("{:?}", e)),
             }
         });
+    }
+
+    fn send_update_article_and_redirect(&mut self, any_history: AnyHistory, article: ArticleCompleteHttp) {
+        spawn_local(async move {
+            match update_article_http(&article).await {
+                Ok(_id) => any_history.push(DashboardArticleRoute::Manage),
+                Err(e) => log!(format!("{:?}", e)),
+            }
+        });
+    }
+
+    fn render_button(&self, ctx: &Context<Self>) -> Html {
+        if ctx.props().article_id.is_none() {
+            html! {
+                <button class="article-create-create-button" onclick={ ctx.link()
+                    .callback(|_| DashboardArticleCreateMsg::Create) }>
+                    {"创建"}
+                </button>
+            }
+        } else {
+            html! {
+                <button class="article-create-create-button" onclick={ ctx.link()
+                    .callback(|_| DashboardArticleCreateMsg::UpdateConfirm) }>
+                    {"修改"}
+                </button>
+            }
+        }
     }
 }
 
@@ -112,6 +139,7 @@ pub enum DashboardArticleCreateMsg {
     FetchEditor(SimpleMDE),
     Create,
     UpdateInit(ArticleCompleteHttp),
+    UpdateConfirm,
 }
 
 impl Component for DashboardArticleCreate {
@@ -149,12 +177,12 @@ impl Component for DashboardArticleCreate {
             },
 
             DashboardArticleCreateMsg::Create => {
-                let article = self.create_article();
+                let article = self.create_article(ctx);
 
                 if self.validate_article(&article) {
                     let history = ctx.link().history().unwrap();
 
-                    self.send_article_and_redirect(history, article);
+                    self.send_add_article_and_redirect(history, article);
                 }
 
                 true
@@ -169,6 +197,18 @@ impl Component for DashboardArticleCreate {
 
                 true
             },
+
+            DashboardArticleCreateMsg::UpdateConfirm => {
+                let article = self.create_article(ctx);
+
+                if self.validate_article(&article) {
+                    let history = ctx.link().history().unwrap();
+
+                    self.send_update_article_and_redirect(history, article);
+                }
+
+                true
+            }
         }
     }
 
@@ -178,9 +218,6 @@ impl Component for DashboardArticleCreate {
 
         let editor_callback = ctx.link()
             .callback(|editor| DashboardArticleCreateMsg::FetchEditor(editor));
-
-        let create_callback = ctx.link()
-            .callback(|_| DashboardArticleCreateMsg::Create);
 
         html! {
             <>
@@ -219,9 +256,7 @@ impl Component for DashboardArticleCreate {
                                     ref={self.create_content.outline_validate.input.get_node_ref()}/>
                             </label>
                         </CreateInput>
-                        <button class="article-create-create-button" onclick={ create_callback }>
-                            {"创建"}
-                        </button>
+                        { self.render_button(ctx) }
                     </div>
                 </div>
             </>

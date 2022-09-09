@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+use chrono::{Local, NaiveDateTime};
+use diesel::{QueryDsl, RunQueryDsl};
 use diesel::{select};
 use diesel::prelude::*;
 use diesel::result::Error;
@@ -24,6 +26,22 @@ pub fn insert(article_: ArticleDB) -> QueryResult<i64> {
     })?;
 
     insert_id
+}
+
+pub fn update_sql(article_: ArticleDB) -> QueryResult<usize> {
+    let conn = &mut get_connection();
+
+    let result = diesel::update(article
+        .filter(id.eq(article_.id.unwrap())))
+        .set((
+            title.eq(article_.title),
+            outline.eq(article_.outline),
+            modify_time.eq(NaiveDateTime::from_timestamp_opt(
+                Local::now().timestamp(), 0)),
+        ))
+        .execute(conn);
+
+    result
 }
 
 
