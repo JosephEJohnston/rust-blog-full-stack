@@ -48,17 +48,18 @@ impl DashboardArticleManage {
     }
 
     fn render_status_button(&self, ctx: &Context<Self>, article: &ArticleListItemHttp) -> Html {
+        let id = article.id.unwrap().clone();
         if article.status == 0 {
             html! {
                 <button class="article-list-column-button article-list-column-button-recover"
-                    onclick={ctx.link().callback(move |_| Msg::RecoverArticle(id.clone()))}>
+                    onclick={ctx.link().callback(move |_| Msg::RecoverArticle(id))}>
                     {"恢复"}
                 </button>
             }
         } else {
             html! {
                 <button class="article-list-column-button article-list-column-button-delete"
-                    onclick={ctx.link().callback(move |_| Msg::DeleteArticle(id.clone()))}>
+                    onclick={ctx.link().callback(move |_| Msg::DeleteArticle(id))}>
                     {"删除"}
                 </button>
             }
@@ -104,7 +105,7 @@ impl Component for DashboardArticleManage {
                 true
             },
 
-            Msg::RecoverArticle(id) => {
+            Msg::RecoverArticle(_id) => {
 
                 true
             }
