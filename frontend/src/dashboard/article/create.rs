@@ -10,6 +10,7 @@ use crate::dashboard::article::for_editor::{ForEditor};
 use crate::dashboard::article::http::add_article_http;
 use crate::dashboard::article::simplemde::SimpleMDE;
 use crate::dashboard::article::create_input::{CreateInput, ValidateMaintain};
+use crate::index::http::{get_article_http, GetArticleOptions};
 use crate::utils::node_ref_transfer::to_input;
 
 pub struct ArticleCreateContent {
@@ -36,11 +37,6 @@ impl Default for ArticleCreateContent {
 
 pub struct DashboardArticleCreate {
     create_content: ArticleCreateContent,
-}
-
-pub enum DashboardArticleCreateMsg {
-    FetchEditor(SimpleMDE),
-    Create,
 }
 
 impl DashboardArticleCreate {
@@ -109,11 +105,39 @@ impl DashboardArticleCreate {
     }
 }
 
+#[derive(Properties, Clone, PartialEq)]
+pub struct DashboardArticleCreateProps {
+    #[prop_or_default]
+    pub article_id: Option<i64>,
+}
+
+pub enum DashboardArticleCreateMsg {
+    FetchEditor(SimpleMDE),
+    Create,
+    UpdateInit(ArticleCompleteHttp),
+}
+
 impl Component for DashboardArticleCreate {
     type Message = DashboardArticleCreateMsg;
-    type Properties = ();
+    type Properties = DashboardArticleCreateProps;
 
-    fn create(_ctx: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
+        if let Some(article_id) =  ctx.props().article_id.as_ref() {
+            let link = ctx.link().clone();
+            let article_id = article_id.clone();
+
+            spawn_local(async move {
+                let opts = GetArticleOptions {
+                    id: article_id,
+                    markdown_opt: 0
+                };
+
+                if let Ok(article) = get_article_http(opts).await {
+                    link.send_message(DashboardArticleCreateMsg::UpdateInit(article));
+                }
+            });
+        }
+
         DashboardArticleCreate {
             create_content: Default::default(),
         }
@@ -137,7 +161,13 @@ impl Component for DashboardArticleCreate {
                 }
 
                 true
-            }
+            },
+
+            DashboardArticleCreateMsg::UpdateInit(article) => {
+                log!(format!("{:?}", article));
+
+                true
+            },
         }
     }
 

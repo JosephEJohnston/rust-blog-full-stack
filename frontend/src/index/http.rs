@@ -16,13 +16,16 @@ pub async fn list_article_http() -> Result<Vec<ArticleListItemHttp>, Box<dyn Err
     Ok(articles)
 }
 
-pub async fn get_article_http(article_id: i64) -> Result<ArticleCompleteHttp, Box<dyn Error>> {
-    let mut url = "/api/article/get?id=".to_string();
-    // let mut url = "http://localhost:8000/api/article/get?id=".to_string();
-    url.push_str(article_id.to_string().as_str());
+pub struct GetArticleOptions {
+    pub id: i64,
+    pub markdown_opt: i8,
+}
 
+pub async fn get_article_http(opts: GetArticleOptions) -> Result<ArticleCompleteHttp, Box<dyn Error>> {
     let article: ArticleCompleteHttp =
-        Request::get(url.as_str())
+        Request::get("/api/article/get")
+            .query([("id", opts.id.to_string())])
+            .query([("markdown_opt", opts.markdown_opt.to_string())])
             .send().await?
             .json().await?;
 

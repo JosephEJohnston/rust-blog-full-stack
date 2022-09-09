@@ -4,6 +4,7 @@ use rocket::serde::json::Json;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::article::article_content::service::access::ArticleContentAccessService;
+use crate::article::http::enums::MarkOpt;
 use crate::article::service::base::{ArticleService, ArticleSingleService};
 use crate::article::sql::access::{get_article_sql, list_article_sql};
 use crate::article::sql::model::ArticleDB;
@@ -43,6 +44,7 @@ fn list_article(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> {
 #[derive(FromForm)]
 struct GetArticleOptions {
     pub id: i64,
+    pub markdown_opt: i8,
 }
 
 #[get("/get?<opt..>")]
@@ -56,7 +58,7 @@ fn get_article(opt: GetArticleOptions) -> Json<ArticleCompleteHttp> {
 
         let mut content_service =
             ArticleContentAccessService::new(service.consume());
-        content_service.render_markdown();
+        content_service.render_markdown(MarkOpt(opt.markdown_opt));
 
         Json(content_service.done())
     } else {

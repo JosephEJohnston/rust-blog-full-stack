@@ -19,6 +19,9 @@ pub enum DashboardArticleRoute {
 
     #[at("/dashboard/article/create")]
     Create,
+
+    #[at("/dashboard/article/update/:article_id")]
+    Update { article_id: i64 },
 }
 
 fn switch(routes: &DashboardArticleRoute) -> Html {
@@ -34,6 +37,12 @@ fn switch(routes: &DashboardArticleRoute) -> Html {
                 <DashboardArticleCreate />
             }
         },
+
+        DashboardArticleRoute::Update { article_id } => {
+            html! {
+                <DashboardArticleCreate article_id={ Some(article_id.clone()) } />
+            }
+        }
     }
 }
 

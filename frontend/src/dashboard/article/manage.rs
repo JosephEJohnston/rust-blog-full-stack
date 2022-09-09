@@ -28,9 +28,10 @@ impl DashboardArticleManage {
                                 <td class="article-list-column">{"0"}</td>
                                 <td class="article-list-column">{ article.create_time.unwrap().clone() }</td>
                                 <td class="article-list-column">
-                                    <button class="article-list-column-button article-list-column-button-update"
-                                        onclick={ctx.link().callback(move |_| Msg::ModifyArticle(id.clone()))}>
-                                        {"修改"}
+                                    <button class="article-list-column-button article-list-column-button-update">
+                                        <Link<DashboardArticleRoute> to={ DashboardArticleRoute::Update { article_id: id } }>
+                                            {"修改"}
+                                        </Link<DashboardArticleRoute>>
                                     </button>
                                     <button class="article-list-column-button article-list-column-button-delete"
                                         onclick={ctx.link().callback(move |_| Msg::DeleteArticle(id.clone()))}>
@@ -52,7 +53,6 @@ impl DashboardArticleManage {
 
 pub enum Msg {
     FetchArticleListHttp(Vec<ArticleListItemHttp>),
-    ModifyArticle(i64),
     DeleteArticle(i64),
 }
 
@@ -80,11 +80,6 @@ impl Component for DashboardArticleManage {
             Msg::FetchArticleListHttp(articles) => {
                 self.article_list = Some(articles);
 
-                true
-            },
-
-            Msg::ModifyArticle(id) => {
-                log!(format!("modify: {:?}", id));
                 true
             },
 

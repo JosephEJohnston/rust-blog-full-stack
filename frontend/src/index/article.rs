@@ -3,7 +3,7 @@ use wasm_bindgen_futures::spawn_local;
 use yew::{Component, Context, Html, html, Properties};
 use share::article::article_complete::ArticleCompleteHttp;
 use crate::css::GITHUB_MARKDOWN_DARK_CSS;
-use crate::index::http::get_article_http;
+use crate::index::http::{get_article_http, GetArticleOptions};
 use crate::utils::raw_html::RawHtml;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
@@ -26,9 +26,14 @@ impl Component for Article {
     fn create(ctx: &Context<Self>) -> Self {
         {
             let link = ctx.link().clone();
-            let article_id = ctx.props().article_id;
+
+            let opts = GetArticleOptions {
+                id: ctx.props().article_id.clone(),
+                markdown_opt: 1
+            };
+
             spawn_local(async move {
-                if let Ok(article) = get_article_http(article_id).await {
+                if let Ok(article) = get_article_http(opts).await {
                     link.send_message(ArticleMsg::FetchArticleHttp(article));
                 }
             })
