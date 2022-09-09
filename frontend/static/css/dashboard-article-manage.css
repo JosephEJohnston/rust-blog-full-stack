@@ -98,4 +98,7 @@
     border: none;
 }
 
-
+.article-list-column-button-recover {
+    background-color: darkgreen;
+    border: none;
+}

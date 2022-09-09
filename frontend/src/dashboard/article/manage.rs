@@ -33,10 +33,7 @@ impl DashboardArticleManage {
                                             {"修改"}
                                         </Link<DashboardArticleRoute>>
                                     </button>
-                                    <button class="article-list-column-button article-list-column-button-delete"
-                                        onclick={ctx.link().callback(move |_| Msg::DeleteArticle(id.clone()))}>
-                                        {"删除"}
-                                    </button>
+                                    { self.render_status_button(ctx, article) }
                                 </td>
                             </tr>
                         }
@@ -49,11 +46,30 @@ impl DashboardArticleManage {
             }
         }
     }
+
+    fn render_status_button(&self, ctx: &Context<Self>, article: &ArticleListItemHttp) -> Html {
+        if article.status == 0 {
+            html! {
+                <button class="article-list-column-button article-list-column-button-recover"
+                    onclick={ctx.link().callback(move |_| Msg::RecoverArticle(id.clone()))}>
+                    {"恢复"}
+                </button>
+            }
+        } else {
+            html! {
+                <button class="article-list-column-button article-list-column-button-delete"
+                    onclick={ctx.link().callback(move |_| Msg::DeleteArticle(id.clone()))}>
+                    {"删除"}
+                </button>
+            }
+        }
+    }
 }
 
 pub enum Msg {
     FetchArticleListHttp(Vec<ArticleListItemHttp>),
     DeleteArticle(i64),
+    RecoverArticle(i64),
 }
 
 impl Component for DashboardArticleManage {
@@ -87,6 +103,11 @@ impl Component for DashboardArticleManage {
                 log!(format!("delete: {:?}", id));
                 true
             },
+
+            Msg::RecoverArticle(id) => {
+
+                true
+            }
         }
     }
 

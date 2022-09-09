@@ -36,7 +36,9 @@ impl Component for AsIndex {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             AsIndexMsg::FetchArticleListHttp(articles) => {
-                self.article_list = articles;
+                self.article_list = articles.into_iter()
+                    .filter(|article| article.status == 1)
+                    .collect();
 
                 true
             }
