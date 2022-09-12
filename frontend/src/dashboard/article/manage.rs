@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+use std::collections::{HashMap};
+use itertools::Itertools;
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use yew_feather::search::Search;
@@ -12,7 +13,6 @@ use crate::dashboard::article::http::update_article_status;
 use crate::index::http::list_article_http;
 
 pub struct DashboardArticleManage {
-    article_list: Option<Vec<ArticleListItemHttp>>,
     article_map: Option<HashMap<i64, ArticleListItemHttp>>,
 }
 
@@ -23,9 +23,14 @@ impl DashboardArticleManage {
 
             }
         } else {
+            let article_list: Vec<&ArticleListItemHttp> = self.article_map.as_ref().unwrap().iter()
+                .sorted_by_key(|(id, _article)| -1i64 * id.clone())
+                .map(|(_id, article)| article)
+                .collect();
+
             html! {
                 {
-                    for self.article_map.as_ref().unwrap().iter().map(|(_, article)| -> Html {
+                    for article_list.into_iter().map(|article| -> Html {
                         let id = article.id.unwrap().clone();
                         html! {
                             <tr class="article-list-row">
@@ -106,7 +111,6 @@ impl Component for DashboardArticleManage {
         }
 
         DashboardArticleManage {
-            article_list: None,
             article_map: None
         }
     }

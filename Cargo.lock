@@ -532,6 +532,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "gloo 0.8.0",
+ "itertools",
  "js-sys",
  "serde",
  "serde_json",
