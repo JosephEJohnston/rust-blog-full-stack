@@ -1,5 +1,5 @@
 use share::article::article_complete::ArticleCompleteHttp;
-use share::article::article_status::ArticleStatus;
+use share::article::article_status::ArticleStatusHttp;
 use crate::article::article_content::sql::model::ArticleContentDB;
 use crate::article::article_content::sql::modify::{insert_article_content, update_article_content_sql};
 use crate::article::article_statistics::sql::model::ArticleStatisticsDB;
@@ -112,11 +112,11 @@ impl UpdateArticleService {
 }
 
 pub struct UpdateArticleStatusService {
-    article_status: ArticleStatus,
+    article_status: ArticleStatusHttp,
 }
 
 impl UpdateArticleStatusService {
-    pub fn new(article_status: ArticleStatus) -> UpdateArticleStatusService {
+    pub fn new(article_status: ArticleStatusHttp) -> UpdateArticleStatusService {
         UpdateArticleStatusService {
             article_status
         }

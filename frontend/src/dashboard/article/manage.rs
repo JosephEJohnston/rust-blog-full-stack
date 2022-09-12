@@ -1,24 +1,31 @@
-use gloo::console::log;
+use std::collections::HashMap;
 use yew::{Component, Context, Html, html};
 use yew_router::prelude::Link;
 use yew_feather::search::Search;
 use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
+use share::article::article_status::ArticleStatusHttp;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
+use crate::dashboard::article::http::update_article_status;
 use crate::index::http::list_article_http;
 
 pub struct DashboardArticleManage {
     article_list: Option<Vec<ArticleListItemHttp>>,
+    article_map: Option<HashMap<i64, ArticleListItemHttp>>,
 }
 
 impl DashboardArticleManage {
     fn render_article_list(&self, ctx: &Context<Self>) -> Html {
-        if let Some(articles) = self.article_list.as_ref() {
+        if self.article_map.is_none() {
+            html! {
+
+            }
+        } else {
             html! {
                 {
-                    for articles.iter().map(|article| -> Html {
+                    for self.article_map.as_ref().unwrap().iter().map(|(_, article)| -> Html {
                         let id = article.id.unwrap().clone();
                         html! {
                             <tr class="article-list-row">
@@ -40,11 +47,8 @@ impl DashboardArticleManage {
                     })
                 }
             }
-        } else {
-            html! {
-
-            }
         }
+
     }
 
     fn render_status_button(&self, ctx: &Context<Self>, article: &ArticleListItemHttp) -> Html {
@@ -65,12 +69,26 @@ impl DashboardArticleManage {
             }
         }
     }
+
+    fn update_article_status_http(&mut self, ctx: &Context<Self>, id: i64, status: i8) {
+        let link = ctx.link().clone();
+        spawn_local(async move {
+            if let Ok(_id) = update_article_status(ArticleStatusHttp {
+                id,
+                status,
+            }).await {
+
+                link.send_message(Msg::UpdateArticleStatus((id, status)));
+            }
+        });
+    }
 }
 
 pub enum Msg {
     FetchArticleListHttp(Vec<ArticleListItemHttp>),
     DeleteArticle(i64),
     RecoverArticle(i64),
+    UpdateArticleStatus((i64, i8)),
 }
 
 impl Component for DashboardArticleManage {
@@ -88,24 +106,41 @@ impl Component for DashboardArticleManage {
         }
 
         DashboardArticleManage {
-            article_list: None
+            article_list: None,
+            article_map: None
         }
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::FetchArticleListHttp(articles) => {
-                self.article_list = Some(articles);
+                self.article_map = Some(articles.into_iter().fold(HashMap::new(), |mut map, article| {
+                    map.insert(article.id.unwrap(), article);
+
+                    map
+                }));
 
                 true
             },
 
             Msg::DeleteArticle(id) => {
-                log!(format!("delete: {:?}", id));
-                true
+                self.update_article_status_http(ctx, id, 0);
+
+                false
             },
 
-            Msg::RecoverArticle(_id) => {
+            Msg::RecoverArticle(id) => {
+                self.update_article_status_http(ctx, id, 1);
+
+                false
+            },
+
+            Msg::UpdateArticleStatus((id, status)) => {
+                let article_map = self.article_map.as_mut().unwrap();
+
+                if let Some(article) = article_map.get_mut(&id) {
+                    article.status = status;
+                }
 
                 true
             }
