@@ -102,3 +102,50 @@
     background-color: darkgreen;
     border: none;
 }
+
+#page-transform {
+    margin-top: 15px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 100%;
+}
+
+.button-transform-left, .button-transform-right, .button-transform-middle {
+    background-color: #e4e7ea;
+    font-size: 20px;
+    color: #7f8c8f;
+}
+
+.button-transform-left, .button-transform-right {
+    width: 45px;
+    height: 45px;
+}
+
+.button-transform-left {
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    border-right: 1px white;
+    margin-right: 1px;
+    border-radius: 10px 0 0 10px;
+}
+
+.button-transform-right {
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-left: 1px white;
+    margin-left: 1px;
+    border-radius: 0 10px 10px 0;
+}
+
+.button-transform-middle {
+    width: 35px;
+    height: 45px;
+    border: none;
+}
+
+

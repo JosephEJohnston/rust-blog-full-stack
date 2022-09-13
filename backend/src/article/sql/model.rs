@@ -3,6 +3,9 @@ use diesel::{Insertable, Queryable, table};
 use serde::{Deserialize, Serialize};
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
+use share::article::http::ListArticleOptions;
+use share::utils::status::StatusOptions;
+use crate::utils::sql::page::PaginationSql;
 
 table! {
     article (id) {
@@ -91,3 +94,21 @@ impl Into<ArticleCompleteHttp> for ArticleDB {
         }
     }
 }
+
+pub struct ListArticleOptionsSql {
+    pub user_id: i64,
+    pub status: StatusOptions,
+    pub page: PaginationSql,
+}
+
+impl From<ListArticleOptions> for ListArticleOptionsSql {
+    fn from(opts: ListArticleOptions) -> Self {
+        Self {
+            user_id: opts.user_id,
+            status: opts.status,
+            page: PaginationSql::from(opts.page),
+        }
+    }
+}
+
+

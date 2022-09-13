@@ -7,6 +7,9 @@ use stylist::Style;
 use wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_status::ArticleStatusHttp;
+use share::article::http::ListArticleOptions;
+use share::utils::page::Pagination;
+use share::utils::status::StatusOptions;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::article::http::update_article_status;
@@ -14,6 +17,7 @@ use crate::index::http::list_article_http;
 
 pub struct DashboardArticleManage {
     article_map: Option<HashMap<i64, ArticleListItemHttp>>,
+    page: Option<Pagination>,
 }
 
 impl DashboardArticleManage {
@@ -104,14 +108,22 @@ impl Component for DashboardArticleManage {
         {
             let link = ctx.link().clone();
             spawn_local(async move {
-                if let Ok(articles) = list_article_http().await {
+                if let Ok(articles) = list_article_http(ListArticleOptions {
+                    user_id: 1,
+                    status: StatusOptions {
+                        is_all: true,
+                        status: None,
+                    },
+                    page: Pagination::init(10),
+                }).await {
                     link.send_message(Msg::FetchArticleListHttp(articles));
                 }
             })
         }
 
         DashboardArticleManage {
-            article_map: None
+            article_map: None,
+            page: None
         }
     }
 
@@ -191,6 +203,14 @@ impl Component for DashboardArticleManage {
                             { self.render_article_list(ctx) }
                         </tbody>
                     </table>
+                    <hr />
+                    <div id="page-transform">
+                        <button class="button-transform-left">{"<"}</button>
+                        <button class="button-transform-middle">{"1"}</button>
+                        <button class="button-transform-middle">{"2"}</button>
+                        <button class="button-transform-middle">{"3"}</button>
+                        <button class="button-transform-right">{">"}</button>
+                    </div>
                 </div>
             </>
         }

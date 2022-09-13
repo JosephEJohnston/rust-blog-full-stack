@@ -1,8 +1,9 @@
 use rocket::fairing::AdHoc;
-use rocket::{FromForm, get, routes};
+use rocket::{FromForm, get, post, routes};
 use rocket::serde::json::Json;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
+use share::article::http::ListArticleOptions;
 use crate::article::article_content::service::access::ArticleContentAccessService;
 use crate::article::http::enums::MarkOpt;
 use crate::article::service::base::{ArticleService, ArticleSingleService};
@@ -15,20 +16,16 @@ pub fn stage() -> AdHoc {
     })
 }
 
-#[derive(FromForm)]
-struct ListArticleOptions {
-    pub user_id: i64,
-}
 
-#[get("/list?<opt..>")]
-fn list_article(opt: ListArticleOptions) -> Json<Vec<ArticleListItemHttp>> {
-    let opt = list_article_sql(opt.user_id);
+#[post("/list", data = "<opt>")]
+fn list_article(opt: Json<ListArticleOptions>) -> Json<Vec<ArticleListItemHttp>> {
+    let res = list_article_sql(opt.into_inner());
 
-    if opt.is_none() {
+    if res.is_none() {
         return Json(Vec::new());
     }
 
-    let article_list: Vec<ArticleListItemHttp> = opt.unwrap().into_iter()
+    let article_list: Vec<ArticleListItemHttp> = res.unwrap().into_iter()
         .map(|db: ArticleDB| <ArticleDB as Into<ArticleListItemHttp>>::into(db))
         .collect();
 

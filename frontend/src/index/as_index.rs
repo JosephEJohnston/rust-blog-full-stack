@@ -1,8 +1,11 @@
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 use share::article::article_base::ArticleListItemHttp;
+use share::article::http::ListArticleOptions;
 use crate::index::article_list_item::ArticleListItem;
 use crate::index::http::list_article_http;
+use share::utils::page::Pagination;
+use share::utils::status::StatusOptions;
 
 pub struct AsIndex {
     article_list: Vec<ArticleListItemHttp>,
@@ -24,7 +27,14 @@ impl Component for AsIndex {
         {
             let link = ctx.link().clone();
             spawn_local(async move {
-                if let Ok(articles) = list_article_http().await {
+                if let Ok(articles) = list_article_http(ListArticleOptions {
+                    user_id: 1,
+                    status: StatusOptions {
+                        is_all: false,
+                        status: Some(1),
+                    },
+                    page: Pagination::init(5),
+                }).await {
                     link.send_message(AsIndexMsg::FetchArticleListHttp(articles));
                 }
             })

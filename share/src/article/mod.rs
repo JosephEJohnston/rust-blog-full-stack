@@ -6,6 +6,7 @@ pub mod article_base;
 pub mod article_statistics;
 pub mod article_complete;
 pub mod article_status;
+pub mod http;
 
 pub trait Article {
     fn get_id(&self) -> i64;
