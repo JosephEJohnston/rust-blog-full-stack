@@ -1,4 +1,4 @@
-use share::utils::page::Pagination;
+use share::utils::page::{PageRequest};
 
 #[derive(Clone, Copy, Debug)]
 pub struct PaginationSql {
@@ -6,8 +6,8 @@ pub struct PaginationSql {
     pub offset: i64,
 }
 
-impl From<Pagination> for PaginationSql {
-    fn from(page: Pagination) -> Self {
+impl From<PageRequest> for PaginationSql {
+    fn from(page: PageRequest) -> Self {
         let size = page.page_size;
 
         PaginationSql {

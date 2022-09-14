@@ -8,7 +8,7 @@ use wasm_bindgen_futures::spawn_local;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_status::ArticleStatusHttp;
 use share::article::http::ListArticleOptions;
-use share::utils::page::Pagination;
+use share::utils::page::{PageRequest, Pagination};
 use share::utils::status::StatusOptions;
 use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
@@ -114,7 +114,7 @@ impl Component for DashboardArticleManage {
                         is_all: true,
                         status: None,
                     },
-                    page: Pagination::init(10),
+                    page: PageRequest::init(10),
                 }).await {
                     link.send_message(Msg::FetchArticleListHttp(articles));
                 }

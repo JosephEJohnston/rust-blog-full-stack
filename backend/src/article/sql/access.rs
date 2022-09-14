@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use diesel::{QueryDsl, RunQueryDsl};
+use diesel::dsl::count;
 use diesel::prelude::*;
 use share::article::http::ListArticleOptions;
 use crate::article::sql::model::article::dsl::*;
@@ -17,20 +18,42 @@ pub fn list_article_sql(opts: ListArticleOptions) -> Option<Vec<ArticleDB>> {
         .into_boxed();
 
     let query = if opts.status.is_all == false {
-        let query = query
-            .filter(status.eq(opts.status.status.unwrap()));
-
-        query
+        query.filter(status.eq(opts.status.status.unwrap()))
     } else {
         query
     };
-
 
     let query = query
         .limit(opts.page.limit)
         .offset(opts.page.offset)
         .order(create_time.desc())
         .load::<ArticleDB>(conn);
+
+    return if let Ok(res) = query {
+        Some(res)
+    } else {
+        None
+    };
+}
+
+pub fn count_article_sql(opts: ListArticleOptions) -> Option<i64> {
+    let opts = ListArticleOptionsSql::from(opts);
+
+    let conn = &mut get_connection();
+
+    let query = article
+        .select(count(id))
+        .filter(user_id.eq(opts.user_id))
+        .into_boxed();
+
+    let query = if opts.status.is_all == false {
+        query.filter(status.eq(opts.status.status.unwrap()))
+    } else {
+        query
+    };
+
+    let query = query
+        .first(conn);
 
     return if let Ok(res) = query {
         Some(res)

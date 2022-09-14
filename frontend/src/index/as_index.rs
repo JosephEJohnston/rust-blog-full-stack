@@ -4,11 +4,12 @@ use share::article::article_base::ArticleListItemHttp;
 use share::article::http::ListArticleOptions;
 use crate::index::article_list_item::ArticleListItem;
 use crate::index::http::list_article_http;
-use share::utils::page::Pagination;
+use share::utils::page::{PageRequest, Pagination};
 use share::utils::status::StatusOptions;
 
 pub struct AsIndex {
     article_list: Vec<ArticleListItemHttp>,
+    page: Option<Pagination<Vec<ArticleListItemHttp>>>,
 }
 
 pub enum AsIndexMsg {
@@ -22,6 +23,7 @@ impl Component for AsIndex {
     fn create(ctx: &Context<Self>) -> Self {
         let as_index = AsIndex {
             article_list: Vec::new(),
+            page: None,
         };
 
         {
@@ -33,7 +35,7 @@ impl Component for AsIndex {
                         is_all: false,
                         status: Some(1),
                     },
-                    page: Pagination::init(5),
+                    page: PageRequest::init(5),
                 }).await {
                     link.send_message(AsIndexMsg::FetchArticleListHttp(articles));
                 }

@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 use share::article::Article;
 use share::article::article_statistics::ArticleStatisticsHttp;
+use share::article::http::ListArticleOptions;
 use share::tag::tag_base::TagHttp;
 use share::user::simple_user::SimpleUserHttp;
+use share::utils::page::{Pagination};
 use crate::article::article_content::sql::access::{get_article_content};
 use crate::article::article_statistics::sql::access::list_article_statistics;
+use crate::article::sql::access::count_article_sql;
 use crate::tag::sql::access::list_tag_sql;
 use crate::tag::sql::model::TagDB;
 use crate::tag::tag_relation::sql::access::list_tag_relation_sql;
@@ -21,8 +24,15 @@ impl <T: Article> ArticleService <T> {
         }
     }
 
-    pub fn consume(self) -> Vec<T> {
-        self.article_list
+    pub fn to_page(self, opts: ListArticleOptions) -> Pagination<Vec<T>> {
+        let page = Pagination {
+            page: opts.page.page,
+            total_page: count_article_sql(opts.clone()).unwrap_or(-1),
+            page_size: opts.page.page_size,
+            data: self.article_list,
+        };
+
+        page
     }
 
     pub fn each_set_with_tag_list(&mut self) {

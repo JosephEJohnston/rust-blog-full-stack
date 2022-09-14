@@ -4,6 +4,7 @@ use rocket::serde::json::Json;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
 use share::article::http::ListArticleOptions;
+use share::utils::page::Pagination;
 use crate::article::article_content::service::access::ArticleContentAccessService;
 use crate::article::http::enums::MarkOpt;
 use crate::article::service::base::{ArticleService, ArticleSingleService};
@@ -18,12 +19,10 @@ pub fn stage() -> AdHoc {
 
 
 #[post("/list", data = "<opt>")]
-fn list_article(opt: Json<ListArticleOptions>) -> Json<Vec<ArticleListItemHttp>> {
-    let res = list_article_sql(opt.into_inner());
+fn list_article(opt: Json<ListArticleOptions>) -> Json<Pagination<Vec<ArticleListItemHttp>>> {
+    let opt = opt.into_inner();
 
-    if res.is_none() {
-        return Json(Vec::new());
-    }
+    let res = list_article_sql(opt.clone());
 
     let article_list: Vec<ArticleListItemHttp> = res.unwrap().into_iter()
         .map(|db: ArticleDB| <ArticleDB as Into<ArticleListItemHttp>>::into(db))
@@ -35,7 +34,7 @@ fn list_article(opt: Json<ListArticleOptions>) -> Json<Vec<ArticleListItemHttp>>
     article_service.each_set_with_statistics();
     article_service.each_set_with_user();
 
-    Json(article_service.consume())
+    Json(article_service.to_page(opt))
 }
 
 #[derive(FromForm)]
