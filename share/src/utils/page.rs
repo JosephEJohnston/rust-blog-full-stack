@@ -22,6 +22,19 @@ pub struct Pagination<T> {
 }
 */
 
+impl <T> Pagination<T> {
+    pub fn to_page<V, F>(self, func: F) -> Pagination<V>
+    where
+        F: Fn(T) -> V
+    {
+        Pagination {
+            page: self.page,
+            total_page: self.total_page,
+            page_size: self.page_size,
+            data: func(self.data),
+        }
+    }
+}
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
 pub struct PageRequest {

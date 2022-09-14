@@ -3,12 +3,13 @@ use gloo::net::http::Request;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::article_complete::ArticleCompleteHttp;
 use share::article::http::ListArticleOptions;
+use share::utils::page::Pagination;
 
 // todo 全局文章接口和用户文章接口
-pub async fn list_article_http(opts: ListArticleOptions) -> Result<Vec<ArticleListItemHttp>, Box<dyn Error>> {
+pub async fn list_article_http(opts: ListArticleOptions) -> Result<Pagination<Vec<ArticleListItemHttp>>, Box<dyn Error>> {
     let url = "/api/article/list";
 
-    let articles: Vec<ArticleListItemHttp> =
+    let articles: Pagination<Vec<ArticleListItemHttp>> =
         Request::post(url)
             .json(&opts)?
             .send().await?

@@ -8,12 +8,11 @@ use share::utils::page::{PageRequest, Pagination};
 use share::utils::status::StatusOptions;
 
 pub struct AsIndex {
-    article_list: Vec<ArticleListItemHttp>,
     page: Option<Pagination<Vec<ArticleListItemHttp>>>,
 }
 
 pub enum AsIndexMsg {
-    FetchArticleListHttp(Vec<ArticleListItemHttp>),
+    FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
 }
 
 impl Component for AsIndex {
@@ -22,7 +21,6 @@ impl Component for AsIndex {
 
     fn create(ctx: &Context<Self>) -> Self {
         let as_index = AsIndex {
-            article_list: Vec::new(),
             page: None,
         };
 
@@ -48,9 +46,7 @@ impl Component for AsIndex {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             AsIndexMsg::FetchArticleListHttp(articles) => {
-                self.article_list = articles.into_iter()
-                    .filter(|article| article.status == 1)
-                    .collect();
+                self.page = Some(articles);
 
                 true
             }
@@ -72,7 +68,7 @@ impl Component for AsIndex {
                 <article class="article-container">
                     <div class="for-article-container">
                         {
-                            for self.article_list.iter().map(|article| -> Html {
+                            for self.page.as_ref().unwrap().data.iter().map(|article| -> Html {
                                 html! {
                                     <ArticleListItem article={article.clone()}/>
                                 }

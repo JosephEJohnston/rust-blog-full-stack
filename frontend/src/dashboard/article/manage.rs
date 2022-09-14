@@ -16,18 +16,17 @@ use crate::dashboard::article::http::update_article_status;
 use crate::index::http::list_article_http;
 
 pub struct DashboardArticleManage {
-    article_map: Option<HashMap<i64, ArticleListItemHttp>>,
-    page: Option<Pagination>,
+    page: Option<Pagination<HashMap<i64, ArticleListItemHttp>>>,
 }
 
 impl DashboardArticleManage {
     fn render_article_list(&self, ctx: &Context<Self>) -> Html {
-        if self.article_map.is_none() {
+        if self.page.is_none() {
             html! {
 
             }
         } else {
-            let article_list: Vec<&ArticleListItemHttp> = self.article_map.as_ref().unwrap().iter()
+            let article_list: Vec<&ArticleListItemHttp> = self.page.as_ref().unwrap().data.iter()
                 .sorted_by_key(|(id, _article)| -1i64 * id.clone())
                 .map(|(_id, article)| article)
                 .collect();
@@ -57,7 +56,6 @@ impl DashboardArticleManage {
                 }
             }
         }
-
     }
 
     fn render_status_button(&self, ctx: &Context<Self>, article: &ArticleListItemHttp) -> Html {
@@ -86,7 +84,6 @@ impl DashboardArticleManage {
                 id,
                 status,
             }).await {
-
                 link.send_message(Msg::UpdateArticleStatus((id, status)));
             }
         });
@@ -94,7 +91,7 @@ impl DashboardArticleManage {
 }
 
 pub enum Msg {
-    FetchArticleListHttp(Vec<ArticleListItemHttp>),
+    FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
     DeleteArticle(i64),
     RecoverArticle(i64),
     UpdateArticleStatus((i64, i8)),
@@ -122,40 +119,48 @@ impl Component for DashboardArticleManage {
         }
 
         DashboardArticleManage {
-            article_map: None,
             page: None
         }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::FetchArticleListHttp(articles) => {
-                self.article_map = Some(articles.into_iter().fold(HashMap::new(), |mut map, article| {
-                    map.insert(article.id.unwrap(), article);
+            Msg::FetchArticleListHttp(article_page) => {
+                let func =
+                    |articles: Vec<ArticleListItemHttp>| {
+                        articles.into_iter().fold(HashMap::new(), |mut map, article| {
+                            map.insert(article.id.unwrap(), article);
 
-                    map
-                }));
+                            map
+                        })
+                    };
+
+                let map = article_page.to_page(func);
+
+                self.page = Some(map);
 
                 true
-            },
+            }
 
             Msg::DeleteArticle(id) => {
                 self.update_article_status_http(ctx, id, 0);
 
                 false
-            },
+            }
 
             Msg::RecoverArticle(id) => {
                 self.update_article_status_http(ctx, id, 1);
 
                 false
-            },
+            }
 
             Msg::UpdateArticleStatus((id, status)) => {
-                let article_map = self.article_map.as_mut().unwrap();
+                if let Some(page) = self.page.as_mut() {
+                    let article_map = &mut page.data;
 
-                if let Some(article) = article_map.get_mut(&id) {
-                    article.status = status;
+                    if let Some(article) = article_map.get_mut(&id) {
+                        article.status = status;
+                    }
                 }
 
                 true

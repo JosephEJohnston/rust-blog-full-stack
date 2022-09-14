@@ -25,10 +25,13 @@ impl <T: Article> ArticleService <T> {
     }
 
     pub fn to_page(self, opts: ListArticleOptions) -> Pagination<Vec<T>> {
+        let total_count = count_article_sql(opts.clone()).unwrap_or(-1);
+        let page_size = opts.page.page_size;
+
         let page = Pagination {
             page: opts.page.page,
-            total_page: count_article_sql(opts.clone()).unwrap_or(-1),
-            page_size: opts.page.page_size,
+            total_page: (total_count / page_size as i64) + 1,
+            page_size,
             data: self.article_list,
         };
 

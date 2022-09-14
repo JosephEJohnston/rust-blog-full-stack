@@ -1,5 +1,6 @@
+#[allow(dead_code)]
+
 use yew::prelude::*;
-use share::utils::page::Pagination;
 
 pub struct Page {
     // page: Pagination,
@@ -14,7 +15,7 @@ impl Component for Page {
     type Message = ();
     type Properties = PageProps;
 
-    fn create(ctx: &Context<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         Self {
             // page: Pagination::init(ctx.props().page_size),
         }
