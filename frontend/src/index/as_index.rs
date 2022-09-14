@@ -29,6 +29,30 @@ impl AsIndex {
             }
         }
     }
+
+    fn render_page(&self) -> Html {
+        if self.page.is_none() {
+            html! {
+
+            }
+        } else {
+            let total_page = self.page.as_ref().unwrap().total_page;
+
+            html! {
+                <div id="page-transform">
+                    <button class="button-transform-left">{ "<" }</button>
+                    {
+                        for (1..total_page + 1).into_iter().map(|i| {
+                            html! {
+                                <button class="button-transform-middle">{ i }</button>
+                            }
+                        })
+                    }
+                    <button class="button-transform-right">{ ">" }</button>
+                </div>
+            }
+        }
+    }
 }
 
 pub enum AsIndexMsg {
@@ -92,13 +116,7 @@ impl Component for AsIndex {
                 </article>
                 <aside>
                 </aside>
-                <div id="page-transform">
-                    <button class="button-transform-left">{ "<" }</button>
-                    <button class="button-transform-middle">{ "1" }</button>
-                    <button class="button-transform-middle">{ "2" }</button>
-                    <button class="button-transform-middle">{ "3" }</button>
-                    <button class="button-transform-right">{ ">" }</button>
-                </div>
+                { self.render_page() }
             </>
         }
     }
