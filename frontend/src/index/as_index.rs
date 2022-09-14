@@ -30,33 +30,62 @@ impl AsIndex {
         }
     }
 
-    fn render_page(&self) -> Html {
+    fn render_page(&self, ctx: &Context<Self>) -> Html {
         if self.page.is_none() {
             html! {
 
             }
         } else {
-            let total_page = self.page.as_ref().unwrap().total_page;
+            let page = self.page.as_ref().unwrap();
+            let total_page = page.total_page;
+            let cur_page = page.page;
 
             html! {
                 <div id="page-transform">
-                    <button class="button-transform-left">{ "<" }</button>
+                    <button class="button-transform-left"
+                        onclick={ ctx.link().callback(move |_| AsIndexMsg::TransferPage(cur_page - 1)) }>
+                        { "<" }
+                    </button>
                     {
                         for (1..total_page + 1).into_iter().map(|i| {
                             html! {
-                                <button class="button-transform-middle">{ i }</button>
+                                <button class="button-transform-middle"
+                                    onclick={ ctx.link().callback(move |_| AsIndexMsg::TransferPage(i)) }>
+                                    { i }
+                                </button>
                             }
                         })
                     }
-                    <button class="button-transform-right">{ ">" }</button>
+                    <button class="button-transform-right" onclick={ ctx.link().callback(move |_| AsIndexMsg::TransferPage(cur_page + 1)) }>
+                        { ">" }
+                    </button>
                 </div>
             }
+        }
+    }
+
+    fn send_article_list_request(&self, ctx: &Context<Self>, page_request: PageRequest) {
+        {
+            let link = ctx.link().clone();
+            spawn_local(async move {
+                if let Ok(articles) = list_article_http(ListArticleOptions {
+                    user_id: 1,
+                    status: StatusOptions {
+                        is_all: false,
+                        status: Some(1),
+                    },
+                    page: page_request,
+                }).await {
+                    link.send_message(AsIndexMsg::FetchArticleListHttp(articles));
+                }
+            })
         }
     }
 }
 
 pub enum AsIndexMsg {
     FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
+    TransferPage(i64),
 }
 
 impl Component for AsIndex {
@@ -68,36 +97,39 @@ impl Component for AsIndex {
             page: None,
         };
 
-        {
-            let link = ctx.link().clone();
-            spawn_local(async move {
-                if let Ok(articles) = list_article_http(ListArticleOptions {
-                    user_id: 1,
-                    status: StatusOptions {
-                        is_all: false,
-                        status: Some(1),
-                    },
-                    page: PageRequest::init(5),
-                }).await {
-                    link.send_message(AsIndexMsg::FetchArticleListHttp(articles));
-                }
-            })
-        }
+        let page_request = PageRequest::init(5);
+        as_index.send_article_list_request(ctx, page_request);
 
         as_index
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             AsIndexMsg::FetchArticleListHttp(articles) => {
                 self.page = Some(articles);
+
+                true
+            },
+
+            AsIndexMsg::TransferPage(page) => {
+                let total_page = self.page.as_ref().unwrap().total_page;
+                if page == 0 || page > total_page {
+                    return false;
+                }
+
+                let page_request = PageRequest {
+                    page,
+                    page_size: 5,
+                };
+
+                self.send_article_list_request(ctx, page_request);
 
                 true
             }
         }
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
 
         // 可以使用多个 style，例如 class={ vec![style, test] }
         // let test = Style::new(ARTICLE_CSS).unwrap();
@@ -116,7 +148,7 @@ impl Component for AsIndex {
                 </article>
                 <aside>
                 </aside>
-                { self.render_page() }
+                { self.render_page(ctx) }
             </>
         }
     }

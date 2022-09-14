@@ -4,9 +4,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
 pub struct Pagination<T> {
-    pub page: i32,
+    pub page: i64,
     pub total_page: i64,
-    pub page_size: i32,
+    pub page_size: i64,
     pub data: T
 }
 
@@ -38,12 +38,12 @@ impl <T> Pagination<T> {
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
 pub struct PageRequest {
-    pub page: i32,
-    pub page_size: i32,
+    pub page: i64,
+    pub page_size: i64,
 }
 
 impl PageRequest {
-    pub fn init(page_size: i32) -> PageRequest {
+    pub fn init(page_size: i64) -> PageRequest {
         PageRequest {
             page: 1,
             page_size,
