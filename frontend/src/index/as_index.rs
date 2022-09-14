@@ -11,6 +11,26 @@ pub struct AsIndex {
     page: Option<Pagination<Vec<ArticleListItemHttp>>>,
 }
 
+impl AsIndex {
+    fn render_contain(&self) -> Html {
+        if self.page.is_none() {
+            html! {
+
+            }
+        } else {
+            html! {
+                {
+                    for self.page.as_ref().unwrap().data.iter().map(|article| -> Html {
+                        html! {
+                            <ArticleListItem article={article.clone()}/>
+                        }
+                    })
+                }
+            }
+        }
+    }
+}
+
 pub enum AsIndexMsg {
     FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
 }
@@ -67,13 +87,7 @@ impl Component for AsIndex {
                 </div>
                 <article class="article-container">
                     <div class="for-article-container">
-                        {
-                            for self.page.as_ref().unwrap().data.iter().map(|article| -> Html {
-                                html! {
-                                    <ArticleListItem article={article.clone()}/>
-                                }
-                            })
-                        }
+                        { self.render_contain() }
                     </div>
                 </article>
                 <aside>
