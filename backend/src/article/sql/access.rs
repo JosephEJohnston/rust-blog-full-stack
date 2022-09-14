@@ -16,9 +16,17 @@ pub fn list_article_sql(opts: ListArticleOptions) -> Option<Vec<ArticleDB>> {
         .filter(user_id.eq(opts.user_id))
         .into_boxed();
 
+    let query = if opts.status.is_all == false {
+        let query = query
+            .filter(status.eq(opts.status.status.unwrap()));
+
+        query
+    } else {
+        query
+    };
+
+
     let query = query
-        // todo 明天再说
-        .filter(status.eq(opts.status.status.unwrap()))
         .limit(opts.page.limit)
         .offset(opts.page.offset)
         .order(create_time.desc())
