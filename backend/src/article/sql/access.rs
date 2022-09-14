@@ -14,6 +14,10 @@ pub fn list_article_sql(opts: ListArticleOptions) -> Option<Vec<ArticleDB>> {
 
     let query = article
         .filter(user_id.eq(opts.user_id))
+        .into_boxed();
+
+    let query = query
+        // todo 明天再说
         .filter(status.eq(opts.status.status.unwrap()))
         .limit(opts.page.limit)
         .offset(opts.page.offset)
