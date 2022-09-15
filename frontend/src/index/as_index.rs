@@ -30,7 +30,7 @@ impl AsIndex {
         }
     }
 
-    fn render_page(&self, ctx: &Context<Self>) -> Html {
+    fn render_page_transfer_bar(&self, ctx: &Context<Self>) -> Html {
         if self.page.is_none() {
             html! {
 
@@ -64,7 +64,7 @@ impl AsIndex {
         }
     }
 
-    fn send_article_list_request(&self, ctx: &Context<Self>, page_request: PageRequest) {
+    fn fetch_article_list_http(&self, ctx: &Context<Self>, page_request: PageRequest) {
         {
             let link = ctx.link().clone();
             spawn_local(async move {
@@ -98,7 +98,7 @@ impl Component for AsIndex {
         };
 
         let page_request = PageRequest::init(5);
-        as_index.send_article_list_request(ctx, page_request);
+        as_index.fetch_article_list_http(ctx, page_request);
 
         as_index
     }
@@ -122,7 +122,7 @@ impl Component for AsIndex {
                     page_size: 5,
                 };
 
-                self.send_article_list_request(ctx, page_request);
+                self.fetch_article_list_http(ctx, page_request);
 
                 true
             }
@@ -148,7 +148,7 @@ impl Component for AsIndex {
                 </article>
                 <aside>
                 </aside>
-                { self.render_page(ctx) }
+                { self.render_page_transfer_bar(ctx) }
             </>
         }
     }

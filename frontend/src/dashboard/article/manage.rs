@@ -77,6 +77,58 @@ impl DashboardArticleManage {
         }
     }
 
+    fn render_page_transfer_bar(&self, ctx: &Context<Self>) -> Html {
+        if self.page.is_none() {
+            html! {
+
+            }
+        } else {
+            let page = self.page.as_ref().unwrap();
+            let total_page = page.total_page;
+            let cur_page = page.page;
+
+            html! {
+                <div id="page-transform">
+                    <button class="button-transform-left"
+                        onclick={ ctx.link().callback(move |_| Msg::TransferPage(cur_page - 1)) }>
+                        { "<" }
+                    </button>
+                    {
+                        for (1..total_page + 1).into_iter().map(|i| {
+                            html! {
+                                <button class="button-transform-middle"
+                                    onclick={ ctx.link().callback(move |_| Msg::TransferPage(i)) }>
+                                    { i }
+                                </button>
+                            }
+                        })
+                    }
+                    <button class="button-transform-right" onclick={ ctx.link().callback(move |_| Msg::TransferPage(cur_page + 1)) }>
+                        { ">" }
+                    </button>
+                </div>
+            }
+        }
+    }
+
+    fn fetch_article_list_http(&self, ctx: &Context<Self>, page_request: PageRequest) {
+        {
+            let link = ctx.link().clone();
+            spawn_local(async move {
+                if let Ok(articles) = list_article_http(ListArticleOptions {
+                    user_id: 1,
+                    status: StatusOptions {
+                        is_all: true,
+                        status: None,
+                    },
+                    page: page_request,
+                }).await {
+                    link.send_message(Msg::FetchArticleListHttp(articles));
+                }
+            })
+        }
+    }
+
     fn update_article_status_http(&mut self, ctx: &Context<Self>, id: i64, status: i8) {
         let link = ctx.link().clone();
         spawn_local(async move {
@@ -92,6 +144,7 @@ impl DashboardArticleManage {
 
 pub enum Msg {
     FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
+    TransferPage(i64),
     DeleteArticle(i64),
     RecoverArticle(i64),
     UpdateArticleStatus((i64, i8)),
@@ -102,25 +155,14 @@ impl Component for DashboardArticleManage {
     type Properties = ();
 
     fn create(ctx: &Context<Self>) -> Self {
-        {
-            let link = ctx.link().clone();
-            spawn_local(async move {
-                if let Ok(articles) = list_article_http(ListArticleOptions {
-                    user_id: 1,
-                    status: StatusOptions {
-                        is_all: true,
-                        status: None,
-                    },
-                    page: PageRequest::init(10),
-                }).await {
-                    link.send_message(Msg::FetchArticleListHttp(articles));
-                }
-            })
-        }
-
-        DashboardArticleManage {
+        let manage = DashboardArticleManage {
             page: None
-        }
+        };
+
+        let page_request = PageRequest::init(10);
+        manage.fetch_article_list_http(ctx, page_request);
+
+        manage
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
@@ -138,6 +180,22 @@ impl Component for DashboardArticleManage {
                 let map = article_page.to_page(func);
 
                 self.page = Some(map);
+
+                true
+            },
+
+            Msg::TransferPage(page) => {
+                let total_page = self.page.as_ref().unwrap().total_page;
+                if page == 0 || page > total_page {
+                    return false;
+                }
+
+                let page_request = PageRequest {
+                    page,
+                    page_size: 10,
+                };
+
+                self.fetch_article_list_http(ctx, page_request);
 
                 true
             }
@@ -209,13 +267,7 @@ impl Component for DashboardArticleManage {
                         </tbody>
                     </table>
                     <hr />
-                    <div id="page-transform">
-                        <button class="button-transform-left">{"<"}</button>
-                        <button class="button-transform-middle">{"1"}</button>
-                        <button class="button-transform-middle">{"2"}</button>
-                        <button class="button-transform-middle">{"3"}</button>
-                        <button class="button-transform-right">{">"}</button>
-                    </div>
+                    { self.render_page_transfer_bar(ctx) }
                 </div>
             </>
         }
