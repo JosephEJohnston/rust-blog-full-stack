@@ -34,6 +34,14 @@ impl <T> Pagination<T> {
             data: func(self.data),
         }
     }
+
+    pub fn make_page_bar(&self) -> PageBar {
+        PageBar {
+            page: self.page.clone(),
+            total_page: self.total_page.clone(),
+            page_size: self.page_size.clone(),
+        }
+    }
 }
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize)]
@@ -51,3 +59,9 @@ impl PageRequest {
     }
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct PageBar {
+    pub page: i64,
+    pub total_page: i64,
+    pub page_size: i64,
+}

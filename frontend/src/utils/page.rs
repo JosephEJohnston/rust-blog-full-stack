@@ -1,35 +1,96 @@
 #[allow(dead_code)]
 
 use yew::prelude::*;
+use share::utils::page::{PageBar, PageRequest};
 
 pub struct Page {
-    // page: Pagination,
+
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Properties)]
+impl Page {
+    fn render_page_transfer_bar(&self, ctx: &Context<Self>) -> Html {
+        let page = ctx.props().page_bar;
+
+        if page.is_none() {
+            html! {
+
+            }
+        } else {
+            let page = page.unwrap();
+            let total_page = page.total_page;
+            let cur_page = page.page;
+
+            html! {
+                <div id="page-transform">
+                    <button class="button-transform-left"
+                        onclick={ ctx.link().callback(move |_| Msg::TransferPage(cur_page - 1)) }>
+                        { "<" }
+                    </button>
+                    {
+                        for (1..total_page + 1).into_iter().map(|i| {
+                            html! {
+                                <button class="button-transform-middle"
+                                    onclick={ ctx.link().callback(move |_| Msg::TransferPage(i)) }>
+                                    { i }
+                                </button>
+                            }
+                        })
+                    }
+                    <button class="button-transform-right" onclick={ ctx.link().callback(move |_| Msg::TransferPage(cur_page + 1)) }>
+                        { ">" }
+                    </button>
+                </div>
+            }
+        }
+    }
+}
+
+#[derive(PartialEq, Properties)]
 pub struct PageProps {
-    page_size: i32,
+    #[prop_or_default]
+    page_bar: Option<PageBar>,
+    callback: Callback<PageRequest>,
+}
+
+pub enum Msg {
+    TransferPage(i64),
 }
 
 impl Component for Page {
-    type Message = ();
+    type Message = Msg;
     type Properties = PageProps;
 
     fn create(_ctx: &Context<Self>) -> Self {
         Self {
-            // page: Pagination::init(ctx.props().page_size),
+
         }
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            Msg::TransferPage(page) => {
+                let page_bar = ctx.props().page_bar.as_ref().unwrap();
+
+                let total_page = page_bar.total_page;
+                if page == 0 || page > total_page {
+                    return false;
+                }
+
+                let page_request = PageRequest {
+                    page,
+                    page_size: page_bar.page_size,
+                };
+
+                ctx.props().callback.emit(page_request);
+
+                true
+            }
+        }
+    }
+
+    fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
-            <div id="page-transform">
-                <button class="button-transform-left">{"<"}</button>
-                <button class="button-transform-middle">{"1"}</button>
-                <button class="button-transform-middle">{"2"}</button>
-                <button class="button-transform-middle">{"3"}</button>
-                <button class="button-transform-right">{">"}</button>
-            </div>
+            { self.render_page_transfer_bar(ctx) }
         }
     }
 }
