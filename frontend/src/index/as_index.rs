@@ -2,6 +2,7 @@ use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 use share::article::article_base::ArticleListItemHttp;
 use share::article::http::ListArticleOptions;
+use crate::utils::page::Page;
 use crate::index::article_list_item::ArticleListItem;
 use crate::index::http::list_article_http;
 use share::utils::page::{PageRequest, Pagination};
@@ -30,40 +31,6 @@ impl AsIndex {
         }
     }
 
-    fn render_page_transfer_bar(&self, ctx: &Context<Self>) -> Html {
-        if self.page.is_none() {
-            html! {
-
-            }
-        } else {
-            let page = self.page.as_ref().unwrap();
-            let total_page = page.total_page;
-            let cur_page = page.page;
-
-            html! {
-                <div id="page-transform">
-                    <button class="button-transform-left"
-                        onclick={ ctx.link().callback(move |_| AsIndexMsg::TransferPage(cur_page - 1)) }>
-                        { "<" }
-                    </button>
-                    {
-                        for (1..total_page + 1).into_iter().map(|i| {
-                            html! {
-                                <button class="button-transform-middle"
-                                    onclick={ ctx.link().callback(move |_| AsIndexMsg::TransferPage(i)) }>
-                                    { i }
-                                </button>
-                            }
-                        })
-                    }
-                    <button class="button-transform-right" onclick={ ctx.link().callback(move |_| AsIndexMsg::TransferPage(cur_page + 1)) }>
-                        { ">" }
-                    </button>
-                </div>
-            }
-        }
-    }
-
     fn fetch_article_list_http(&self, ctx: &Context<Self>, page_request: PageRequest) {
         {
             let link = ctx.link().clone();
@@ -85,7 +52,7 @@ impl AsIndex {
 
 pub enum AsIndexMsg {
     FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
-    TransferPage(i64),
+    TransferPage(PageRequest),
 }
 
 impl Component for AsIndex {
@@ -111,17 +78,7 @@ impl Component for AsIndex {
                 true
             },
 
-            AsIndexMsg::TransferPage(page) => {
-                let total_page = self.page.as_ref().unwrap().total_page;
-                if page == 0 || page > total_page {
-                    return false;
-                }
-
-                let page_request = PageRequest {
-                    page,
-                    page_size: 5,
-                };
-
+            AsIndexMsg::TransferPage(page_request) => {
                 self.fetch_article_list_http(ctx, page_request);
 
                 true
@@ -133,6 +90,8 @@ impl Component for AsIndex {
 
         // 可以使用多个 style，例如 class={ vec![style, test] }
         // let test = Style::new(ARTICLE_CSS).unwrap();
+        let callback = ctx.link()
+            .callback(|request| AsIndexMsg::TransferPage(request));
 
         html! {
             <>
@@ -148,7 +107,8 @@ impl Component for AsIndex {
                 </article>
                 <aside>
                 </aside>
-                { self.render_page_transfer_bar(ctx) }
+                <Page page_bar={self.page.as_ref().map(|page| page.make_page_bar())}
+                        callback={callback} />
             </>
         }
     }

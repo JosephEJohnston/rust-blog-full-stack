@@ -48,8 +48,8 @@ impl Page {
 #[derive(PartialEq, Properties)]
 pub struct PageProps {
     #[prop_or_default]
-    page_bar: Option<PageBar>,
-    callback: Callback<PageRequest>,
+    pub page_bar: Option<PageBar>,
+    pub callback: Callback<PageRequest>,
 }
 
 pub enum Msg {
