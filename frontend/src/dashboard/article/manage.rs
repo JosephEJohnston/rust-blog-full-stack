@@ -14,6 +14,7 @@ use crate::css::{DASHBOARD_ARTICLE_MANAGE_CSS, DASHBOARD_MAIN_COMMON};
 use crate::dashboard::article::DashboardArticleRoute;
 use crate::dashboard::article::http::update_article_status;
 use crate::index::http::list_article_http;
+use crate::utils::page::Page;
 
 pub struct DashboardArticleManage {
     page: Option<Pagination<HashMap<i64, ArticleListItemHttp>>>,
@@ -77,40 +78,6 @@ impl DashboardArticleManage {
         }
     }
 
-    fn render_page_transfer_bar(&self, ctx: &Context<Self>) -> Html {
-        if self.page.is_none() {
-            html! {
-
-            }
-        } else {
-            let page = self.page.as_ref().unwrap();
-            let total_page = page.total_page;
-            let cur_page = page.page;
-
-            html! {
-                <div id="page-transform">
-                    <button class="button-transform-left"
-                        onclick={ ctx.link().callback(move |_| Msg::TransferPage(cur_page - 1)) }>
-                        { "<" }
-                    </button>
-                    {
-                        for (1..total_page + 1).into_iter().map(|i| {
-                            html! {
-                                <button class="button-transform-middle"
-                                    onclick={ ctx.link().callback(move |_| Msg::TransferPage(i)) }>
-                                    { i }
-                                </button>
-                            }
-                        })
-                    }
-                    <button class="button-transform-right" onclick={ ctx.link().callback(move |_| Msg::TransferPage(cur_page + 1)) }>
-                        { ">" }
-                    </button>
-                </div>
-            }
-        }
-    }
-
     fn fetch_article_list_http(&self, ctx: &Context<Self>, page_request: PageRequest) {
         {
             let link = ctx.link().clone();
@@ -144,7 +111,7 @@ impl DashboardArticleManage {
 
 pub enum Msg {
     FetchArticleListHttp(Pagination<Vec<ArticleListItemHttp>>),
-    TransferPage(i64),
+    TransferPage(PageRequest),
     DeleteArticle(i64),
     RecoverArticle(i64),
     UpdateArticleStatus((i64, i8)),
@@ -184,17 +151,7 @@ impl Component for DashboardArticleManage {
                 true
             },
 
-            Msg::TransferPage(page) => {
-                let total_page = self.page.as_ref().unwrap().total_page;
-                if page == 0 || page > total_page {
-                    return false;
-                }
-
-                let page_request = PageRequest {
-                    page,
-                    page_size: 10,
-                };
-
+            Msg::TransferPage(page_request) => {
                 self.fetch_article_list_http(ctx, page_request);
 
                 true
@@ -229,6 +186,9 @@ impl Component for DashboardArticleManage {
     fn view(&self, ctx: &Context<Self>) -> Html {
         let dashboard_css = Style::new(DASHBOARD_MAIN_COMMON).unwrap();
         let manage_css = Style::new(DASHBOARD_ARTICLE_MANAGE_CSS).unwrap();
+
+        let callback = ctx.link()
+            .callback(|request| Msg::TransferPage(request));
 
         html! {
             <>
@@ -267,7 +227,8 @@ impl Component for DashboardArticleManage {
                         </tbody>
                     </table>
                     <hr />
-                    { self.render_page_transfer_bar(ctx) }
+                    <Page page_bar={self.page.as_ref().map(|page| page.make_page_bar())}
+                            callback={callback}/>
                 </div>
             </>
         }

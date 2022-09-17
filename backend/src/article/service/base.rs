@@ -28,9 +28,16 @@ impl <T: Article> ArticleService <T> {
         let total_count = count_article_sql(opts.clone()).unwrap_or(-1);
         let page_size = opts.page.page_size;
 
+        let raw_page = total_count / page_size as i64;
+        let total_page = if total_count % page_size == 0 {
+            raw_page
+        } else {
+            raw_page + 1
+        };
+
         let page = Pagination {
             page: opts.page.page,
-            total_page: (total_count / page_size as i64) + 1,
+            total_page,
             page_size,
             data: self.article_list,
         };
