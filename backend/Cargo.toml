@@ -28,3 +28,5 @@ dotenvy = "0.15"
 const_format = "0.2.26"
 
 markdown = "0.3.0"
+
+ubyte = "0.10.3"

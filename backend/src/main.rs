@@ -3,6 +3,7 @@ mod user;
 mod tag;
 mod article;
 mod utils;
+mod common;
 
 use rocket::{get, launch, options, routes};
 use crate::cors::CORS;
@@ -23,5 +24,6 @@ fn rocket() -> _ {
     rocket::build()
         .attach(CORS)
         .attach(article::http::stage())
+        .attach(common::http::stage())
         .mount("/api", routes![index, all_options])
 }
